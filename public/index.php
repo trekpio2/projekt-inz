@@ -8,95 +8,64 @@ $router = new \App\Service\Router();
 
 $action = $_REQUEST['action'] ?? null;
 switch ($action) {
-    case 'post-index':
+    case 'animal-index':
     case null:
-        $controller = new \App\Controller\PostController();
+        $controller = new \App\Controller\AnimalController();
         $view = $controller->indexAction($templating, $router);
         break;
-    case 'post-create':
-        $controller = new \App\Controller\PostController();
-        $view = $controller->createAction($_REQUEST['post'] ?? null, $templating, $router);
+    case 'animal-create':
+        $controller = new \App\Controller\AnimalController();
+        $view = $controller->createAction($_REQUEST['animal'] ?? null, $templating, $router);
         break;
-    case 'post-edit':
-        if (! $_REQUEST['id']) {
+    case 'animal-edit':
+        if (! $_REQUEST['animalId']) {
             break;
         }
-        $controller = new \App\Controller\PostController();
-        $view = $controller->editAction($_REQUEST['id'], $_REQUEST['post'] ?? null, $templating, $router);
+        $controller = new \App\Controller\AnimalController();
+        $view = $controller->editAction($_REQUEST['animalId'], $_REQUEST['animal'] ?? null, $templating, $router);
         break;
-    case 'post-show':
-        if (! $_REQUEST['id']) {
+    case 'animal-show':
+        if (! $_REQUEST['animalId']) {
             break;
         }
-        $controller = new \App\Controller\PostController();
-        $view = $controller->showAction($_REQUEST['id'], $templating, $router);
+        $controller = new \App\Controller\AnimalController();
+        $view = $controller->showAction($_REQUEST['animalId'], $templating, $router);
         break;
-    case 'post-delete':
-        if (! $_REQUEST['id']) {
+    case 'animal-delete':
+        if (! $_REQUEST['animalId']) {
             break;
         }
-        $controller = new \App\Controller\PostController();
-        $view = $controller->deleteAction($_REQUEST['id'], $router);
+        $controller = new \App\Controller\AnimalController();
+        $view = $controller->deleteAction($_REQUEST['animalId'], $router);
         break;
-            case 'post-index':
-    case null:
-        $controller = new \App\Controller\PostController();
+    case 'aquarium-index':
+        $controller = new \App\Controller\AquariumController();
         $view = $controller->indexAction($templating, $router);
         break;
-    case 'post-create':
-        $controller = new \App\Controller\PostController();
-        $view = $controller->createAction($_REQUEST['post'] ?? null, $templating, $router);
+    case 'aquarium-create':
+        $controller = new \App\Controller\AquariumController();
+        $view = $controller->createAction($_REQUEST['aquarium'] ?? null, $templating, $router);
         break;
-    case 'post-edit':
-        if (! $_REQUEST['id']) {
+    case 'aquarium-edit':
+        if (! $_REQUEST['aquariumId']) {
             break;
         }
-        $controller = new \App\Controller\PostController();
-        $view = $controller->editAction($_REQUEST['id'], $_REQUEST['post'] ?? null, $templating, $router);
+        $controller = new \App\Controller\AquariumController();
+        $view = $controller->editAction($_REQUEST['aquariumId'], $_REQUEST['aquarium'] ?? null, $templating, $router);
         break;
-    case 'post-show':
-        if (! $_REQUEST['id']) {
+    case 'aquarium-show':
+        if (! $_REQUEST['aquariumId']) {
             break;
         }
-        $controller = new \App\Controller\PostController();
-        $view = $controller->showAction($_REQUEST['id'], $templating, $router);
+        $controller = new \App\Controller\AquariumController();
+        $view = $controller->showAction($_REQUEST['aquariumId'], $templating, $router);
         break;
-    case 'post-delete':
-        if (! $_REQUEST['id']) {
+    case 'aquarium-delete':
+        if (! $_REQUEST['aquariumId']) {
             break;
         }
-        $controller = new \App\Controller\PostController();
-        $view = $controller->deleteAction($_REQUEST['id'], $router);
-        break;
-    case 'contact-index':
-    case null:
-        $controller = new \App\Controller\ContactController();
-        $view = $controller->indexAction($templating, $router);
-        break;
-    case 'contact-create':
-        $controller = new \App\Controller\ContactController();
-        $view = $controller->createAction($_REQUEST['contact'] ?? null, $templating, $router);
-        break;
-    case 'contact-edit':
-        if (! $_REQUEST['id']) {
-            break;
-        }
-        $controller = new \App\Controller\ContactController();
-        $view = $controller->editAction($_REQUEST['id'], $_REQUEST['contact'] ?? null, $templating, $router);
-        break;
-    case 'contact-show':
-        if (! $_REQUEST['id']) {
-            break;
-        }
-        $controller = new \App\Controller\ContactController();
-        $view = $controller->showAction($_REQUEST['id'], $templating, $router);
-        break;
-    case 'contact-delete':
-        if (! $_REQUEST['id']) {
-            break;
-        }
-        $controller = new \App\Controller\ContactController();
-        $view = $controller->deleteAction($_REQUEST['id'], $router);
+        $controller = new \App\Controller\AquariumController();
+        $view = $controller->deleteAction($_REQUEST['aquariumId'], $router);
         break;
     default:
         $view = 'Not found';
