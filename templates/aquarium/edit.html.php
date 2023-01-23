@@ -12,7 +12,6 @@ ob_start(); ?>
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_editForm.html.php'; ?>
         <input type="hidden" name="action" value="aquarium-edit">
         <input type="hidden" name="aquariumId" value="<?= $aquarium->getAquariumId() ?>">
-        <input type="hidden" id="activity_id" name="aquarium[activity_id]" value="<?= $aquarium->getActivityId() ?>">
         <input type="hidden" id="user_id" name="aquarium[user_id]" value="<?= $aquarium->getUserId() ?>">
     </form>
 

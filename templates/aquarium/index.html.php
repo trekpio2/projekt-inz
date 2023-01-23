@@ -16,8 +16,8 @@ ob_start(); ?>
              <!-- dodac zdjecie? jesli tak to w bazie i modelu tez  -->
             <li><h3><?= $aquarium->getAquariumName(); ?></h3>
                 <ul class="action-list">
-                    <li><a href="<?= $router->generatePath('aquarium-show', ['aquariumId' => $aquarium->getAquariumId()]) ?>">Details</a></li>
-                    <li><a href="<?= $router->generatePath('aquarium-edit', ['aquariumId' => $aquarium->getAquariumId()]) ?>">Edit</a></li>
+                    <li><a href="<?= $router->generatePath('aquarium-show', ['aquarium_id' => $aquarium->getAquariumId()]) ?>">Details</a></li>
+                    <li><a href="<?= $router->generatePath('aquarium-edit', ['aquarium_id' => $aquarium->getAquariumId()]) ?>">Edit</a></li>
                 </ul>
             </li>
         <?php endforeach; ?>

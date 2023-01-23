@@ -13,7 +13,6 @@ ob_start(); ?>
         <input type="hidden" name="action" value="aquarium-create">
         <!-- na sztywno narazie oba -->
         <input type="hidden" id="user_id" name="aquarium[user_id]" value="<?= "1" ?>">
-        <input type="hidden" id="activity_id" name="aquarium[activity_id]" value="<?= "1" ?>">
     </form>
 
     <a href="<?= $router->generatePath('aquarium-index') ?>">Back to aquarium list</a>

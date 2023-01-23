@@ -12,14 +12,13 @@ ob_start(); ?>
     <article>
         <p>Gatunek: <?= $species->getSpeciesName();?></p>
         <p>Płeć: <?= $animal->getAnimalGender();?></p>
-        <!-- do zrobienia  -->
-        <!-- <img src="<?= $animal->getAnimalImage() ?>" alt=""> -->
+        <img src="<?= $animal->getAnimalImage() ?>" alt="">
         <!-- reszta dotyczaca zwierzecia -->
     </article>
 
     <ul class="action-list">
         <li> <a href="<?= $router->generatePath('animal-index') ?>">Back to animal list</a></li>
-        <li><a href="<?= $router->generatePath('animal-edit', ['animalId'=> $animal->getAnimalId()]) ?>">Edit</a></li>
+        <li><a href="<?= $router->generatePath('animal-edit', ['animal_id'=> $animal->getAnimalId()]) ?>">Edit</a></li>
     </ul>
 <?php $main = ob_get_clean();
 

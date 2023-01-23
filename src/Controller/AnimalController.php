@@ -21,16 +21,51 @@ class AnimalController
         return $html;
     }
 
-    public function createAction(?array $requestAnimal, Templating $templating, Router $router): ?string
+    public function createAction(?array $requestAnimal, ?array $uploadedFile, Templating $templating, Router $router): ?string
     {
         if ($requestAnimal) {
             $animal = Animal::fromArray($requestAnimal);
             // @todo missing validation
             $animal->save();
+            echo $uploadedFile['tmp_name'];
 
-            $path = $router->generatePath('animal-index');
-            $router->redirect($path);
-            return null;
+            //na sztywno narazie
+            $userName = 'piotrek';
+            $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+
+            if ( ! is_dir($imagePath)) {
+                mkdir($imagePath);
+            }
+
+            $imageName = 'animal' . $animal->getAnimalId();
+            
+            
+            $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+            if($extension == 'JPG')
+                $extension = 'jpeg';
+
+            //Stores the tempname as it is given by the host when uploaded.
+            $imagetemp = $uploadedFile['tmp_name'];
+
+            if(is_uploaded_file($imagetemp)) {
+                if(move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension)) {
+                    echo "Sussecfully uploaded your image.";
+                }
+                else {
+                    echo "Failed to move your image.";
+                }
+            }
+            else {
+                echo "Failed to upload your image.";
+            }
+
+            // $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+            // $animal->setAnimalImage($toDatabase);
+            // $animal->save();
+
+            // $path = $router->generatePath('animal-index');
+            // $router->redirect($path);
+            // return null;
         } else {
             $animal = new Animal();
         }
@@ -42,7 +77,7 @@ class AnimalController
         return $html;
     }
 
-    public function editAction(int $animalId, ?array $requestAnimal, Templating $templating, Router $router): ?string
+    public function editAction(int $animalId, ?array $requestAnimal, ?array $uploadedFile, Templating $templating, Router $router): ?string
     {
         $animal = Animal::find($animalId);
         if (! $animal) {
@@ -50,11 +85,43 @@ class AnimalController
         }
 
         if ($requestAnimal) {
-            $animal->fill($requestAnimal);
-            // @todo missing validation
-            $animal->save();
+            //na sztywno narazie
+            $userName = 'piotrek';
+            $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
 
-            $path = $router->generatePath('animal-index');
+            if ( ! is_dir($imagePath)) {
+                mkdir($imagePath);
+            }
+
+            $imageName = 'animal' . $animalId;
+            
+            
+            $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+            if($extension == 'JPG')
+            $extension = 'jpeg';
+
+            //Stores the tempname as it is given by the host when uploaded.
+            $imagetemp = $uploadedFile['tmp_name'];
+
+            if(is_uploaded_file($imagetemp)) {
+                if(move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension)) {
+                    echo "Sussecfully uploaded your image.";
+                }
+                else {
+                    echo "Failed to move your image.";
+                }
+            }
+            else {
+                echo "Failed to upload your image.";
+            }
+
+            $requestAnimal['animal_image'] = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+
+            $animal->fill($requestAnimal);
+            //@todo missing validation
+             $animal->save();
+
+            $path = $router->generatePath('animal-show', ['animal_id' => $animalId]);
             $router->redirect($path);
             return null;
         }

@@ -12,7 +12,6 @@ class Aquarium
     private ?float $aquariumHeight = null;
     private ?float $aquariumVolume = null;
     private ?int $userId = null;
-    private ?int $activityId = null;
 
     public function getAquariumId(): ?int
     {
@@ -98,18 +97,6 @@ class Aquarium
         return $this;
     }
 
-    public function getActivityId(): ?int
-    {
-        return $this->activityId;
-    }
-
-    public function setActivityId(?int $activityId): Aquarium
-    {
-        $this->activityId = $activityId;
-
-        return $this;
-    }
-
     public static function fromArray($array): Aquarium
     {
         $aquarium = new self();
@@ -140,9 +127,6 @@ class Aquarium
         }
         if (isset($array['user_id'])) {
             $this->setUserId($array['user_id']);
-        }
-        if (isset($array['activity_id'])) {
-            $this->setActivityId($array['activity_id']);
         }
 
         return $this;
@@ -186,7 +170,7 @@ class Aquarium
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getAquariumId()) {
-            $sql = "INSERT INTO aquarium (aquarium_name, aquarium_length, aquarium_width, aquarium_height, aquarium_volume, user_id, activity_id) VALUES (:aquariumName, :aquariumLength, :aquariumWidth, :aquariumHeight, :aquariumVolume, :userId, :activityId)";
+            $sql = "INSERT INTO aquarium (aquarium_name, aquarium_length, aquarium_width, aquarium_height, aquarium_volume, user_id) VALUES (:aquariumName, :aquariumLength, :aquariumWidth, :aquariumHeight, :aquariumVolume, :userId)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'aquariumName' => $this->getAquariumName(),
@@ -195,12 +179,11 @@ class Aquarium
                 'aquariumHeight' => $this->getAquariumHeight(),
                 'aquariumVolume' => $this->getAquariumVolume(),
                 'userId' => $this->getUserId(),
-                'activityId' => $this->getActivityId(),
             ]);
 
             $this->setAquariumId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE aquarium SET aquarium_name = :aquariumName, aquarium_length = :aquariumLength, aquarium_width = :aquariumWidth, aquarium_height = :aquariumHeight, aquarium_volume = :aquariumVolume, user_id = :userId, activity_id = :activityId WHERE aquarium_id = :aquariumId";
+            $sql = "UPDATE aquarium SET aquarium_name = :aquariumName, aquarium_length = :aquariumLength, aquarium_width = :aquariumWidth, aquarium_height = :aquariumHeight, aquarium_volume = :aquariumVolume, user_id = :userId WHERE aquarium_id = :aquariumId";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 ':aquariumName' => $this->getAquariumName(),
@@ -209,7 +192,6 @@ class Aquarium
                 ':aquariumHeight' => $this->getAquariumHeight(),
                 ':aquariumVolume' => $this->getAquariumVolume(),
                 ':userId' => $this->getUserId(),
-                ':activityId' => $this->getActivityId(),
                 ':aquariumId' => $this->getAquariumId(),
             ]);
         }
@@ -231,6 +213,5 @@ class Aquarium
         $this->setAquariumHeight(null);
         $this->setAquariumVolume(null);
         $this->setUserId(null);
-        $this->setActivityId(null);
     }
 }

@@ -8,7 +8,7 @@ $bodyClass = "edit";
 
 ob_start(); ?>
     <h1>Create Animal</h1>
-    <form action="<?= $router->generatePath('animal-create') ?>" method="post" class="edit-form">
+    <form action="<?= $router->generatePath('animal-create') ?>" method="post" enctype="multipart/form-data" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_createForm.html.php'; ?>
         <input type="hidden" name="action" value="animal-create">
         <!-- na sztywno narazie -->

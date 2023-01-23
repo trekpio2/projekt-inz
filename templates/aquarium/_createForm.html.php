@@ -27,10 +27,10 @@
     <input type="text" id="aquarium_volume" name="aquarium[aquarium_volume]" value="<?= $aquarium ? $aquarium->getAquariumVolume() : '' ?>">
 </div>
 
-<!--  jesli beda zdjecia akwarium
+<!--  jesli beda zdjecia akwarium, dodac enctype w glownym formularzu
 <div class="form-group">
     <label for="aquarium_image">Image</label>
-    <input type="file" id="aquarium_image" name="aquarium[aquarium_image]">
+    <input type="file" id="aquarium_image" name="aquarium_image">
 </div> -->
 
 

@@ -23,12 +23,11 @@
     <label for="aquarium_id">Aquarium</label>
     <input type="text" id="aquarium_id" name="animal[aquarium_id]">
 </div>
-<!--  do zrobienia
-<div class="form-group">
-    <label for="animal_image">Image</label>
-    <input type="file" id="animal_image" name="animal[animal_image]">
-</div> -->
 
+<div class="form-group">
+    <label for="animal_image">image</label>
+    <input type="file" id="animal_image" name="animal_image">
+</div>
 
 
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Exception\NotFoundException;
 use App\Model\Aquarium;
 use App\Model\Animal;
+use App\Model\Activity;
 use App\Model\User;
 use App\Service\Router;
 use App\Service\Templating;
@@ -70,7 +71,7 @@ class AquariumController
     {
         $aquarium = Aquarium::find($aquariumId);
         $animals= Animal::findAllInAquarium($aquariumId);
-        // do zmiany, nowa metoda select IN $species = Species::findAll($animal->getSpeciesId());
+        $activities = Activity::findAllAssignedToAquarium($aquariumId);
 
         if (! $aquarium) {
             throw new NotFoundException("Missing aquarium with id $aquariumId");
@@ -79,6 +80,7 @@ class AquariumController
         $html = $templating->render('aquarium/show.html.php', [
             'aquarium' => $aquarium,
             'animals' => $animals,
+            'activities' => $activities,
             // 'species' => $species,
             'router' => $router,
         ]);

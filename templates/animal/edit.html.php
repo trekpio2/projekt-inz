@@ -8,10 +8,10 @@ $bodyClass = "edit";
 
 ob_start(); ?>
     <h1><?= $title ?></h1>
-    <form action="<?= $router->generatePath('animal-edit') ?>" method="post" class="edit-form">
+    <form action="<?= $router->generatePath('animal-edit') ?>" method="post" enctype="multipart/form-data" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_editForm.html.php'; ?>
         <input type="hidden" name="action" value="animal-edit">
-        <input type="hidden" name="animalId" value="<?= $animal->getAnimalId() ?>">
+        <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
         <input type="hidden" id="species_id" name="animal[species_id]" value="<?= $animal->getSpeciesId() ?>">
         <input type="hidden" id="aquarium_id" name="animal[aquarium_id]" value="<?= $animal->getAquariumId() ?>">
         <input type="hidden" id="user_id" name="animal[user_id]" value="<?= $animal->getUserId() ?>">
@@ -24,7 +24,7 @@ ob_start(); ?>
             <form action="<?= $router->generatePath('animal-delete') ?>" method="post">
                 <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
                 <input type="hidden" name="action" value="animal-delete">
-                <input type="hidden" name="animalId" value="<?= $animal->getAnimalId() ?>">
+                <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
             </form>
         </li>
     </ul>

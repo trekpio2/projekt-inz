@@ -5,42 +5,94 @@ use App\Service\Config;
 
 class Activity
 {
-    private ?int $id = null;
-    private ?string $subject = null;
-    private ?string $content = null;
+    private ?int $activity_id = null;
+    private ?string $activity_name = null;
+    private ?int $lights_level = null;
+    private ?float $temperature = null;
+    private ?int $is_planned = null;
+    private ?int $aquarium_id = null;
+    private ?int $user_id = null;
 
-    public function getId(): ?int
+    public function getActivityId(): ?int
     {
-        return $this->id;
+        return $this->activity_id;
     }
 
-    public function setId(?int $id): Activity
+    public function setActivityId(?int $activity_id): Activity
     {
-        $this->id = $id;
+        $this->activity_id = $activity_id;
 
         return $this;
     }
 
-    public function getSubject(): ?string
+    public function getActivityName(): ?string
     {
-        return $this->subject;
+        return $this->activity_name;
     }
 
-    public function setSubject(?string $subject): Activity
+    public function setActivityName(?string $activity_name): Activity
     {
-        $this->subject = $subject;
+        $this->activity_name = $activity_name;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getLightsLevel(): ?int
     {
-        return $this->content;
+        return $this->lights_level;
     }
 
-    public function setContent(?string $content): Activity
+    public function setLightsLevel(?int $lights_level): Activity
     {
-        $this->content = $content;
+        $this->lights_level = $lights_level;
+
+        return $this;
+    }
+
+    public function getTemperature(): ?float
+    {
+        return $this->temperature;
+    }
+
+    public function setTemperature(?float $temperature): Activity
+    {
+        $this->temperature = $temperature;
+
+        return $this;
+    }
+
+    public function getIsPlanned(): ?int
+    {
+        return $this->is_planned;
+    }
+
+    public function setIsPlanned(?int $is_planned): Activity
+    {
+        $this->is_planned = $is_planned;
+
+        return $this;
+    }
+
+    public function getAquariumId(): ?int
+    {
+        return $this->aquarium_id;
+    }
+
+    public function setAquariumId(?int $aquarium_id): Activity
+    {
+        $this->aquarium_id = $aquarium_id;
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?int $user_id): Activity
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }
@@ -55,25 +107,37 @@ class Activity
 
     public function fill($array): Activity
     {
-        if (isset($array['id']) && ! $this->getId()) {
-            $this->setId($array['id']);
+        if (isset($array['activity_id']) && ! $this->getActivityId()) {
+            $this->setActivityId($array['activity_id']);
         }
-        if (isset($array['subject'])) {
-            $this->setSubject($array['subject']);
+        if (isset($array['activity_name'])) {
+            $this->setActivityName($array['activity_name']);
         }
-        if (isset($array['content'])) {
-            $this->setContent($array['content']);
+        if (isset($array['lights_level'])) {
+            $this->setLightsLevel($array['lights_level']);
+        }
+        if (isset($array['temperature'])) {
+            $this->setTemperature($array['temperature']);
+        }
+        if (isset($array['is_planned'])) {
+            $this->setTemperature($array['is_planned']);
+        }
+        if (isset($array['aquarium_id'])) {
+            $this->setAquariumId($array['aquarium_id']);
+        }
+        if (isset($array['user_id'])) {
+            $this->setUserId($array['user_id']);
         }
 
         return $this;
     }
 
-    public static function findAll(): array
+    public static function findAllAssignedToAquarium($aquarium_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM activity';
+        $sql = 'SELECT * FROM activity WHERE aquarium_id = :aquarium_id ';
         $statement = $pdo->prepare($sql);
-        $statement->execute();
+        $statement->execute(['aquarium_id' => $aquarium_id]);
 
         $activities = [];
         $activitiesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -84,12 +148,28 @@ class Activity
         return $activities;
     }
 
-    public static function find($id): ?Activity
+    public static function findAllAssignedToUser($user_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM activity WHERE id = :id';
+        $sql = 'SELECT * FROM activity WHERE user_id = :user_id ';
         $statement = $pdo->prepare($sql);
-        $statement->execute(['id' => $id]);
+        $statement->execute(['user_id' => $user_id]);
+
+        $activities = [];
+        $activitiesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($activitiesArray as $activityArray) {
+            $activities[] = self::fromArray($activityArray);
+        }
+
+        return $activities;
+    }
+
+    public static function find($activity_id): ?Activity
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = 'SELECT * FROM activity WHERE activity_id = :activity_id';
+        $statement = $pdo->prepare($sql);
+        $statement->execute(['activity_id' => $activity_id]);
 
         $activityArray = $statement->fetch(\PDO::FETCH_ASSOC);
         if (! $activityArray) {
@@ -103,22 +183,30 @@ class Activity
     public function save(): void
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        if (! $this->getId()) {
-            $sql = "INSERT INTO activity (subject, content) VALUES (:subject, :content)";
+        if (! $this->getActivityId()) {
+            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, is_planned, aquarium_id, user_id) VALUES (:activity_name, :lights_level, :temperature, :is_planned, :aquarium_id, :user_id)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
-                'subject' => $this->getSubject(),
-                'content' => $this->getContent(),
+                'activity_name' => $this->getActivityName(),
+                'lights_level' => $this->getLightsLevel(),
+                'temperature' => $this->getTemperature(),
+                'is_planned' => $this->getIsPlanned(),
+                'aquarium_id' => $this->getAquariumId(),
+                'user_id' => $this->getUserId(),
             ]);
 
-            $this->setId($pdo->lastInsertId());
+            $this->setActivityId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE activity SET subject = :subject, content = :content WHERE id = :id";
+            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, is_planned = :is_planned, aquarium_id = :aquarium_id, user_id = :user_id WHERE activity_id = :activity_id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
-                ':subject' => $this->getSubject(),
-                ':content' => $this->getContent(),
-                ':id' => $this->getId(),
+                'activity_name' => $this->getActivityName(),
+                'lights_level' => $this->getLightsLevel(),
+                'temperature' => $this->getTemperature(),
+                'is_planned' => $this->getIsPlanned(),
+                'aquarium_id' => $this->getAquariumId(),
+                'user_id' => $this->getUserId(),
+                ':activity_id' => $this->getActivityId(),
             ]);
         }
     }
@@ -126,14 +214,18 @@ class Activity
     public function delete(): void
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = "DELETE FROM activity WHERE id = :id";
+        $sql = "DELETE FROM activity WHERE activity_id = :activity_id";
         $statement = $pdo->prepare($sql);
         $statement->execute([
-            ':id' => $this->getId(),
+            ':activity_id' => $this->getActivityId(),
         ]);
 
-        $this->setId(null);
-        $this->setSubject(null);
-        $this->setContent(null);
+        $this->setActivityId(null);
+        $this->setActivityName(null);
+        $this->setLightsLevel(null);
+        $this->setTemperature(null);
+        $this->setIsPlanned(null);
+        $this->setAquariumId(null);
+        $this->setUserId(null);
     }
 }

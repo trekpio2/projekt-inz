@@ -15,28 +15,28 @@ switch ($action) {
         break;
     case 'animal-create':
         $controller = new \App\Controller\AnimalController();
-        $view = $controller->createAction($_REQUEST['animal'] ?? null, $templating, $router);
+        $view = $controller->createAction($_REQUEST['animal'] ?? null, $_FILES['animal_image'] ?? null, $templating, $router);
         break;
     case 'animal-edit':
-        if (! $_REQUEST['animalId']) {
+        if (! $_REQUEST['animal_id']) {
             break;
         }
         $controller = new \App\Controller\AnimalController();
-        $view = $controller->editAction($_REQUEST['animalId'], $_REQUEST['animal'] ?? null, $templating, $router);
+        $view = $controller->editAction($_REQUEST['animal_id'], $_REQUEST['animal'] ?? null, $_FILES['animal_image'] ?? null, $templating, $router);
         break;
     case 'animal-show':
-        if (! $_REQUEST['animalId']) {
+        if (! $_REQUEST['animal_id']) {
             break;
         }
         $controller = new \App\Controller\AnimalController();
-        $view = $controller->showAction($_REQUEST['animalId'], $templating, $router);
+        $view = $controller->showAction($_REQUEST['animal_id'], $templating, $router);
         break;
     case 'animal-delete':
-        if (! $_REQUEST['animalId']) {
+        if (! $_REQUEST['animal_id']) {
             break;
         }
         $controller = new \App\Controller\AnimalController();
-        $view = $controller->deleteAction($_REQUEST['animalId'], $router);
+        $view = $controller->deleteAction($_REQUEST['animal_id'], $router);
         break;
     case 'aquarium-index':
         $controller = new \App\Controller\AquariumController();
@@ -47,25 +47,54 @@ switch ($action) {
         $view = $controller->createAction($_REQUEST['aquarium'] ?? null, $templating, $router);
         break;
     case 'aquarium-edit':
-        if (! $_REQUEST['aquariumId']) {
+        if (! $_REQUEST['aquarium_id']) {
             break;
         }
         $controller = new \App\Controller\AquariumController();
-        $view = $controller->editAction($_REQUEST['aquariumId'], $_REQUEST['aquarium'] ?? null, $templating, $router);
+        $view = $controller->editAction($_REQUEST['aquarium_id'], $_REQUEST['aquarium'] ?? null, $templating, $router);
         break;
     case 'aquarium-show':
-        if (! $_REQUEST['aquariumId']) {
+        if (! $_REQUEST['aquarium_id']) {
             break;
         }
         $controller = new \App\Controller\AquariumController();
-        $view = $controller->showAction($_REQUEST['aquariumId'], $templating, $router);
+        $view = $controller->showAction($_REQUEST['aquarium_id'], $templating, $router);
         break;
     case 'aquarium-delete':
-        if (! $_REQUEST['aquariumId']) {
+        if (! $_REQUEST['aquarium_id']) {
             break;
         }
         $controller = new \App\Controller\AquariumController();
-        $view = $controller->deleteAction($_REQUEST['aquariumId'], $router);
+        $view = $controller->deleteAction($_REQUEST['aquarium_id'], $router);
+        break;
+    case 'activity-index':
+        $controller = new \App\Controller\ActivityController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+    case 'activity-create':
+        $controller = new \App\Controller\ActivityController();
+        $view = $controller->createAction($_REQUEST['activity'] ?? null, $templating, $router);
+        break;
+    case 'activity-edit':
+        if (! $_REQUEST['activity_id']) {
+            break;
+        }
+        $controller = new \App\Controller\ActivityController();
+        $view = $controller->editAction($_REQUEST['activity_id'], $_REQUEST['activity'] ?? null, $templating, $router);
+        break;
+    case 'activity-show':
+        if (! $_REQUEST['activity_id']) {
+            break;
+        }
+        $controller = new \App\Controller\ActivityController();
+        $view = $controller->showAction($_REQUEST['activity_id'], $templating, $router);
+        break;
+    case 'activity-delete':
+        if (! $_REQUEST['activity_id']) {
+            break;
+        }
+        $controller = new \App\Controller\ActivityController();
+        $view = $controller->deleteAction($_REQUEST['activity_id'], $router);
         break;
     default:
         $view = 'Not found';

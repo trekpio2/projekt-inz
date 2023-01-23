@@ -3,7 +3,7 @@
 /** @var \App\Model\Aquarium $aquarium */
 /** @var \App\Model\Animal[] $animals */
 /** @var \App\Model\Species $species */
-/** @var \App\Model\Acitity $activity */
+/** @var \App\Model\Acitity[] $activities */
 /** @var \App\Service\Router $router */
 
 // zawartosc do ustalenia narazie wypis zwierzat, pozniej tez czynnosci
@@ -18,17 +18,23 @@ ob_start(); ?>
         <?php foreach ($animals as $animal): ?>
             <!-- dodac zdjecie? -->
             <li>
-                <a href="<?= $router->generatePath('animal-show', ['animalId' => $animal->getAnimalId()]) ?>"><h3><?= $animal->getAnimalName(); ?></h3></a>
+                <a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>"><h3><?= $animal->getAnimalName(); ?></h3></a>
             </li>
             <?php endforeach; ?>
         </ul>
     
     <h2>Activities</h2>
-    TODO
+    <ul class="index-list">
+        <?php foreach ($activities as $activity): ?>
+            <li>
+                <a href="<?= $router->generatePath('activity-show', ['activity_id' => $activity->getActivityId()]) ?>"><h3><?= $activity->getActivityName(); ?></h3></a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
         
     <ul class="action-list">
         <li> <a href="<?= $router->generatePath('aquarium-index') ?>">Back to aquarium list</a></li>
-        <li><a href="<?= $router->generatePath('aquarium-edit', ['aquariumId'=> $aquarium->getAquariumId()]) ?>">Edit</a></li>
+        <li><a href="<?= $router->generatePath('aquarium-edit', ['aquarium_id'=> $aquarium->getAquariumId()]) ?>">Edit</a></li>
     </ul>
 <?php $main = ob_get_clean();
 

@@ -18,11 +18,10 @@
     <input type="text" id="species_id" name="animal[species_id]" value="<?= $animal ? $animal->getSpeciesId() : '' ?>">
 </div>
 
-<!--  do zrobienia
 <div class="form-group">
-    <label for="animal_image">Name</label>
-    <input type="file" id="animal_image" name="animal[animal_image]">
-</div> -->
+    <label for="animal_image">image</label>
+    <input type="file" id="animal_image" name="animal_image">
+</div>
 
 
 
