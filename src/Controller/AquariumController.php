@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller;
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 use App\Exception\NotFoundException;
 use App\Model\Aquarium;
 use App\Model\Animal;
 use App\Model\Activity;
-use App\Model\User;
 use App\Service\Router;
 use App\Service\Templating;
 
@@ -13,8 +14,7 @@ class AquariumController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
-        // narazie user id na sztywno
-        $aquariums = Aquarium::findAquariumsOwnedByUser(1);
+        $aquariums = Aquarium::findAquariumsOwnedByUser($_SESSION['user_id']);
         $html = $templating->render('aquarium/index.html.php', [
             'aquariums' => $aquariums,
             'router' => $router,

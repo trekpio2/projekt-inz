@@ -27,6 +27,11 @@
     <input type="text" id="aquarium_volume" name="aquarium[aquarium_volume]" value="<?= $aquarium ? $aquarium->getAquariumVolume() : '' ?>">
 </div>
 
+<div class="form-group">
+    <label for="ip">IP</label>
+    <input type="text" id="ip" name="aquarium[ip]" value="<?= $aquarium ? $aquarium->getIP() : '' ?>">
+</div>
+
 <!--  jesli beda zdjecia akwarium, dodac enctype w glownym formularzu
 <div class="form-group">
     <label for="aquarium_image">Image</label>

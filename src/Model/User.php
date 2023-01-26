@@ -68,17 +68,17 @@ class User
 
     public function fill($array): User
     {
-        if (isset($array['userId']) && ! $this->getUserId()) {
-            $this->setUserId($array['userId']);
+        if (isset($array['user_id']) && ! $this->getUserId()) {
+            $this->setUserId($array['user_id']);
         }
         if (isset($array['username'])) {
             $this->setUsername($array['username']);
         }
-        if (isset($array['userPassword'])) {
-            $this->setUserPassword($array['userPassword']);
+        if (isset($array['user_password'])) {
+            $this->setUserPassword($array['user_password']);
         }
-        if (isset($array['isAdmin'])) {
-            $this->setIsAdmin($array['isAdmin']);
+        if (isset($array['is_admin'])) {
+            $this->setIsAdmin($array['is_admin']);
         }
 
         return $this;
@@ -100,6 +100,25 @@ class User
         return $users;
     }
 
+    public static function login($username, $userPassword): ?User
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = 'SELECT * FROM user WHERE username = :username AND user_password = :user_password ';
+        $statement = $pdo->prepare($sql);
+        $statement->execute([
+            'username' => $username,
+            'user_password' => $userPassword,
+            ]);
+
+        $userArray = $statement->fetch(\PDO::FETCH_ASSOC);
+        if (! $userArray) {
+            return null;
+        }
+        $user = User::fromArray($userArray);
+
+        return $user;
+    }
+    
     public static function find($userId): ?User
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));

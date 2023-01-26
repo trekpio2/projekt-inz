@@ -97,6 +97,15 @@ class Activity
         return $this;
     }
 
+    public function getExecuteData()
+    {
+        $activityData = [];
+        $activityData['lightsLevel'] = $this->lights_level;
+        $activityData['temperature'] = $this->temperature;
+        
+        return json_encode($activityData);
+    }
+
     public static function fromArray($array): Activity
     {
         $activity = new self();

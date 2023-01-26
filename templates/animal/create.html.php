@@ -11,8 +11,7 @@ ob_start(); ?>
     <form action="<?= $router->generatePath('animal-create') ?>" method="post" enctype="multipart/form-data" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_createForm.html.php'; ?>
         <input type="hidden" name="action" value="animal-create">
-        <!-- na sztywno narazie -->
-        <input type="hidden" id="user_id" name="animal[user_id]" value="<?= "1" ?>">
+        <input type="hidden" id="user_id" name="animal[user_id]" value="<?= $_SESSION['user_id'] ?>">
     </form>
 
     <a href="<?= $router->generatePath('animal-index') ?>">Back to animal list</a>

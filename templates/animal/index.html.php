@@ -13,7 +13,7 @@ ob_start(); ?>
 
     <ul class="index-list">
         <?php foreach ($animals as $animal): ?>
-             <!-- dodac zdjecie -->
+             <!-- dodac zdjecie? -->
             <li><h3><?= $animal->getAnimalName(); ?></h3>
                 <ul class="action-list">
                     <li><a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>">Details</a></li>

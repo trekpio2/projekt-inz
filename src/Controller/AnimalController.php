@@ -1,9 +1,10 @@
 <?php
 namespace App\Controller;
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 use App\Exception\NotFoundException;
 use App\Model\Animal;
-use App\Model\User;
 use App\Model\Species;
 use App\Service\Router;
 use App\Service\Templating;
@@ -12,8 +13,7 @@ class AnimalController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
-        // narazie id uzytkownika na sztywno
-        $animals = Animal::findAllOwnedByUser(1);
+        $animals = Animal::findAllOwnedByUser($_SESSION['user_id']);
         $html = $templating->render('animal/index.html.php', [
             'animals' => $animals,
             'router' => $router,
@@ -41,8 +41,6 @@ class AnimalController
             
             
             $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-            if($extension == 'JPG')
-                $extension = 'jpeg';
 
             //Stores the tempname as it is given by the host when uploaded.
             $imagetemp = $uploadedFile['tmp_name'];
@@ -59,13 +57,13 @@ class AnimalController
                 echo "Failed to upload your image.";
             }
 
-            // $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
-            // $animal->setAnimalImage($toDatabase);
-            // $animal->save();
+            $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+            $animal->setAnimalImage($toDatabase);
+            $animal->save();
 
-            // $path = $router->generatePath('animal-index');
-            // $router->redirect($path);
-            // return null;
+            $path = $router->generatePath('animal-index');
+            $router->redirect($path);
+            return null;
         } else {
             $animal = new Animal();
         }
@@ -97,8 +95,6 @@ class AnimalController
             
             
             $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-            if($extension == 'JPG')
-            $extension = 'jpeg';
 
             //Stores the tempname as it is given by the host when uploaded.
             $imagetemp = $uploadedFile['tmp_name'];

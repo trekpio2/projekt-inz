@@ -11,8 +11,7 @@ ob_start(); ?>
     <form action="<?= $router->generatePath('aquarium-create') ?>" method="post" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_createForm.html.php'; ?>
         <input type="hidden" name="action" value="aquarium-create">
-        <!-- na sztywno narazie oba -->
-        <input type="hidden" id="user_id" name="aquarium[user_id]" value="<?= "1" ?>">
+        <input type="hidden" id="user_id" name="aquarium[user_id]" value="<?= $_SESSION['user_id'] ?>">
     </form>
 
     <a href="<?= $router->generatePath('aquarium-index') ?>">Back to aquarium list</a>

@@ -1,10 +1,11 @@
 <?php
 namespace App\Controller;
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 use App\Exception\NotFoundException;
 use App\Model\Activity;
 use App\Model\Aquarium;
-use App\Model\User;
 use App\Service\Router;
 use App\Service\Templating;
 
@@ -12,8 +13,7 @@ class ActivityController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
-        // narazie id uzytkownika na sztywno
-        $activities = Activity::findAllAssignedToUser(1);
+        $activities = Activity::findAllAssignedToUser($_SESSION['user_id']);
         $html = $templating->render('activity/index.html.php', [
             'activities' => $activities,
             'router' => $router,
@@ -70,7 +70,8 @@ class ActivityController
     {
         $activity = Activity::find($activityId);
         $aquarium = Aquarium::find($activity->getAquariumId());
-        
+        $executeData = $activity->getExecuteData();
+
         if (! $activity) {
             throw new NotFoundException("Missing activity with id $activityId");
         }
@@ -78,6 +79,7 @@ class ActivityController
         $html = $templating->render('activity/show.html.php', [
             'activity' => $activity,
             'aquarium' => $aquarium,
+            'executeData' => $executeData,
             'router' => $router,
         ]);
         return $html;

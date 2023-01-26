@@ -8,8 +8,29 @@ $router = new \App\Service\Router();
 
 $action = $_REQUEST['action'] ?? null;
 switch ($action) {
-    case 'animal-index':
     case null:
+        // tu strona glowna jak bedzie
+    case 'login-index':
+        $controller = new \App\Controller\LoginController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+    case 'login-login':
+        $controller = new \App\Controller\LoginController();
+        $view = $controller->loginAction($_REQUEST['user'] ?? null, $templating, $router);
+        break;
+    case 'login-logout':
+        $controller = new \App\Controller\LoginController();
+        $view = $controller->logoutAction($templating, $router);
+        break;
+    case 'register-index':
+        $controller = new \App\Controller\RegisterController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+    case 'register-register':
+        $controller = new \App\Controller\RegisterController();
+        $view = $controller->registerAction($_REQUEST['user'] ?? null, $templating, $router);
+        break;
+    case 'animal-index':
         $controller = new \App\Controller\AnimalController();
         $view = $controller->indexAction($templating, $router);
         break;
