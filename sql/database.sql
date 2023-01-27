@@ -42,28 +42,27 @@ CREATE TABLE IF NOT EXISTS `animal` (
   `animal_name` varchar(255) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   `animal_gender` varchar(255) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   `animal_image` varchar(50) COLLATE utf8mb4_polish_ci DEFAULT NULL,
-  `species_id` int DEFAULT NULL,
+  `species_name` varchar(50) COLLATE utf8mb4_polish_ci DEFAULT NULL,
+  `color` varchar(50) COLLATE utf8mb4_polish_ci DEFAULT NULL,
+  `birthdate` date DEFAULT NULL,
   `aquarium_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
-  `date_added` date DEFAULT NULL,
   PRIMARY KEY (`animal_id`),
   KEY `FK_animal_aquarium` (`aquarium_id`),
   KEY `user_id` (`user_id`),
-  KEY `spieces_id` (`species_id`) USING BTREE,
   CONSTRAINT `FK_animal_aquarium` FOREIGN KEY (`aquarium_id`) REFERENCES `aquarium` (`aquarium_id`),
-  CONSTRAINT `FK_animal_species` FOREIGN KEY (`species_id`) REFERENCES `species` (`species_id`),
   CONSTRAINT `FK_animal_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 -- Zrzucanie danych dla tabeli project.animal: ~7 rows (około)
-INSERT INTO `animal` (`animal_id`, `animal_name`, `animal_gender`, `animal_image`, `species_id`, `aquarium_id`, `user_id`, `date_added`) VALUES
-	(1, 'Axel', 'male', NULL, 1, 1, 1, '2023-01-22'),
-	(2, 'lotla', 'female', NULL, 1, 1, 1, '2023-01-22'),
-	(3, 'testowy', 'male', NULL, 1, 2, 1, '2023-01-21'),
-	(4, 'testowa', 'female', NULL, 2, 2, 1, '2023-01-22'),
-	(5, 'Rex', 'female', '\\userImages\\piotrek\\animal5.PNG', 1, 1, 1, NULL),
-	(17, 'Cody', 'male', '\\userImages\\piotrek\\animal17.PNG', 1, 2, 1, NULL),
-	(18, 'Fives', 'male', '\\userImages\\piotrek\\animal18.PNG', 1, 2, 1, NULL);
+INSERT INTO `animal` (`animal_id`, `animal_name`, `animal_gender`, `animal_image`, `species_name`, `color`, `birthdate`, `aquarium_id`, `user_id`) VALUES
+	(1, 'Axel', 'male', NULL, 'jakis', 'pink', '2023-01-22', 1, 1),
+	(2, 'lotla', 'female', NULL, 'jakis', NULL, '2023-01-22', 1, 1),
+	(3, 'testowy', 'male', NULL, 'inny', NULL, '2023-01-21', 2, 1),
+	(4, 'testowa', 'female', NULL, 'inny', NULL, '2023-01-22', 2, 1),
+	(5, 'Rex', 'female', '\\userImages\\piotrek\\animal5.PNG', 'jakis', NULL, NULL, 1, 1),
+	(17, 'Cody', 'male', '\\userImages\\piotrek\\animal17.PNG', 'taki', NULL, NULL, 2, 1),
+	(18, 'Fives', 'male', '\\userImages\\piotrek\\animal18.', 'jaks', '', NULL, 1, 1);
 
 -- Zrzut struktury tabela project.aquarium
 CREATE TABLE IF NOT EXISTS `aquarium` (
@@ -73,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `aquarium` (
   `aquarium_width` decimal(10,2) DEFAULT NULL,
   `aquarium_height` decimal(10,2) DEFAULT NULL,
   `aquarium_volume` decimal(10,2) DEFAULT NULL,
+  `ip` varchar(50) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`aquarium_id`),
   KEY `user_id` (`user_id`),
@@ -80,21 +80,30 @@ CREATE TABLE IF NOT EXISTS `aquarium` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 -- Zrzucanie danych dla tabeli project.aquarium: ~2 rows (około)
-INSERT INTO `aquarium` (`aquarium_id`, `aquarium_name`, `aquarium_length`, `aquarium_width`, `aquarium_height`, `aquarium_volume`, `user_id`) VALUES
-	(1, 'akwarium1', 12.00, 12.00, 12.00, 1728.00, 1),
-	(2, 'Akwarium2', 12.00, 11.20, 15.00, 1758.00, 1);
+INSERT INTO `aquarium` (`aquarium_id`, `aquarium_name`, `aquarium_length`, `aquarium_width`, `aquarium_height`, `aquarium_volume`, `ip`, `user_id`) VALUES
+	(1, 'akwarium1', 12.00, 12.00, 12.00, 1728.00, 'http://1.1.1.1', 1),
+	(2, 'Akwarium2', 12.00, 11.20, 15.00, 1758.00, 'https://jsonplaceholder.typicode.com/users', 1);
 
--- Zrzut struktury tabela project.species
-CREATE TABLE IF NOT EXISTS `species` (
-  `species_id` int NOT NULL AUTO_INCREMENT,
-  `species_name` varchar(255) COLLATE utf8mb4_polish_ci DEFAULT NULL,
-  PRIMARY KEY (`species_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+-- Zrzut struktury tabela project.plant
+CREATE TABLE IF NOT EXISTS `plant` (
+  `plant_id` int NOT NULL AUTO_INCREMENT,
+  `plant_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci DEFAULT NULL,
+  `plant_height` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci DEFAULT NULL,
+  `plant_image` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci DEFAULT NULL,
+  `species_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci DEFAULT NULL,
+  `color` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci DEFAULT NULL,
+  `aquarium_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  PRIMARY KEY (`plant_id`),
+  KEY `user_id` (`user_id`),
+  KEY `aquarium_id` (`aquarium_id`),
+  CONSTRAINT `FK_plant_aquarium` FOREIGN KEY (`aquarium_id`) REFERENCES `aquarium` (`aquarium_id`),
+  CONSTRAINT `FK_plant_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci ROW_FORMAT=DYNAMIC;
 
--- Zrzucanie danych dla tabeli project.species: ~2 rows (około)
-INSERT INTO `species` (`species_id`, `species_name`) VALUES
-	(1, 'jakis'),
-	(2, 'inny');
+-- Zrzucanie danych dla tabeli project.plant: ~1 rows (około)
+INSERT INTO `plant` (`plant_id`, `plant_name`, `plant_height`, `plant_image`, `species_name`, `color`, `aquarium_id`, `user_id`) VALUES
+	(1, 'roslina1', '60', '\\userImages\\piotrek\\plant1.', 'jakis taki sobie', 'blue', 1, 1);
 
 -- Zrzut struktury tabela project.user
 CREATE TABLE IF NOT EXISTS `user` (
@@ -103,11 +112,13 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_password` varchar(255) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   `is_admin` int DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
--- Zrzucanie danych dla tabeli project.user: ~1 rows (około)
+-- Zrzucanie danych dla tabeli project.user: ~3 rows (około)
 INSERT INTO `user` (`user_id`, `username`, `user_password`, `is_admin`) VALUES
-	(1, 'piotrek', '123', 1);
+	(1, 'piotrek', '123', 1),
+	(2, 'adam', '321', NULL),
+	(3, 'ala', 'kot', NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -1,5 +1,6 @@
 <?php
     /** @var $animal ?\App\Model\Animal */
+    /** @var $aquariums ?\App\Model\Aquarium[] */
 ?>
 
 <div class="form-group">
@@ -12,16 +13,23 @@
     <input type="text" id="animal_gender" name="animal[animal_gender]">
 </div>
 
-<!-- jako select? -->
 <div class="form-group">
-    <label for="species_id">Species</label>
-    <input type="text" id="species_id" name="animal[species_id]">
+    <label for="color">Color</label>
+    <input type="text" id="color" name="animal[color]" value="<?= $animal ? $animal->getColor() : '' ?>">
 </div>
 
-<!-- jako select? jesli zostaje tabela species i gatunki sa ustalone z gory albo tylko nazwa gatunku w tabeli animal i wtedy uzytkownik moze sobie dowolne gatunki wpisywac -->
+<div class="form-group">
+    <label for="species_name">Species</label>
+    <input type="text" id="species_name" name="animal[species_name]">
+</div>
+
 <div class="form-group">
     <label for="aquarium_id">Aquarium</label>
-    <input type="text" id="aquarium_id" name="animal[aquarium_id]">
+    <select id="aquarium_id" name="animal[aquarium_id]">
+        <?php foreach ($aquariums as $aquarium): ?>
+            <option value=<?= $aquarium ? $aquarium->getAquariumId() : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
 
 <div class="form-group">

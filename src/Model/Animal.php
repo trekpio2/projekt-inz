@@ -9,8 +9,9 @@ class Animal
     private ?string $animalName = null;
     private ?string $animalGender = null;
     private ?string $animalImage = null;
-    private ?string $dateAdded = null;
-    private ?int $speciesId = null;
+    private ?string $birthdate = null;
+    private ?string $color = null;
+    private ?string $speciesName = null;
     private ?int $aquariumId = null;
     private ?int $userId = null;
 
@@ -63,26 +64,38 @@ class Animal
         return $this;
     }
 
-    public function getDateAdded(): ?string
+    public function getBirthdate(): ?string
     {
-        return $this->dateAdded;
+        return $this->birthdate;
     }
 
-    public function setDateAdded(?string $dateAdded): Animal
+    public function setBirthdate(?string $birthdate): Animal
     {
-        $this->dateAdded = $dateAdded;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
 
-    public function getSpeciesId(): ?int
+    public function getColor(): ?string
     {
-        return $this->speciesId;
+        return $this->color;
     }
 
-    public function setSpeciesId(?int $speciesId): Animal
+    public function setColor(?string $color): Animal
     {
-        $this->speciesId = $speciesId;
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getSpeciesName(): ?string
+    {
+        return $this->speciesName;
+    }
+
+    public function setSpeciesName(?string $speciesName): Animal
+    {
+        $this->speciesName = $speciesName;
 
         return $this;
     }
@@ -133,8 +146,8 @@ class Animal
         if (isset($array['animal_image'])) {
             $this->setAnimalImage($array['animal_image']);
         }
-        if (isset($array['species_id'])) {
-            $this->setSpeciesId($array['species_id']);
+        if (isset($array['species_name'])) {
+            $this->setSpeciesName($array['species_name']);
         }
         if (isset($array['aquarium_id'])) {
             $this->setAquariumId($array['aquarium_id']);
@@ -142,8 +155,11 @@ class Animal
         if (isset($array['user_id'])) {
             $this->setUserId($array['user_id']);
         }
-        if (isset($array['date_added'])) {
-            $this->setDateAdded($array['date_added']);
+        if (isset($array['birthdate'])) {
+            $this->setBirthdate($array['birthdate']);
+        }
+        if (isset($array['color'])) {
+            $this->setColor($array['color']);
         }
 
         return $this;
@@ -201,30 +217,32 @@ class Animal
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getAnimalId()) {
-            $sql = "INSERT INTO animal (animal_name, animal_gender, animal_image, species_id, aquarium_id, user_id, date_added) VALUES (:animalName, :animalGender, :animalImage, :speciesId, :aquariumId, :userId, :dateAdded)";
+            $sql = "INSERT INTO animal (animal_name, animal_gender, animal_image, species_name, aquarium_id, user_id, birthdate, color) VALUES (:animalName, :animalGender, :animalImage, :speciesName, :aquariumId, :userId, :birthdate, :color)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'animalName' => $this->getAnimalName(),
                 'animalGender' => $this->getAnimalGender(),
                 'animalImage' => $this->getAnimalImage(),
-                'speciesId' => $this->getSpeciesId(),
+                'speciesName' => $this->getSpeciesName(),
                 'aquariumId' => $this->getAquariumId(),
                 'userId' => $this->getUserId(),
-                'dateAdded' => $this->getDateAdded(),
+                'birthdate' => $this->getBirthdate(),
+                'color' => $this->getColor(),
             ]);
 
             $this->setAnimalId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE animal SET  animal_name = :animalName, animal_gender = :animalGender, animal_image = :animalImage, species_id = :speciesId, aquarium_id = :aquariumId, user_id = :userId, date_added = :dateAdded WHERE animal_id = :animalId";
+            $sql = "UPDATE animal SET  animal_name = :animalName, animal_gender = :animalGender, animal_image = :animalImage, species_name = :speciesName, aquarium_id = :aquariumId, user_id = :userId, birthdate = :birthdate, color = :color WHERE animal_id = :animalId";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 ':animalName' => $this->getAnimalName(),
                 ':animalGender' => $this->getAnimalGender(),
                 ':animalImage' => $this->getAnimalImage(),
-                ':speciesId' => $this->getSpeciesId(),
+                ':speciesName' => $this->getSpeciesName(),
                 ':aquariumId' => $this->getAquariumId(),
                 ':userId' => $this->getUserId(),
-                ':dateAdded' => $this->getDateAdded(),
+                ':birthdate' => $this->getBirthdate(),
+                ':color' => $this->getColor(),
                 ':animalId' => $this->getAnimalId(),
             ]);
         }
@@ -243,9 +261,10 @@ class Animal
         $this->setAnimalName(null);
         $this->setAnimalGender(null);
         $this->setAnimalImage(null);
-        $this->setSpeciesId(null);
+        $this->setSpeciesName(null);
         $this->setAquariumId(null);
         $this->setUserId(null);
-        $this->setDateAdded(null);
+        $this->setBirthdate(null);
+        $this->setColor(null);
     }
 }

@@ -9,7 +9,11 @@ $router = new \App\Service\Router();
 $action = $_REQUEST['action'] ?? null;
 switch ($action) {
     case null:
-        // tu strona glowna jak bedzie
+        //home page
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+    //login
     case 'login-index':
         $controller = new \App\Controller\LoginController();
         $view = $controller->indexAction($templating, $router);
@@ -22,6 +26,7 @@ switch ($action) {
         $controller = new \App\Controller\LoginController();
         $view = $controller->logoutAction($templating, $router);
         break;
+    //register
     case 'register-index':
         $controller = new \App\Controller\RegisterController();
         $view = $controller->indexAction($templating, $router);
@@ -30,6 +35,7 @@ switch ($action) {
         $controller = new \App\Controller\RegisterController();
         $view = $controller->registerAction($_REQUEST['user'] ?? null, $templating, $router);
         break;
+    //animal
     case 'animal-index':
         $controller = new \App\Controller\AnimalController();
         $view = $controller->indexAction($templating, $router);
@@ -59,6 +65,7 @@ switch ($action) {
         $controller = new \App\Controller\AnimalController();
         $view = $controller->deleteAction($_REQUEST['animal_id'], $router);
         break;
+    //aquarium
     case 'aquarium-index':
         $controller = new \App\Controller\AquariumController();
         $view = $controller->indexAction($templating, $router);
@@ -88,6 +95,37 @@ switch ($action) {
         $controller = new \App\Controller\AquariumController();
         $view = $controller->deleteAction($_REQUEST['aquarium_id'], $router);
         break;
+    //plant
+    case 'plant-index':
+        $controller = new \App\Controller\PlantController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+    case 'plant-create':
+        $controller = new \App\Controller\PlantController();
+        $view = $controller->createAction($_REQUEST['plant'] ?? null, $_FILES['plant_image'] ?? null, $templating, $router);
+        break;
+    case 'plant-edit':
+        if (! $_REQUEST['plant_id']) {
+            break;
+        }
+        $controller = new \App\Controller\PlantController();
+        $view = $controller->editAction($_REQUEST['plant_id'], $_REQUEST['plant'] ?? null, $_FILES['plant_image'] ?? null, $templating, $router);
+        break;
+    case 'plant-show':
+        if (! $_REQUEST['plant_id']) {
+            break;
+        }
+        $controller = new \App\Controller\PlantController();
+        $view = $controller->showAction($_REQUEST['plant_id'], $templating, $router);
+        break;
+    case 'plant-delete':
+        if (! $_REQUEST['plant_id']) {
+            break;
+        }
+        $controller = new \App\Controller\PlantController();
+        $view = $controller->deleteAction($_REQUEST['plant_id'], $router);
+        break;
+    //activity
     case 'activity-index':
         $controller = new \App\Controller\ActivityController();
         $view = $controller->indexAction($templating, $router);

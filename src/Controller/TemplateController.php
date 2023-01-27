@@ -1,11 +1,11 @@
 <?php
+//TODO
 namespace App\Controller;
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 use App\Exception\NotFoundException;
 use App\Model\Animal;
-use App\Model\Aquarium;
 use App\Service\Router;
 use App\Service\Templating;
 
@@ -27,9 +27,10 @@ class AnimalController
             $animal = Animal::fromArray($requestAnimal);
             // @todo missing validation
             $animal->save();
+            echo $uploadedFile['tmp_name'];
 
-            $userName = $_SESSION['username'];
-            
+            //na sztywno narazie
+            $userName = 'piotrek';
             $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
 
             if ( ! is_dir($imagePath)) {
@@ -65,12 +66,10 @@ class AnimalController
             return null;
         } else {
             $animal = new Animal();
-            $aquariums = Aquarium::findAquariumsOwnedByUser($_SESSION['user_id']);
         }
 
         $html = $templating->render('animal/create.html.php', [
             'animal' => $animal,
-            'aquariums' => $aquariums,
             'router' => $router,
         ]);
         return $html;
@@ -79,13 +78,13 @@ class AnimalController
     public function editAction(int $animalId, ?array $requestAnimal, ?array $uploadedFile, Templating $templating, Router $router): ?string
     {
         $animal = Animal::find($animalId);
-        
         if (! $animal) {
             throw new NotFoundException("Missing animal with id $animalId");
         }
 
         if ($requestAnimal) {
-            $userName = $_SESSION['username'];
+            //na sztywno narazie
+            $userName = 'piotrek';
             $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
 
             if ( ! is_dir($imagePath)) {
@@ -113,21 +112,18 @@ class AnimalController
             }
 
             $requestAnimal['animal_image'] = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
-            
+
             $animal->fill($requestAnimal);
             //@todo missing validation
              $animal->save();
-             
-             $path = $router->generatePath('animal-show', ['animal_id' => $animalId]);
-             $router->redirect($path);
-             return null;
-            }
-            
-            $aquariums = Aquarium::findAquariumsOwnedByUser($_SESSION['user_id']);
-            
-            $html = $templating->render('animal/edit.html.php', [
+
+            $path = $router->generatePath('animal-show', ['animal_id' => $animalId]);
+            $router->redirect($path);
+            return null;
+        }
+
+        $html = $templating->render('animal/edit.html.php', [
             'animal' => $animal,
-            'aquariums' => $aquariums,
             'router' => $router,
         ]);
         return $html;

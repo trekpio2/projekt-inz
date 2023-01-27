@@ -81,7 +81,6 @@ class AquariumController
             'aquarium' => $aquarium,
             'animals' => $animals,
             'activities' => $activities,
-            // 'species' => $species,
             'router' => $router,
         ]);
         return $html;

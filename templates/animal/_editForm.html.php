@@ -12,10 +12,23 @@
     <input type="text" id="animal_gender" name="animal[animal_gender]" value="<?= $animal ? $animal->getAnimalGender() : '' ?>">
 </div>
 
-<!-- jako select? -->
 <div class="form-group">
-    <label for="species_id">Species</label>
-    <input type="text" id="species_id" name="animal[species_id]" value="<?= $animal ? $animal->getSpeciesId() : '' ?>">
+    <label for="color">Color</label>
+    <input type="text" id="color" name="animal[color]" value="<?= $animal ? $animal->getColor() : '' ?>">
+</div>
+
+<div class="form-group">
+    <label for="species_name">Species</label>
+    <input type="text" id="species_name" name="animal[species_name]" value="<?= $animal ? $animal->getSpeciesName() : '' ?>">
+</div>
+
+<div class="form-group">
+    <label for="aquarium_id">Aquarium</label>
+    <select id="aquarium_id" name="animal[aquarium_id]">
+        <?php foreach ($aquariums as $aquarium): ?>
+            <option value=<?= $aquarium ? $aquarium->getAquariumId() : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
 
 <div class="form-group">

@@ -1,7 +1,6 @@
 <?php
 
 /** @var \App\Model\Animal $animal */
-/** @var \App\Model\Species $species */
 /** @var \App\Service\Router $router */
 
 $title = "{$animal->getAnimalName()}";
@@ -10,7 +9,7 @@ $bodyClass = 'show';
 ob_start(); ?>
     <h1><?= $animal->getAnimalName() ?></h1>
     <article>
-        <p>Gatunek: <?= $species->getSpeciesName();?></p>
+        <p>Gatunek: <?= $animal->getSpeciesName();?></p>
         <p>Płeć: <?= $animal->getAnimalGender();?></p>
         <img src="<?= $animal->getAnimalImage() ?>" alt="">
         <!-- reszta dotyczaca zwierzecia -->
