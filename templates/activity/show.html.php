@@ -13,6 +13,10 @@ ob_start(); ?>
     <article>
         <p>Lights level: <?= $activity->getLightsLevel();?></p>
         <p>Temperature: <?= $activity->getTemperature();?></p>
+        <p>Feed: <?= $activity->getFeed();?></p>
+        <p>Filter: <?= $activity->getFilter();?></p>
+        <p>Pump: <?= $activity->getPump() ? : 0;?></p>
+        <p>Planned: <?= $activity->getIsPlanned() ? $activity->getStartTime() : "Not planned";?></p>
         <p>Assigned to: <?= $aquarium->getAquariumName();?></p>
         <button id="executeBtn">Execute activity</button>
     </article>

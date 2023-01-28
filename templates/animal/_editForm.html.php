@@ -1,5 +1,6 @@
 <?php
     /** @var $animal ?\App\Model\Animal */
+    /** @var $aquariums ?\App\Model\Aquarium[] */
 ?>
 
 <div class="form-group">

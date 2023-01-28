@@ -20,7 +20,12 @@ CREATE TABLE IF NOT EXISTS `activity` (
   `activity_name` varchar(255) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   `lights_level` int DEFAULT NULL,
   `temperature` decimal(10,2) DEFAULT NULL,
+  `feed` int DEFAULT NULL,
+  `filter` int DEFAULT NULL,
+  `pump` int DEFAULT NULL,
   `is_planned` int DEFAULT NULL,
+  `start_time` time DEFAULT NULL,
+  `task_name` varchar(50) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   `aquarium_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`activity_id`),
@@ -28,13 +33,14 @@ CREATE TABLE IF NOT EXISTS `activity` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `FK_activity_aquarium` FOREIGN KEY (`aquarium_id`) REFERENCES `aquarium` (`aquarium_id`),
   CONSTRAINT `FK_activity_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
--- Zrzucanie danych dla tabeli project.activity: ~3 rows (około)
-INSERT INTO `activity` (`activity_id`, `activity_name`, `lights_level`, `temperature`, `is_planned`, `aquarium_id`, `user_id`) VALUES
-	(1, 'day', 10, 24.00, NULL, 1, 1),
-	(2, 'night', 0, 18.00, NULL, 1, 1),
-	(3, 'cos', 12, 24.00, NULL, 2, 1);
+-- Zrzucanie danych dla tabeli project.activity: ~4 rows (około)
+INSERT INTO `activity` (`activity_id`, `activity_name`, `lights_level`, `temperature`, `feed`, `filter`, `pump`, `is_planned`, `start_time`, `task_name`, `aquarium_id`, `user_id`) VALUES
+	(1, 'day', 10, 24.00, 1, 1, NULL, 1, '16:00:00', NULL, 1, 1),
+	(2, 'night', 0, 18.00, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1),
+	(3, 'cos', 12, 24.00, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1),
+	(11, 'testPlanowanej', 62, 26.00, 1, NULL, 1, 1, '16:00:00', 'piotrek-testPlanowanej', 1, 1);
 
 -- Zrzut struktury tabela project.animal
 CREATE TABLE IF NOT EXISTS `animal` (
@@ -101,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `plant` (
   CONSTRAINT `FK_plant_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci ROW_FORMAT=DYNAMIC;
 
--- Zrzucanie danych dla tabeli project.plant: ~1 rows (około)
+-- Zrzucanie danych dla tabeli project.plant: ~0 rows (około)
 INSERT INTO `plant` (`plant_id`, `plant_name`, `plant_height`, `plant_image`, `species_name`, `color`, `aquarium_id`, `user_id`) VALUES
 	(1, 'roslina1', '60', '\\userImages\\piotrek\\plant1.', 'jakis taki sobie', 'blue', 1, 1);
 

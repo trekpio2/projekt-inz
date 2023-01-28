@@ -1,5 +1,6 @@
 <?php
     /** @var $activity ?\App\Model\Activity */
+    /** @var $aquariums ?\App\Model\Aquarium[] */
 ?>
 
 <div class="form-group">
@@ -17,10 +18,38 @@
     <input type="text" id="temperature" name="activity[temperature]" value="<?= $activity ? $activity->getTemperature() : '' ?>">
 </div>
 
-<!-- jako select? -->
 <div class="form-group">
-    <label for="aquarium_id">aquarium id</label>
-    <input type="text" id="aquarium_id" name="activity[aquarium_id]" value="<?= $activity->getAquariumId() ?>">
+    <label for="feed">Feed</label>
+    <input type="checkbox" id="feed" name="activity[feed]" value="1" <?= $activity->getFeed() ? 'checked' : '' ?>>
+</div>
+
+<div class="form-group">
+    <label for="filter">Filter</label>
+    <input type="checkbox" id="filter" name="activity[filter]" value="1" <?= $activity->getFilter() ? 'checked' : '' ?>>
+</div>
+
+<div class="form-group">
+    <label for="pump">Pump</label>
+    <input type="checkbox" id="pump" name="activity[pump]" value="1" <?= $activity->getPump() ? 'checked' : '' ?>>
+</div>
+
+<div class="form-group">
+    <label for="is_planned">Plan activity</label>
+    <input type="checkbox" id="is_planned" name="activity[is_planned]" value="1" <?= $activity->getIsPlanned() ? 'checked' : '' ?>>
+</div>
+
+<div class="form-group">
+    <label for="start_time">starting time</label>
+    <input type="time" id="start_time" name="activity[start_time]" value="<?= $activity ? $activity->getStartTime() : '' ?>">
+</div>
+
+<div class="form-group">
+    <label for="aquarium_id">Aquarium</label>
+    <select id="aquarium_id" name="activity[aquarium_id]">
+        <?php foreach ($aquariums as $aquarium): ?>
+            <option value=<?= $aquarium ? $aquarium->getAquariumId() : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
 
 

@@ -3,9 +3,11 @@ namespace App\Controller;
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 use App\Exception\NotFoundException;
 use App\Model\Activity;
 use App\Model\Aquarium;
+use App\Model\Scheduler;
 use App\Service\Router;
 use App\Service\Templating;
 
@@ -25,18 +27,46 @@ class ActivityController
     {
         if ($requestActivity) {
             // @todo missing validation
+            $userName = $_SESSION['username'];
+            $taskName = $userName . '-' . $requestActivity['activity_name'];
+            $requestActivity['task_name'] = $taskName;
+
             $activity = Activity::fromArray($requestActivity);
             $activity->save();
             
+            if($requestActivity['is_planned'] == 1)
+            {
+                $scheduler = new Scheduler();
+                $scriptFilePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "plannedActivities" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+
+                if ( ! is_dir($scriptFilePath)) {
+                    mkdir($scriptFilePath);
+                }
+                
+                $scriptFilePath .= $activity->getActivityName() . '.js';
+                $executeData = $activity->getExecuteData();
+                $aquarium = Aquarium::find($activity->getAquariumId());
+
+                $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData);
+                
+                $taskCommand = "node " . $scriptFilePath;
+                // zakomentowane zeby nie smiecic w systemie
+                //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime());
+            }
+
+
+
             $path = $router->generatePath('activity-index');
             $router->redirect($path);
             return null;
         } else {
             $activity = new Activity();
+            $aquariums = Aquarium::findAquariumsOwnedByUser($_SESSION['user_id']);
         }
 
         $html = $templating->render('activity/create.html.php', [
             'activity' => $activity,
+            'aquariums' => $aquariums,
             'router' => $router,
         ]);
         return $html;
@@ -58,9 +88,10 @@ class ActivityController
             $router->redirect($path);
             return null;
         }
-
+        $aquariums = Aquarium::findAquariumsOwnedByUser($_SESSION['user_id']);
         $html = $templating->render('activity/edit.html.php', [
             'activity' => $activity,
+            'aquariums' => $aquariums,
             'router' => $router,
         ]);
         return $html;
@@ -75,7 +106,7 @@ class ActivityController
         if (! $activity) {
             throw new NotFoundException("Missing activity with id $activityId");
         }
-
+        
         $html = $templating->render('activity/show.html.php', [
             'activity' => $activity,
             'aquarium' => $aquarium,

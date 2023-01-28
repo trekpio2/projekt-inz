@@ -9,7 +9,12 @@ class Activity
     private ?string $activity_name = null;
     private ?int $lights_level = null;
     private ?float $temperature = null;
+    private ?int $feed = null;
+    private ?int $filter = null;
+    private ?int $pump = null;
     private ?int $is_planned = null;
+    private ?string $start_time = null;
+    private ?string $task_name = null;
     private ?int $aquarium_id = null;
     private ?int $user_id = null;
 
@@ -61,6 +66,42 @@ class Activity
         return $this;
     }
 
+    public function getFeed(): ?int
+    {
+        return $this->feed;
+    }
+
+    public function setFeed(?int $feed): Activity
+    {
+        $this->feed = $feed;
+
+        return $this;
+    }
+
+    public function getFilter(): ?int
+    {
+        return $this->filter;
+    }
+
+    public function setFilter(?int $filter): Activity
+    {
+        $this->filter = $filter;
+
+        return $this;
+    }
+    
+    public function getPump(): ?int
+    {
+        return $this->pump;
+    }
+
+    public function setPump(?int $pump): Activity
+    {
+        $this->pump = $pump;
+
+        return $this;
+    }
+
     public function getIsPlanned(): ?int
     {
         return $this->is_planned;
@@ -69,6 +110,30 @@ class Activity
     public function setIsPlanned(?int $is_planned): Activity
     {
         $this->is_planned = $is_planned;
+
+        return $this;
+    }
+
+    public function getStartTime(): ?string
+    {
+        return $this->start_time;
+    }
+
+    public function setStartTime(?string $start_time): Activity
+    {
+        $this->start_time = $start_time;
+
+        return $this;
+    }
+
+    public function getTaskName(): ?string
+    {
+        return $this->task_name;
+    }
+
+    public function setTaskName(?string $task_name): Activity
+    {
+        $this->task_name = $task_name;
 
         return $this;
     }
@@ -100,8 +165,16 @@ class Activity
     public function getExecuteData()
     {
         $activityData = [];
-        $activityData['lightsLevel'] = $this->lights_level;
-        $activityData['temperature'] = $this->temperature;
+        if(!is_null($this->lights_level))
+            $activityData['lightsLevel'] = $this->lights_level;
+        if(!is_null($this->temperature))
+            $activityData['temperature'] = $this->temperature;
+        if(!is_null($this->feed))
+            $activityData['feed'] = $this->feed;
+        if(!is_null($this->filter))
+            $activityData['filter'] = $this->filter;
+        if(!is_null($this->pump))
+            $activityData['pump'] = $this->pump;
         
         return json_encode($activityData);
     }
@@ -128,8 +201,23 @@ class Activity
         if (isset($array['temperature'])) {
             $this->setTemperature($array['temperature']);
         }
+        if (isset($array['feed'])) {
+            $this->setFeed($array['feed']);
+        }
+        if (isset($array['filter'])) {
+            $this->setFilter($array['filter']);
+        }
+        if (isset($array['pump'])) {
+            $this->setPump($array['pump']);
+        }
         if (isset($array['is_planned'])) {
-            $this->setTemperature($array['is_planned']);
+            $this->setIsPlanned($array['is_planned']);
+        }
+        if (isset($array['start_time'])) {
+            $this->setStartTime($array['start_time']);
+        }
+        if (isset($array['task_name'])) {
+            $this->setTaskName($array['task_name']);
         }
         if (isset($array['aquarium_id'])) {
             $this->setAquariumId($array['aquarium_id']);
@@ -193,26 +281,36 @@ class Activity
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getActivityId()) {
-            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, is_planned, aquarium_id, user_id) VALUES (:activity_name, :lights_level, :temperature, :is_planned, :aquarium_id, :user_id)";
+            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, feed, filter, pump, is_planned, start_time, task_name, aquarium_id, user_id) VALUES (:activity_name, :lights_level, :temperature, :feed, :filter, :pump, :is_planned, :start_time, :task_name, :aquarium_id, :user_id)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
                 'lights_level' => $this->getLightsLevel(),
                 'temperature' => $this->getTemperature(),
+                'feed' => $this->getFeed(),
+                'filter' => $this->getFilter(),
+                'pump' => $this->getPump(),
                 'is_planned' => $this->getIsPlanned(),
+                'start_time' => $this->getStartTime(),
+                'task_name' => $this->getTaskName(),
                 'aquarium_id' => $this->getAquariumId(),
                 'user_id' => $this->getUserId(),
             ]);
 
             $this->setActivityId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, is_planned = :is_planned, aquarium_id = :aquarium_id, user_id = :user_id WHERE activity_id = :activity_id";
+            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, feed = :feed, filter = :filter, pump = :pump, is_planned = :is_planned, start_time = :start_time, task_name = :task_name, aquarium_id = :aquarium_id, user_id = :user_id WHERE activity_id = :activity_id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
                 'lights_level' => $this->getLightsLevel(),
                 'temperature' => $this->getTemperature(),
+                'feed' => $this->getFeed(),
+                'filter' => $this->getFilter(),
+                'pump' => $this->getPump(),
                 'is_planned' => $this->getIsPlanned(),
+                'start_time' => $this->getStartTime(),
+                'task_name' => $this->getTaskName(),
                 'aquarium_id' => $this->getAquariumId(),
                 'user_id' => $this->getUserId(),
                 ':activity_id' => $this->getActivityId(),
@@ -233,7 +331,12 @@ class Activity
         $this->setActivityName(null);
         $this->setLightsLevel(null);
         $this->setTemperature(null);
+        $this->setFeed(null);
+        $this->setFilter(null);
+        $this->setPump(null);
         $this->setIsPlanned(null);
+        $this->setStartTime(null);
+        $this->setTaskName(null);
         $this->setAquariumId(null);
         $this->setUserId(null);
     }
