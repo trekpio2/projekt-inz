@@ -22,6 +22,14 @@ class Scheduler
         fclose($file);
     }
 
+    public function deleteTaskFile($scriptFilePath)
+    {
+        if (file_exists($scriptFilePath))
+        {
+            unlink($scriptFilePath);
+        }
+    }
+
     public function addTask($taskName, $taskCommand, $startTime) {
         $schedule = "daily";
         exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc $schedule /st $startTime");
