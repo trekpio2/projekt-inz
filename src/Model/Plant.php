@@ -170,7 +170,7 @@ class Plant
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         $sql = 'SELECT * FROM plant WHERE user_id = :userId';
         $statement = $pdo->prepare($sql);
-        $statement->execute(['userId' => $userId]);
+        // $statement->execute(['userId' => $userId]);
 
         $plants = [];
         $plantsArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
