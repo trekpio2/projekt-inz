@@ -11,7 +11,7 @@ ob_start(); ?>
         <input class="input" type="hidden" name="action" value="login-login">
     </form>
     <div class="registerClick">
-    Don't have account?
+    Don't have an account?
     <div class="button">
     <a href="<?= $router->generatePath('register-index') ?>">CREATE</a>
     </div></div>
