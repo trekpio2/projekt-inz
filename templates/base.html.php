@@ -19,7 +19,6 @@
 </head>
 <body <?= isset($bodyClass) ? "class='$bodyClass'" : '' ?>>
     <nav><?php require(__DIR__ . DIRECTORY_SEPARATOR . 'nav.html.php') ?></nav>
-    <footer>&copy;<?= date('Y') ?> Custom Framework</footer>
-    <?= $scripts ?? null ?>
-</body>
-</html>
+
+
+
