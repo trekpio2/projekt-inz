@@ -32,14 +32,6 @@
     <input type="text" id="ip" name="aquarium[ip]" value="<?= $aquarium ? $aquarium->getIP() : '' ?>">
 </div>
 
-<!--  jesli beda zdjecia akwarium, dodac enctype w glownym formularzu
-<div class="form-group">
-    <label for="aquarium_image">Image</label>
-    <input type="file" id="aquarium_image" name="aquarium_image">
-</div> -->
-
-
-
 
 
 <div class="form-group">

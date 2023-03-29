@@ -46,7 +46,7 @@ class PlantController
 
             if(is_uploaded_file($imagetemp)) {
                 if(move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension)) {
-                    echo "Sussecfully uploaded your image.";
+                    echo "Succesfully uploaded your image.";
                 }
                 else {
                     echo "Failed to move your image.";

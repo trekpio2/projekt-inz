@@ -3,6 +3,7 @@ namespace App\Controller;
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 use App\Exception\NotFoundException;
 use App\Model\Animal;
 use App\Model\Aquarium;
@@ -14,6 +15,7 @@ class AnimalController
     public function indexAction(Templating $templating, Router $router): ?string
     {
         $animals = Animal::findAllOwnedByUser($_SESSION['user_id']);
+        
         $html = $templating->render('animal/index.html.php', [
             'animals' => $animals,
             'router' => $router,
@@ -23,6 +25,7 @@ class AnimalController
 
     public function createAction(?array $requestAnimal, ?array $uploadedFile, Templating $templating, Router $router): ?string
     {
+        // SPRAWDZIC CZY JEST AKWARIUM
         if ($requestAnimal) {
             $animal = Animal::fromArray($requestAnimal);
             // @todo missing validation

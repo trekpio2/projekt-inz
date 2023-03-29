@@ -11,7 +11,7 @@ ob_start(); ?>
     <form action="<?= $router->generatePath('aquarium-edit') ?>" method="post" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_editForm.html.php'; ?>
         <input type="hidden" name="action" value="aquarium-edit">
-        <input type="hidden" name="aquariumId" value="<?= $aquarium->getAquariumId() ?>">
+        <input type="hidden" name="aquarium_id" value="<?= $aquarium->getAquariumId() ?>">
         <input type="hidden" id="user_id" name="aquarium[user_id]" value="<?= $aquarium->getUserId() ?>">
     </form>
 
@@ -22,7 +22,7 @@ ob_start(); ?>
             <form action="<?= $router->generatePath('aquarium-delete') ?>" method="post">
                 <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
                 <input type="hidden" name="action" value="aquarium-delete">
-                <input type="hidden" name="aquariumId" value="<?= $aquarium->getAquariumId() ?>">
+                <input type="hidden" name="aquarium_id" value="<?= $aquarium->getAquariumId() ?>">
             </form>
         </li>
     </ul>

@@ -12,7 +12,6 @@ ob_start(); ?>
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_editForm.html.php'; ?>
         <input type="hidden" name="action" value="plant-edit">
         <input type="hidden" name="plant_id" value="<?= $plant->getPlantId() ?>">
-        <input type="hidden" id="user_id" name="plant[user_id]" value="<?= $plant->getUserId() ?>">
     </form>
 
     <ul class="action-list">

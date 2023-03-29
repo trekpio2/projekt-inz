@@ -32,12 +32,6 @@
     <input type="text" id="ip" name="aquarium[ip]" value="<?= $aquarium ? $aquarium->getIP() : '' ?>">
 </div>
 
-<!--  jesli beda zdjecia akwarium
-<div class="form-group">
-    <label for="aquarium_image">Name</label>
-    <input type="file" id="aquarium_image" name="aquarium[aquarium_image]">
-</div> -->
-
 
 
 <div class="form-group">

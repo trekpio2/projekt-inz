@@ -11,7 +11,6 @@ ob_start(); ?>
     <form action="<?= $router->generatePath('plant-create') ?>" method="post" enctype="multipart/form-data" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_createForm.html.php'; ?>
         <input type="hidden" name="action" value="plant-create">
-        <input type="hidden" id="user_id" name="plant[user_id]" value="<?= $_SESSION['user_id'] ?>">
     </form>
 
     <a href="<?= $router->generatePath('plant-index') ?>">Back to plant list</a>

@@ -16,7 +16,6 @@ class Activity
     private ?string $start_time = null;
     private ?string $task_name = null;
     private ?int $aquarium_id = null;
-    private ?int $user_id = null;
 
     public function getActivityId(): ?int
     {
@@ -150,18 +149,6 @@ class Activity
         return $this;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?int $user_id): Activity
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
-
     public function getExecuteData()
     {
         $activityData = [];
@@ -222,9 +209,6 @@ class Activity
         if (isset($array['aquarium_id'])) {
             $this->setAquariumId($array['aquarium_id']);
         }
-        if (isset($array['user_id'])) {
-            $this->setUserId($array['user_id']);
-        }
 
         return $this;
     }
@@ -248,7 +232,7 @@ class Activity
     public static function findAllAssignedToUser($user_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM activity WHERE user_id = :user_id ';
+        $sql = 'SELECT * FROM activity WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id)';
         $statement = $pdo->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
 
@@ -281,7 +265,7 @@ class Activity
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getActivityId()) {
-            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, feed, filter, pump, is_planned, start_time, task_name, aquarium_id, user_id) VALUES (:activity_name, :lights_level, :temperature, :feed, :filter, :pump, :is_planned, :start_time, :task_name, :aquarium_id, :user_id)";
+            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, feed, filter, pump, is_planned, start_time, task_name, aquarium_id) VALUES (:activity_name, :lights_level, :temperature, :feed, :filter, :pump, :is_planned, :start_time, :task_name, :aquarium_id)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
@@ -294,12 +278,11 @@ class Activity
                 'start_time' => $this->getStartTime(),
                 'task_name' => $this->getTaskName(),
                 'aquarium_id' => $this->getAquariumId(),
-                'user_id' => $this->getUserId(),
             ]);
 
             $this->setActivityId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, feed = :feed, filter = :filter, pump = :pump, is_planned = :is_planned, start_time = :start_time, task_name = :task_name, aquarium_id = :aquarium_id, user_id = :user_id WHERE activity_id = :activity_id";
+            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, feed = :feed, filter = :filter, pump = :pump, is_planned = :is_planned, start_time = :start_time, task_name = :task_name, aquarium_id = :aquarium_id WHERE activity_id = :activity_id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
@@ -312,7 +295,6 @@ class Activity
                 'start_time' => $this->getStartTime(),
                 'task_name' => $this->getTaskName(),
                 'aquarium_id' => $this->getAquariumId(),
-                'user_id' => $this->getUserId(),
                 ':activity_id' => $this->getActivityId(),
             ]);
         }
@@ -338,6 +320,5 @@ class Activity
         $this->setStartTime(null);
         $this->setTaskName(null);
         $this->setAquariumId(null);
-        $this->setUserId(null);
     }
 }

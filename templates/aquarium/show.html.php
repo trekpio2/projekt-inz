@@ -16,7 +16,6 @@ ob_start(); ?>
     <h2>Animals in aquarium</h2>
     <ul class="index-list">
         <?php foreach ($animals as $animal): ?>
-            <!-- dodac zdjecie? -->
             <li>
                 <a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>"><h3><?= $animal->getAnimalName(); ?></h3></a>
             </li>

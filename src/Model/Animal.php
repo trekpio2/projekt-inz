@@ -13,8 +13,6 @@ class Animal
     private ?string $color = null;
     private ?string $speciesName = null;
     private ?int $aquariumId = null;
-    private ?int $userId = null;
-
     
     public function getAnimalId(): ?int
     {
@@ -112,18 +110,6 @@ class Animal
         return $this;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(?int $userId): Animal
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
     public static function fromArray($array): Animal
     {
         $animal = new self();
@@ -152,9 +138,6 @@ class Animal
         if (isset($array['aquarium_id'])) {
             $this->setAquariumId($array['aquarium_id']);
         }
-        if (isset($array['user_id'])) {
-            $this->setUserId($array['user_id']);
-        }
         if (isset($array['birthdate'])) {
             $this->setBirthdate($array['birthdate']);
         }
@@ -181,12 +164,12 @@ class Animal
         return $animals;
     }
 
-    public static function findAllOwnedByUser($userId): array
+    public static function findAllOwnedByUser($user_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM animal WHERE user_id = :userId';
+        $sql = 'SELECT * FROM animal WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id)';
         $statement = $pdo->prepare($sql);
-        $statement->execute(['userId' => $userId]);
+        $statement->execute(['user_id' => $user_id]);
 
         $animals = [];
         $animalsArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -217,7 +200,7 @@ class Animal
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getAnimalId()) {
-            $sql = "INSERT INTO animal (animal_name, animal_gender, animal_image, species_name, aquarium_id, user_id, birthdate, color) VALUES (:animalName, :animalGender, :animalImage, :speciesName, :aquariumId, :userId, :birthdate, :color)";
+            $sql = "INSERT INTO animal (animal_name, animal_gender, animal_image, species_name, aquarium_id, birthdate, color) VALUES (:animalName, :animalGender, :animalImage, :speciesName, :aquariumId, :birthdate, :color)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'animalName' => $this->getAnimalName(),
@@ -225,14 +208,13 @@ class Animal
                 'animalImage' => $this->getAnimalImage(),
                 'speciesName' => $this->getSpeciesName(),
                 'aquariumId' => $this->getAquariumId(),
-                'userId' => $this->getUserId(),
                 'birthdate' => $this->getBirthdate(),
                 'color' => $this->getColor(),
             ]);
 
             $this->setAnimalId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE animal SET  animal_name = :animalName, animal_gender = :animalGender, animal_image = :animalImage, species_name = :speciesName, aquarium_id = :aquariumId, user_id = :userId, birthdate = :birthdate, color = :color WHERE animal_id = :animalId";
+            $sql = "UPDATE animal SET  animal_name = :animalName, animal_gender = :animalGender, animal_image = :animalImage, species_name = :speciesName, aquarium_id = :aquariumId, birthdate = :birthdate, color = :color WHERE animal_id = :animalId";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 ':animalName' => $this->getAnimalName(),
@@ -240,7 +222,6 @@ class Animal
                 ':animalImage' => $this->getAnimalImage(),
                 ':speciesName' => $this->getSpeciesName(),
                 ':aquariumId' => $this->getAquariumId(),
-                ':userId' => $this->getUserId(),
                 ':birthdate' => $this->getBirthdate(),
                 ':color' => $this->getColor(),
                 ':animalId' => $this->getAnimalId(),
@@ -263,7 +244,6 @@ class Animal
         $this->setAnimalImage(null);
         $this->setSpeciesName(null);
         $this->setAquariumId(null);
-        $this->setUserId(null);
         $this->setBirthdate(null);
         $this->setColor(null);
     }

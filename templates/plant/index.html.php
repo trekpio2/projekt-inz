@@ -21,7 +21,7 @@ ob_start(); ?>
             </li>
         <?php endforeach; ?>
     </ul>
-
+    
 <?php $main = ob_get_clean();
 
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

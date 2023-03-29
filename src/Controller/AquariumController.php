@@ -43,11 +43,11 @@ class AquariumController
         return $html;
     }
 
-    public function editAction(int $aquariumId, ?array $requestAquarium, Templating $templating, Router $router): ?string
+    public function editAction(int $aquarium_id, ?array $requestAquarium, Templating $templating, Router $router): ?string
     {
-        $aquarium = Aquarium::find($aquariumId);
+        $aquarium = Aquarium::find($aquarium_id);
         if (! $aquarium) {
-            throw new NotFoundException("Missing aquarium with id $aquariumId");
+            throw new NotFoundException("Missing aquarium with id $aquarium_id");
         }
 
         if ($requestAquarium) {
@@ -67,14 +67,14 @@ class AquariumController
         return $html;
     }
 
-    public function showAction(int $aquariumId, Templating $templating, Router $router): ?string
+    public function showAction(int $aquarium_id, Templating $templating, Router $router): ?string
     {
-        $aquarium = Aquarium::find($aquariumId);
-        $animals= Animal::findAllInAquarium($aquariumId);
-        $activities = Activity::findAllAssignedToAquarium($aquariumId);
+        $aquarium = Aquarium::find($aquarium_id);
+        $animals= Animal::findAllInAquarium($aquarium_id);
+        $activities = Activity::findAllAssignedToAquarium($aquarium_id);
 
         if (! $aquarium) {
-            throw new NotFoundException("Missing aquarium with id $aquariumId");
+            throw new NotFoundException("Missing aquarium with id $aquarium_id");
         }
 
         $html = $templating->render('aquarium/show.html.php', [
@@ -86,11 +86,11 @@ class AquariumController
         return $html;
     }
 
-    public function deleteAction(int $aquariumId, Router $router): ?string
+    public function deleteAction(int $aquarium_id, Router $router): ?string
     {
-        $aquarium = Aquarium::find($aquariumId);
+        $aquarium = Aquarium::find($aquarium_id);
         if (! $aquarium) {
-            throw new NotFoundException("Missing aquarium with id $aquariumId");
+            throw new NotFoundException("Missing aquarium with id $aquarium_id");
         }
 
         $aquarium->delete();

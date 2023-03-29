@@ -5,7 +5,7 @@ use App\Service\Config;
 
 class Aquarium
 {
-    private ?int $aquariumId = null;
+    private ?int $aquarium_id = null;
     private ?string $aquariumName = null;
     private ?string $ip = null;
     private ?float $aquariumLength = null;
@@ -16,12 +16,12 @@ class Aquarium
 
     public function getAquariumId(): ?int
     {
-        return $this->aquariumId;
+        return $this->aquarium_id;
     }
 
-    public function setAquariumId(?int $aquariumId): Aquarium
+    public function setAquariumId(?int $aquarium_id): Aquarium
     {
-        $this->aquariumId = $aquariumId;
+        $this->aquarium_id = $aquarium_id;
 
         return $this;
     }
@@ -166,12 +166,12 @@ class Aquarium
         return $aquariums;
     }
 
-    public static function find($aquariumId): ?Aquarium
+    public static function find($aquarium_id): ?Aquarium
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM aquarium WHERE aquarium_id = :aquariumId';
+        $sql = 'SELECT * FROM aquarium WHERE aquarium_id = :aquarium_id';
         $statement = $pdo->prepare($sql);
-        $statement->execute(['aquariumId' => $aquariumId]);
+        $statement->execute(['aquarium_id' => $aquarium_id]);
 
         $aquariumArray = $statement->fetch(\PDO::FETCH_ASSOC);
         if (! $aquariumArray) {
@@ -186,7 +186,7 @@ class Aquarium
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getAquariumId()) {
-            $sql = "INSERT INTO aquarium (aquarium_name, aquarium_length, aquarium_width, aquarium_height, aquarium_volume, ip user_id) VALUES (:aquariumName, :aquariumLength, :aquariumWidth, :aquariumHeight, :aquariumVolume, :ip, :userId)";
+            $sql = "INSERT INTO aquarium (aquarium_name, aquarium_length, aquarium_width, aquarium_height, aquarium_volume, ip, user_id) VALUES (:aquariumName, :aquariumLength, :aquariumWidth, :aquariumHeight, :aquariumVolume, :ip, :userId)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'aquariumName' => $this->getAquariumName(),
@@ -200,7 +200,7 @@ class Aquarium
 
             $this->setAquariumId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE aquarium SET aquarium_name = :aquariumName, aquarium_length = :aquariumLength, aquarium_width = :aquariumWidth, aquarium_height = :aquariumHeight, aquarium_volume = :aquariumVolume, ip = :ip, user_id = :userId WHERE aquarium_id = :aquariumId";
+            $sql = "UPDATE aquarium SET aquarium_name = :aquariumName, aquarium_length = :aquariumLength, aquarium_width = :aquariumWidth, aquarium_height = :aquariumHeight, aquarium_volume = :aquariumVolume, ip = :ip, user_id = :userId WHERE aquarium_id = :aquarium_id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 ':aquariumName' => $this->getAquariumName(),
@@ -210,7 +210,7 @@ class Aquarium
                 ':aquariumVolume' => $this->getAquariumVolume(),
                 ':ip' => $this->getIP(),
                 ':userId' => $this->getUserId(),
-                ':aquariumId' => $this->getAquariumId(),
+                ':aquarium_id' => $this->getAquariumId(),
             ]);
         }
     }
@@ -218,10 +218,10 @@ class Aquarium
     public function delete(): void
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = "DELETE FROM aquarium WHERE aquarium_id = :aquariumId";
+        $sql = "DELETE FROM aquarium WHERE aquarium_id = :aquarium_id";
         $statement = $pdo->prepare($sql);
         $statement->execute([
-            ':aquariumId' => $this->getAquariumId(),
+            ':aquarium_id' => $this->getAquariumId(),
         ]);
 
         $this->setAquariumId(null);

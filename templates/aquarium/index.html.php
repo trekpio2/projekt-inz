@@ -13,7 +13,6 @@ ob_start(); ?>
 
     <ul class="index-list">
         <?php foreach ($aquariums as $aquarium): ?>
-             <!-- dodac zdjecie? jesli tak to w bazie i modelu tez  -->
             <li><h3><?= $aquarium->getAquariumName(); ?></h3>
                 <ul class="action-list">
                     <li><a href="<?= $router->generatePath('aquarium-show', ['aquarium_id' => $aquarium->getAquariumId()]) ?>">Details</a></li>
