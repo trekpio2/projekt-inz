@@ -171,6 +171,9 @@ table {
 * {
   box-sizing: border-box;
 }
+h1 {
+  text-align: center;
+}
 body {
   background-color: #f5f5f5;
   display: flex;
@@ -215,6 +218,7 @@ body h1 {
   font-weight: bold;
   margin-top: 0.5em;
   margin-bottom: 1em;
+  text-align: center;
 }
 body h3 {
   font-size: 1.5rem;
@@ -465,4 +469,97 @@ footer::before {
   background-color: white;
   border-radius: 17px;
   padding-top: 10px;
+}
+.addActivity {
+  width: 197px;
+  margin: 0 auto;
+  background-color: #AACB73;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  text-transform: uppercase;
+  box-shadow: 0 4px 5px #d888a528;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border: none;
+}
+.acivityTitle {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 80%;
+  margin: 30px auto;
+  border-bottom: solid 1px #D1D1D1;
+}
+.actionItem {
+  position: relative;
+  margin: 10px auto;
+  background-color: #AACB73;
+  width: 306px;
+  box-shadow: 0 4px 5px #d888a528;
+  padding-top: 10px;
+  padding-bottom: 2px;
+  text-align: left;
+  vertical-align: middle;
+  border-radius: 31px;
+  padding-left: 10px;
+  z-index: -1;
+}
+.forwardIcon {
+  position: absolute;
+  top: 10px;
+  right: -20px;
+  margin: 10px auto;
+  background-color: #CDE990;
+  width: 56px;
+  box-shadow: 0 4px 5px #d888a528;
+  text-align: center;
+  border-radius: 31px;
+  padding-left: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+.actionItem h3 {
+  color: white;
+  text-transform: uppercase;
+}
+article {
+  width: 80%;
+  margin: 20px auto;
+  border-radius: 20px;
+}
+article p {
+  margin-top: 5px;
+  padding-left: 5px;
+}
+article p:nth-child(2n-1) {
+  background-color: #e2e2e2;
+  border-radius: 10px;
+}
+.selfButton {
+  width: 30%;
+  color: white;
+  background-color: #AACB73;
+  box-shadow: 0 4px 5px #d888a528;
+  float: left;
+  border-radius: 31px;
+  text-align: center;
+  margin: 0 auto;
+}
+.selfButton a {
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+}
+.formContainer {
+  width: 80%;
+  margin: 10px auto;
+}
+.form-group {
+  margin-left: 0;
+}
+.formContainer input {
+  border-radius: 10px;
 }
