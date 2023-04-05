@@ -12,7 +12,7 @@
 </div>
 
 <div class="form-group">
-    <input type="text" id="user_password" name="user[user_password]" placeholder="PASSWORD">
+    <input type="password" id="user_password" name="user[user_password]" placeholder="PASSWORD">
 </div>
 
 <div class="form-group">

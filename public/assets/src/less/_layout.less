@@ -4,11 +4,14 @@
 h1{
   text-align: center;
 }
+html{
+  height: 100%;
+}
 body {
   background-color: @backgroundColor;
   display: flex;
   flex-direction: column;
-  min-height: 95vh;
+  min-height: 100%;
   font-family: "Poppins", sans-serif;
   font-size: @baseFontSize;
   line-height: 1.5 * @baseFontSize;
@@ -75,4 +78,13 @@ body {
       margin-right: 1em;
     }
   }
+}
+.name{
+  text-transform: lowercase;
+}
+.name::first-letter{
+  text-transform: uppercase !important;
+}
+span{
+  display: block;
 }
