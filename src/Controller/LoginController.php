@@ -29,8 +29,7 @@ class LoginController
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();
             
-            //zmienic na strone glowna jak bedzie
-            $path = $router->generatePath('animal-index');
+            $path = $router->generatePath('');
             $router->redirect($path);
             return null;
         } else {

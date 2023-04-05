@@ -15,5 +15,12 @@ ob_start(); ?>
 
     <a href="<?= $router->generatePath('activity-index') ?>">Back to activity list</a>
 <?php $main = ob_get_clean();
+ob_start();
+echo "
+    <script src='/assets/dist/activityForm.js'></script>
+";
+?>
+<?php
+$scripts = ob_get_clean();
 
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

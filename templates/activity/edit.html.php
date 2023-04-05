@@ -27,5 +27,11 @@ ob_start(); ?>
     </ul>
 
 <?php $main = ob_get_clean();
-
+ob_start();
+echo "
+    <script src='/assets/dist/activityForm.js'></script>
+";
+?>
+<?php
+$scripts = ob_get_clean();
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

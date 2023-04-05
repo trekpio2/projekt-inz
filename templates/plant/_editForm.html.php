@@ -28,7 +28,7 @@
     <label for="aquarium_id">Aquarium</label>
     <select id="aquarium_id" name="plant[aquarium_id]">
         <?php foreach ($aquariums as $aquarium): ?>
-            <option value=<?= $aquarium ? $aquarium->getAquariumId() : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
+            <option value="<?= $aquarium ? $aquarium->getAquariumId() : '' ?>"<?= $activity->getAquariumId() == $aquarium->getAquariumId() ? 'selected' : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
         <?php endforeach; ?>
     </select>
 </div>

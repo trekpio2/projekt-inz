@@ -40,14 +40,25 @@
 
 <div class="form-group">
     <label for="start_time">starting time</label>
-    <input type="time" id="start_time" name="activity[start_time]" value="<?= $activity ? $activity->getStartTime() : '' ?>">
+    <input type="time" id="start_time" name="activity[start_time]" value="<?= $activity ? $activity->getStartTime() : '' ?>" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
+</div>
+
+<div class="form-group">
+    <label for="period">period</label>
+    <input type="number" min="1" id="period_nr" name="activity[period_nr]" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
+    <select id="period" name="activity[period]" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
+        <option value="days">days</option>
+        <option value="weeks">weeks</option>
+        <option value="months">months</option>
+        <option value="years">years</option>
+    </select>
 </div>
 
 <div class="form-group">
     <label for="aquarium_id">Aquarium</label>
     <select id="aquarium_id" name="activity[aquarium_id]">
         <?php foreach ($aquariums as $aquarium): ?>
-            <option value=<?= $aquarium ? $aquarium->getAquariumId() : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
+            <option value="<?= $aquarium ? $aquarium->getAquariumId() : '' ?>"<?= $activity->getAquariumId() == $aquarium->getAquariumId() ? 'selected' : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
         <?php endforeach; ?>
     </select>
 </div>

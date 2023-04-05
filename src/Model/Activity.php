@@ -14,6 +14,8 @@ class Activity
     private ?int $pump = null;
     private ?int $is_planned = null;
     private ?string $start_time = null;
+    private ?int $period_nr = null;
+    private ?string $period = null;
     private ?string $task_name = null;
     private ?int $aquarium_id = null;
 
@@ -25,6 +27,30 @@ class Activity
     public function setActivityId(?int $activity_id): Activity
     {
         $this->activity_id = $activity_id;
+
+        return $this;
+    }
+
+    public function getPeriodNr(): ?int
+    {
+        return $this->period_nr;
+    }
+
+    public function setPeriodNr(?int $period_nr): Activity
+    {
+        $this->period_nr = $period_nr;
+
+        return $this;
+    }
+    
+    public function getPeriod(): ?string
+    {
+        return $this->period;
+    }
+
+    public function setPeriod(?string $period): Activity
+    {
+        $this->period = $period;
 
         return $this;
     }
@@ -206,6 +232,12 @@ class Activity
         if (isset($array['task_name'])) {
             $this->setTaskName($array['task_name']);
         }
+        if (isset($array['period_nr'])) {
+            $this->setPeriodNr($array['period_nr']);
+        }
+        if (isset($array['period'])) {
+            $this->setPeriod($array['period']);
+        }
         if (isset($array['aquarium_id'])) {
             $this->setAquariumId($array['aquarium_id']);
         }
@@ -265,7 +297,7 @@ class Activity
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getActivityId()) {
-            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, feed, filter, pump, is_planned, start_time, task_name, aquarium_id) VALUES (:activity_name, :lights_level, :temperature, :feed, :filter, :pump, :is_planned, :start_time, :task_name, :aquarium_id)";
+            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, feed, filter, pump, is_planned, start_time, period_nr, period, task_name, aquarium_id) VALUES (:activity_name, :lights_level, :temperature, :feed, :filter, :pump, :is_planned, :start_time, :period_nr, :period, :task_name, :aquarium_id)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
@@ -277,12 +309,14 @@ class Activity
                 'is_planned' => $this->getIsPlanned(),
                 'start_time' => $this->getStartTime(),
                 'task_name' => $this->getTaskName(),
+                'period_nr' => $this->getPeriodNr(),
+                'period' => $this->getPeriod(),
                 'aquarium_id' => $this->getAquariumId(),
             ]);
 
             $this->setActivityId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, feed = :feed, filter = :filter, pump = :pump, is_planned = :is_planned, start_time = :start_time, task_name = :task_name, aquarium_id = :aquarium_id WHERE activity_id = :activity_id";
+            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, feed = :feed, filter = :filter, pump = :pump, is_planned = :is_planned, start_time = :start_time, period_nr = :period_nr, period = :period, task_name = :task_name, aquarium_id = :aquarium_id WHERE activity_id = :activity_id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
@@ -293,6 +327,8 @@ class Activity
                 'pump' => $this->getPump(),
                 'is_planned' => $this->getIsPlanned(),
                 'start_time' => $this->getStartTime(),
+                'period_nr' => $this->getPeriodNr(),
+                'period' => $this->getPeriod(),
                 'task_name' => $this->getTaskName(),
                 'aquarium_id' => $this->getAquariumId(),
                 ':activity_id' => $this->getActivityId(),
@@ -318,6 +354,8 @@ class Activity
         $this->setPump(null);
         $this->setIsPlanned(null);
         $this->setStartTime(null);
+        $this->setPeriodNr(null);
+        $this->setPeriod(null);
         $this->setTaskName(null);
         $this->setAquariumId(null);
     }

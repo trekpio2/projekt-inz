@@ -20,27 +20,38 @@
 
 <div class="form-group">
     <label for="feed">Feed</label>
-    <input type="checkbox" id="feed" name="activity[feed]" value="1" <?= $activity->getFeed() ? 'checked' : '' ?>>
+    <input type="checkbox" id="feed" name="activity[feed]" value="1">
 </div>
 
 <div class="form-group">
     <label for="filter">Filter</label>
-    <input type="checkbox" id="filter" name="activity[filter]" value="1" <?= $activity->getFilter() ? 'checked' : '' ?>>
+    <input type="checkbox" id="filter" name="activity[filter]" value="1">
 </div>
 
 <div class="form-group">
     <label for="pump">Pump</label>
-    <input type="checkbox" id="pump" name="activity[pump]" value="1" <?= $activity->getPump() ? 'checked' : '' ?>>
+    <input type="checkbox" id="pump" name="activity[pump]" value="1">
 </div>
 
 <div class="form-group">
     <label for="is_planned">Plan activity</label>
-    <input type="checkbox" id="is_planned" name="activity[is_planned]" value="1" <?= $activity->getIsPlanned() ? 'checked' : '' ?>>
+    <input type="checkbox" id="is_planned" name="activity[is_planned]" value="1">
 </div>
 
 <div class="form-group">
     <label for="start_time">starting time</label>
-    <input type="time" id="start_time" name="activity[start_time]" value="<?= $activity ? $activity->getStartTime() : '' ?>">
+    <input type="time" id="start_time" name="activity[start_time]" disabled>
+</div>
+
+<div class="form-group">
+    <label for="period">period</label>
+    <input type="number" min="1" id="period_nr" name="activity[period_nr]" disabled>
+    <select id="period" name="activity[period]" disabled>
+        <option value="days">days</option>
+        <option value="weeks">weeks</option>
+        <option value="months">months</option>
+        <option value="years">years</option>
+    </select>
 </div>
 
 <div class="form-group">

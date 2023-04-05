@@ -30,27 +30,28 @@ class Scheduler
         }
     }
 
-    public function addTask($taskName, $taskCommand, $startTime) {
-        $schedule = "daily";
-        exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc $schedule /st $startTime");
+    public function addTask($taskName, $taskCommand, $startTime, $period)
+    {
+        exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc $period /st $startTime");
     }
 
-    public function editTask($taskName, $startTime) {
-        $schedule = "daily";
-        exec("schtasks /change /tn \"$taskName\" /sc $schedule /st $startTime");
+    public function editTask($taskName, $startTime, $period)
+    {
+        exec("schtasks /change /tn \"$taskName\" /sc $period /st $startTime");
     }
 
-    public function removeTask($taskName) {
+    public function removeTask($taskName)
+    {
         exec("schtasks /delete /tn \"$taskName\" /f");
     }
 
-    public function turnOffTask($taskName) {
+    public function turnOffTask($taskName)
+    {
         exec("schtasks /change /tn \"$taskName\" /disable");
     }
     
-    public function turnOnTask($taskName) {
+    public function turnOnTask($taskName) 
+    {
         exec("schtasks /change /tn \"$taskName\" /enable");
     }
-
-
 }

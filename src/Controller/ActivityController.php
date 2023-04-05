@@ -122,7 +122,6 @@ class ActivityController
              }
              
              
-
             $path = $router->generatePath('activity-show', ['activity_id' => $activityId]);
             $router->redirect($path);
             return null;
