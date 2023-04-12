@@ -14,6 +14,7 @@ class Activity
     private ?int $pump = null;
     private ?int $is_planned = null;
     private ?string $start_time = null;
+    private ?string $start_date = null;
     private ?int $period_nr = null;
     private ?string $period = null;
     private ?string $task_name = null;
@@ -151,6 +152,18 @@ class Activity
         return $this;
     }
 
+    public function getStartDate(): ?string
+    {
+        return $this->start_date;
+    }
+
+    public function setStartDate(?string $start_date): Activity
+    {
+        $this->start_date = $start_date;
+
+        return $this;
+    }
+
     public function getTaskName(): ?string
     {
         return $this->task_name;
@@ -229,6 +242,9 @@ class Activity
         if (isset($array['start_time'])) {
             $this->setStartTime($array['start_time']);
         }
+        if (isset($array['start_date'])) {
+            $this->setStartDate($array['start_date']);
+        }
         if (isset($array['task_name'])) {
             $this->setTaskName($array['task_name']);
         }
@@ -297,7 +313,7 @@ class Activity
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getActivityId()) {
-            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, feed, filter, pump, is_planned, start_time, period_nr, period, task_name, aquarium_id) VALUES (:activity_name, :lights_level, :temperature, :feed, :filter, :pump, :is_planned, :start_time, :period_nr, :period, :task_name, :aquarium_id)";
+            $sql = "INSERT INTO activity (activity_name, lights_level, temperature, feed, filter, pump, is_planned, start_time, start_date, period_nr, period, task_name, aquarium_id) VALUES (:activity_name, :lights_level, :temperature, :feed, :filter, :pump, :is_planned, :start_time, :start_date, :period_nr, :period, :task_name, :aquarium_id)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
@@ -308,6 +324,7 @@ class Activity
                 'pump' => $this->getPump(),
                 'is_planned' => $this->getIsPlanned(),
                 'start_time' => $this->getStartTime(),
+                'start_date' => $this->getStartDate(),
                 'task_name' => $this->getTaskName(),
                 'period_nr' => $this->getPeriodNr(),
                 'period' => $this->getPeriod(),
@@ -316,7 +333,7 @@ class Activity
 
             $this->setActivityId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, feed = :feed, filter = :filter, pump = :pump, is_planned = :is_planned, start_time = :start_time, period_nr = :period_nr, period = :period, task_name = :task_name, aquarium_id = :aquarium_id WHERE activity_id = :activity_id";
+            $sql = "UPDATE activity SET activity_name = :activity_name, lights_level = :lights_level, temperature = :temperature, feed = :feed, filter = :filter, pump = :pump, is_planned = :is_planned, start_time = :start_time, start_date = :start_date, period_nr = :period_nr, period = :period, task_name = :task_name, aquarium_id = :aquarium_id WHERE activity_id = :activity_id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 'activity_name' => $this->getActivityName(),
@@ -327,6 +344,7 @@ class Activity
                 'pump' => $this->getPump(),
                 'is_planned' => $this->getIsPlanned(),
                 'start_time' => $this->getStartTime(),
+                'start_date' => $this->getStartDate(),
                 'period_nr' => $this->getPeriodNr(),
                 'period' => $this->getPeriod(),
                 'task_name' => $this->getTaskName(),
@@ -354,6 +372,7 @@ class Activity
         $this->setPump(null);
         $this->setIsPlanned(null);
         $this->setStartTime(null);
+        $this->setStartDate(null);
         $this->setPeriodNr(null);
         $this->setPeriod(null);
         $this->setTaskName(null);

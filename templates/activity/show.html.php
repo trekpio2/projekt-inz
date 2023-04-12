@@ -5,6 +5,7 @@
 /** @var array $executeData */
 /** @var \App\Service\Router $router */
 
+
 $title = "{$activity->getActivityName()}";
 $bodyClass = 'show';
 
@@ -32,7 +33,7 @@ echo "
     let executeData = '" . $executeData . "';
     let ip = '" . $aquarium->getIP() . "';
     </script>
-    <script src='/assets/dist/activity.js'></script>
+    <script src='/assets/src/js/activityExecute.js'></script>
 ";
 ?>
 <?php

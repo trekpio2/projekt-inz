@@ -29,7 +29,7 @@ ob_start(); ?>
 <?php $main = ob_get_clean();
 ob_start();
 echo "
-    <script src='/assets/dist/activityForm.js'></script>
+    <script src='/assets/src/js/activityForm.js'></script>
 ";
 ?>
 <?php

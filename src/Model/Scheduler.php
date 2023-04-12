@@ -3,6 +3,11 @@ namespace App\Model;
 
 use App\Service\Config;
 
+function convertDate($date) {
+    $timestamp = strtotime($date);
+    return date('m/d/Y', $timestamp);
+}
+
 class Scheduler
 {
     public function createTaskFile($scriptFilePath,$ip, $activityName, $executeData)
@@ -30,28 +35,57 @@ class Scheduler
         }
     }
 
-    public function addTask($taskName, $taskCommand, $startTime, $period)
+    public function addTask($taskName, $taskCommand, $startTime, $startDate, $period, $periodNr)
     {
-        exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc $period /st $startTime");
+        $startDate = convertDate($startDate);
+        switch ($period) {
+            case 'days':
+                exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc daily /mo $periodNr /sd $startDate /st $startTime");
+                break;
+            case 'weeks':
+                exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc weekly /mo $periodNr /sd $startDate /st $startTime");
+                break;
+            case 'months':
+                exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc monthly /mo $periodNr /sd $startDate /st $startTime");
+                break;
+            default:
+                exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc once /sd $startDate /st $startTime");
+                break;
+        }
+        
     }
 
-    public function editTask($taskName, $startTime, $period)
+    public function editTask($taskName, $startTime, $startDate, $period, $periodNr)
     {
-        exec("schtasks /change /tn \"$taskName\" /sc $period /st $startTime");
+        switch ($period) {
+            case 'days':
+                exec("schtasks /change /tn \"$taskName\" /tr \"$taskCommand\" /sc daily /mo $periodNr /sd $startDate /st $startTime");
+                break;
+            case 'weeks':
+                exec("schtasks /change /tn \"$taskName\" /tr \"$taskCommand\" /sc weekly /mo $periodNr /sd $startDate /st $startTime");
+                break;
+            case 'months':
+                exec("schtasks /change /tn \"$taskName\" /tr \"$taskCommand\" /sc monthly /mo $periodNr /sd $startDate /st $startTime");
+                break;
+            default:
+                exec("schtasks /change /tn \"$taskName\" /tr \"$taskCommand\" /sc once /sd $startDate /st $startTime");
+                break;
+        }
     }
 
     public function removeTask($taskName)
     {
         exec("schtasks /delete /tn \"$taskName\" /f");
     }
+/*
+public function turnOffTask($taskName)
+{
+    exec("schtasks /change /tn \"$taskName\" /disable");
+}
 
-    public function turnOffTask($taskName)
-    {
-        exec("schtasks /change /tn \"$taskName\" /disable");
-    }
-    
-    public function turnOnTask($taskName) 
-    {
-        exec("schtasks /change /tn \"$taskName\" /enable");
-    }
+public function turnOnTask($taskName) 
+{
+    exec("schtasks /change /tn \"$taskName\" /enable");
+}
+*/
 }

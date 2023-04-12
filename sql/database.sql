@@ -25,21 +25,42 @@ CREATE TABLE IF NOT EXISTS `activity` (
   `pump` int DEFAULT NULL,
   `is_planned` int DEFAULT NULL,
   `start_time` time DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
   `task_name` varchar(50) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   `aquarium_id` int DEFAULT NULL,
+  `period_nr` int DEFAULT NULL,
+  `period` varchar(50) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   PRIMARY KEY (`activity_id`),
   KEY `aquarium_id` (`aquarium_id`),
   CONSTRAINT `FK_activity_aquarium` FOREIGN KEY (`aquarium_id`) REFERENCES `aquarium` (`aquarium_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
--- Zrzucanie danych dla tabeli project.activity: ~6 rows (około)
-INSERT INTO `activity` (`activity_id`, `activity_name`, `lights_level`, `temperature`, `feed`, `filter`, `pump`, `is_planned`, `start_time`, `task_name`, `aquarium_id`) VALUES
-	(1, 'DAY', 10, 24.00, 1, 1, NULL, 0, '16:00:00', NULL, 1),
-	(2, 'night', 0, 18.00, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-	(3, 'cos', 12, 24.00, NULL, NULL, NULL, NULL, NULL, NULL, 2),
-	(11, 'testPlanowanej13', 62, 26.00, 1, NULL, 1, 1, '21:34:00', 'piotrek-testPlanowanej13', 1),
-	(12, 'ts', 2, 2.00, NULL, NULL, NULL, NULL, '00:00:00', 'piotrek-ts', 1),
-	(13, 'x', 2, 2.00, NULL, NULL, 1, 1, '22:33:00', 'piotrek-x', 1);
+-- Zrzucanie danych dla tabeli project.activity: ~19 rows (około)
+INSERT INTO `activity` (`activity_id`, `activity_name`, `lights_level`, `temperature`, `feed`, `filter`, `pump`, `is_planned`, `start_time`, `start_date`, `task_name`, `aquarium_id`, `period_nr`, `period`) VALUES
+	(1, 'DAY', 10, 24.00, 1, 1, NULL, 1, '16:00:00', NULL, 'piotrek-DAY', 1, NULL, NULL),
+	(2, 'night', 0, 18.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
+	(3, 'cos', 12, 24.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL),
+	(11, 'testPlanowanej13', 62, 26.00, 1, NULL, 1, 1, '21:34:00', NULL, 'piotrek-testPlanowanej13', 1, NULL, NULL),
+	(12, 'ts', 2, 2.00, NULL, NULL, NULL, NULL, '00:00:00', NULL, 'piotrek-ts', 1, NULL, NULL),
+	(13, 'x', 2, 2.00, NULL, NULL, 1, 1, '22:33:00', NULL, 'piotrek-x', 1, NULL, NULL),
+	(17, 'zzzzz', 12, 12.00, NULL, NULL, 1, 1, '13:55:00', NULL, 'piotrek-zzzzz', 1, 3, 'weeks'),
+	(18, 'okm', 12, 20.00, NULL, 1, NULL, 1, '15:59:00', NULL, 'piotrek-okm', 1, 2, 'weeks'),
+	(19, 'lmnn', 12, 50.00, 1, NULL, 1, 1, '23:00:00', '2024-02-12', 'piotrek-lmnn', 1, 2, 'weeks'),
+	(21, 'pppp', 12, 20.00, 1, NULL, 1, 1, '23:42:00', '2023-12-12', 'piotrek-pppp', 1, 2, 'weeks'),
+	(22, 'jkl', 11, 23.00, NULL, 1, 1, 1, '12:12:00', '2023-02-24', 'piotrek-jkl', 1, 3, 'days'),
+	(23, 'bla', 12, 52.00, 1, NULL, 1, 1, '22:22:00', '2023-12-12', 'piotrek-bla', 1, 3, 'days'),
+	(24, 'oco', 12, 52.00, 1, NULL, 1, 1, '12:12:00', '2023-12-24', 'piotrek-oco', 1, 2, 'days'),
+	(25, 'mmmmmmmmmmmmmm', 21, 21.00, NULL, 1, 1, 1, '23:23:00', '2023-12-12', 'piotrek-mmmmmmmmmmmmmm', 1, 4, 'days'),
+	(26, 'ewi', 12, 24.00, NULL, 1, 1, 1, '23:24:00', '2023-12-24', 'piotrek-ewi', 1, 2, 'days'),
+	(27, 'ostat', 24, 36.00, NULL, 1, 1, 1, '23:24:00', '2023-12-12', 'piotrek-ostat', 1, 25, 'days'),
+	(28, 'what', 24, 21.00, NULL, NULL, 1, 1, '21:12:00', '2023-12-21', 'piotrek-what', 1, 4, 'days'),
+	(29, 'musi', 3, 45.00, NULL, 1, 1, 1, '21:12:00', '2023-12-12', 'piotrek-musi', 1, 24, 'days'),
+	(30, 'lets', 22, 12.00, NULL, 1, 1, 1, '11:21:00', '2023-12-20', 'piotrek-lets', 1, 42, 'days'),
+	(31, 'notak', 23, 21.00, NULL, 1, 1, 1, '12:14:00', '2023-12-05', 'piotrek-notak', 1, 2, 'days'),
+	(32, 'miesiacet', 14, 12.00, 1, NULL, 1, 1, '15:16:00', '2023-12-12', 'piotrek-miesiacet', 1, 2, 'days'),
+	(33, 'ofic', 21, 34.00, NULL, NULL, 1, 1, '15:16:00', '2023-12-15', 'piotrek-ofic', 1, 3, 'months'),
+	(34, 'ofic2', 213, 21.00, NULL, 1, 1, 1, '22:22:00', '2023-12-12', 'piotrek-ofic2', 1, 2, 'months'),
+	(35, 'terazofci', 12, 31.00, NULL, NULL, 1, 1, '22:22:00', '2023-12-12', 'piotrek-terazofci', 1, 3, 'months');
 
 -- Zrzut struktury tabela project.animal
 CREATE TABLE IF NOT EXISTS `animal` (
@@ -56,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `animal` (
   CONSTRAINT `FK_animal_aquarium` FOREIGN KEY (`aquarium_id`) REFERENCES `aquarium` (`aquarium_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
--- Zrzucanie danych dla tabeli project.animal: ~9 rows (około)
+-- Zrzucanie danych dla tabeli project.animal: ~8 rows (około)
 INSERT INTO `animal` (`animal_id`, `animal_name`, `animal_gender`, `animal_image`, `species_name`, `color`, `birthdate`, `aquarium_id`) VALUES
 	(1, 'Axel', 'male', NULL, 'jakis', 'pink', '2023-01-22', 1),
 	(2, 'lotla', 'female', NULL, 'jakis', NULL, '2023-01-22', 1),
@@ -83,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `aquarium` (
   CONSTRAINT `aquarium_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
--- Zrzucanie danych dla tabeli project.aquarium: ~3 rows (około)
+-- Zrzucanie danych dla tabeli project.aquarium: ~2 rows (około)
 INSERT INTO `aquarium` (`aquarium_id`, `aquarium_name`, `aquarium_length`, `aquarium_width`, `aquarium_height`, `aquarium_volume`, `ip`, `user_id`) VALUES
 	(1, 'akwarium1', 12.00, 12.00, 12.00, 1728.00, 'http://1.1.1.1', 1),
 	(2, 'Akwarium2', 12.00, 11.20, 15.00, 1758.00, 'https://jsonplaceholder.typicode.com/users', 1),
@@ -103,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `plant` (
   CONSTRAINT `FK_plant_aquarium` FOREIGN KEY (`aquarium_id`) REFERENCES `aquarium` (`aquarium_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci ROW_FORMAT=DYNAMIC;
 
--- Zrzucanie danych dla tabeli project.plant: ~2 rows (około)
+-- Zrzucanie danych dla tabeli project.plant: ~1 rows (około)
 INSERT INTO `plant` (`plant_id`, `plant_name`, `plant_height`, `plant_image`, `species_name`, `color`, `aquarium_id`) VALUES
 	(1, 'roslina1', '60', '\\userImages\\piotrek\\plant1.', 'jakis taki sobie', 'blue', 1),
 	(2, 'r2', '4', '\\userImages\\piotrek\\plant2.', 'zxc', 'pink', 1);
@@ -126,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
--- Zrzucanie danych dla tabeli project.user: ~4 rows (około)
+-- Zrzucanie danych dla tabeli project.user: ~3 rows (około)
 INSERT INTO `user` (`user_id`, `username`, `user_password`, `is_admin`) VALUES
 	(1, 'piotrek', '123', 1),
 	(2, 'adam', '321', NULL),

@@ -44,13 +44,17 @@
 </div>
 
 <div class="form-group">
+    <label for="start_date">starting date</label>
+    <input type="date" id="start_date" name="activity[start_date]" disabled>
+</div>
+
+<div class="form-group">
     <label for="period">period</label>
     <input type="number" min="1" id="period_nr" name="activity[period_nr]" disabled>
     <select id="period" name="activity[period]" disabled>
         <option value="days">days</option>
         <option value="weeks">weeks</option>
         <option value="months">months</option>
-        <option value="years">years</option>
     </select>
 </div>
 

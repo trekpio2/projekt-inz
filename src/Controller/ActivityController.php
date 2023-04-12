@@ -49,8 +49,8 @@ class ActivityController
                 $aquarium = Aquarium::find($activity->getAquariumId());
                 $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData);
                 $taskCommand = "node " . $scriptFilePath;
-                // zakomentowane zeby nie smiecic w systemie
-                //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime());
+                // zakomentowane zeby nie smiecic w systemie                
+                //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
             }
 
             
@@ -108,12 +108,13 @@ class ActivityController
                 $executeData = $activity->getExecuteData();
                 $aquarium = Aquarium::find($activity->getAquariumId());
                 
+
                 $scheduler->deleteTaskFile($previousFilePath);
                 $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData);
                 
                 $taskCommand = "node " . $scriptFilePath;
                 // zakomentowane zeby nie smiecic w systemie
-                //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime());
+                //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
             }
             else
              {

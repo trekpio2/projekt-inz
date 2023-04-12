@@ -44,13 +44,17 @@
 </div>
 
 <div class="form-group">
+    <label for="start_date">starting date</label>
+    <input type="date" id="start_date" name="activity[start_date]" value="<?= $activity ? $activity->getStartDate() : '' ?>" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
+</div>
+
+<div class="form-group">
     <label for="period">period</label>
     <input type="number" min="1" id="period_nr" name="activity[period_nr]" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
     <select id="period" name="activity[period]" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
         <option value="days">days</option>
         <option value="weeks">weeks</option>
         <option value="months">months</option>
-        <option value="years">years</option>
     </select>
 </div>
 
