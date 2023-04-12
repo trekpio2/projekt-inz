@@ -13,17 +13,20 @@ ob_start(); ?>
     <h1>Hello, <span class="name"><?php echo $_SESSION['username']?>!</span></h1>
     <h2 class="homeAnimalTitle">My Animals</h2>
 
-    <ul class="index-list">
         <div id="carousel">
-        <?php foreach ($animals as $animal): ?>
-                <div class="animalPhotoHome">
-                <a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>"><img src="<?= $animal->getAnimalImage(); ?>" style='height: 115px; width: 115px; object-fit: cover; border-radius: 100%'>
-                </a></div>
-        <?php endforeach; ?>
+
         </div>
-    </ul>
-    
-    <h2>My Plants</h2>
+    <?php $i =0; foreach ($animals as $animal): ?>
+                <div class="Baza" hidden>
+                <a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>"><img src="<?= $animal->getAnimalImage(); ?>" style='height: 155px; width: 85px; object-fit: cover; border-radius: 20%'>
+                </a></div>
+                <?php $i = $i +1; ?>
+        <?php endforeach; ?>
+        <div class="ButtonHolder">
+            <div class="Button" onclick="goRight()"> <<</div>
+            <div class="Button" onclick="goLeft()"> >> </div>
+        </div>
+    <h2 class="homeAnimalTitle">My Plants</h2>
     <ul class="index-list">
         <?php foreach ($plants as $plant): ?>
 
