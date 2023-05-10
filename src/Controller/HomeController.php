@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+
 use App\Exception\NotFoundException;
 use App\Model\Animal;
 use App\Model\Plant;

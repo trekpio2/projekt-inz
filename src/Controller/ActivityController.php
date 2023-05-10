@@ -1,8 +1,5 @@
 <?php
 namespace App\Controller;
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 use App\Exception\NotFoundException;
 use App\Model\Activity;
@@ -127,6 +124,7 @@ class ActivityController
             $router->redirect($path);
             return null;
         }
+
         $aquariums = Aquarium::findAquariumsOwnedByUser($_SESSION['user_id']);
         $html = $templating->render('activity/edit.html.php', [
             'activity' => $activity,

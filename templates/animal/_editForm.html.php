@@ -27,14 +27,16 @@
     <label for="aquarium_id">Aquarium</label>
     <select id="aquarium_id" name="animal[aquarium_id]">
         <?php foreach ($aquariums as $aquarium): ?>
-            <option value="<?= $aquarium ? $aquarium->getAquariumId() : '' ?>"<?= $activity->getAquariumId() == $aquarium->getAquariumId() ? 'selected' : '' ?>><?= $aquarium ? $aquarium->getAquariumName() : '' ?></option>
+            <option value="<?= $aquarium ? $aquarium->getAquariumId() : '' ?>"<?= $animal->getAquariumId() == $aquarium->getAquariumId() ? 'selected' : '' ?>>
+                <?= $aquarium ? $aquarium->getAquariumName() : '' ?>
+            </option>
         <?php endforeach; ?>
     </select>
 </div>
 
 <div class="form-group">
     <label for="animal_image">image</label>
-    <input type="file" id="animal_image" name="animal_image">
+    <input type="file" id="animal_image" name="animal_image"  accept="image/png, image/jpeg">
 </div>
 
 

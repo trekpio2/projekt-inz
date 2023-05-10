@@ -35,7 +35,7 @@
 
 <div class="form-group">
     <label for="plant_image">image</label>
-    <input type="file" id="plant_image" name="plant_image">
+    <input type="file" id="plant_image" name="plant_image" accept="image/png, image/jpeg">
 </div>
 
 

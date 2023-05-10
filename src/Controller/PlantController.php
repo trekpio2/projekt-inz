@@ -1,11 +1,10 @@
 <?php
 namespace App\Controller;
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+
 use App\Exception\NotFoundException;
 use App\Model\Plant;
 use App\Model\Aquarium;
+use App\Validator\Validator;
 use App\Service\Router;
 use App\Service\Templating;
 

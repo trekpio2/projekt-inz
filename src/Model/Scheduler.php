@@ -37,7 +37,7 @@ class Scheduler
 
     public function addTask($taskName, $taskCommand, $startTime, $startDate, $period, $periodNr)
     {
-        $startDate = convertDate($startDate);
+        $startDate = convertDateToScheduler($startDate);
         switch ($period) {
             case 'days':
                 exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc daily /mo $periodNr /sd $startDate /st $startTime");
@@ -57,6 +57,7 @@ class Scheduler
 
     public function editTask($taskName, $startTime, $startDate, $period, $periodNr)
     {
+        $startDate = convertDateToScheduler($startDate);
         switch ($period) {
             case 'days':
                 exec("schtasks /change /tn \"$taskName\" /tr \"$taskCommand\" /sc daily /mo $periodNr /sd $startDate /st $startTime");
