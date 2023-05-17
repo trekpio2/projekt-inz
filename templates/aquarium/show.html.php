@@ -15,7 +15,7 @@ $bodyClass = 'show';
 
 ob_start(); ?>
     <h1><?= $aquarium->getAquariumName() ?></h1>
-    <h2>Animals in aquarium</h2>
+    <h2 class="homeAnimalTitle">Animals in aquarium</h2>
     <ul class="index-list">
         <?php foreach ($animals as $animal): ?>
             <!-- dodac zdjecie? -->
@@ -25,7 +25,7 @@ ob_start(); ?>
             <?php endforeach; ?>
         </ul>
     
-    <h2>Activities</h2>
+    <h2 class="homeAnimalTitle">Activities</h2>
     <ul class="index-list">
         <?php foreach ($activities as $activity): ?>
             <li>

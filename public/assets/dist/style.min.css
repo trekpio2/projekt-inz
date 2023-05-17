@@ -224,6 +224,7 @@ body h1 {
   text-align: center;
 }
 body h3 {
+  text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
   margin-top: 0.5em;
@@ -237,6 +238,8 @@ body a:hover {
   color: #ffa650;
 }
 body ul.action-list {
+  width: 80%;
+  margin: 0 auto;
   margin-top: 1em;
   margin-bottom: 2em;
 }
@@ -274,7 +277,7 @@ nav::after {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 11;
   top: 0;
   left: 0;
   background-color: #AACB73;
@@ -300,7 +303,7 @@ nav::after {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 0;
+  z-index: 10;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
@@ -319,6 +322,7 @@ nav::after {
   margin-left: 50px;
 }
 footer {
+  width: 100%;
   font-size: 0.8rem;
   text-align: center;
   color: white;
@@ -340,11 +344,12 @@ footer::before {
   color: #6d6d6d;
 }
 .edit .edit-form {
+  width: 80%;
   margin-bottom: 1em;
 }
 .edit .edit-form .form-group {
   margin-bottom: 1em;
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column;
 }
@@ -359,6 +364,7 @@ footer::before {
 }
 .edit .edit-form .form-group input[type="text"] {
   flex-grow: 3;
+  background-color: white;
 }
 .edit .edit-form .form-group textarea {
   height: 300px;
@@ -570,7 +576,11 @@ article p:nth-child(2n-1) {
   margin: 10px auto;
 }
 .form-group {
-  margin-left: 0;
+  margin: 10px auto;
+  width: 80%;
+}
+.form-group.animal input {
+  border-radius: 3px;
 }
 .formContainer input {
   border-radius: 10px;
@@ -636,4 +646,8 @@ article p:nth-child(2n-1) {
   text-align: center;
   margin: 0 auto;
   margin-bottom: 40px;
+}
+.show h2 {
+  margin: 0 auto;
+  font-weight: bold;
 }

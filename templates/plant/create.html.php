@@ -1,4 +1,6 @@
-<?php
+<?php $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Plant $plant */
 /** @var \App\Service\Router $router */
@@ -15,6 +17,6 @@ ob_start(); ?>
     </form>
 
     <a href="<?= $router->generatePath('plant-index') ?>">Back to plant list</a>
-<?php $main = ob_get_clean();
+    <?php
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

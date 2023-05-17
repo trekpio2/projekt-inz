@@ -11,9 +11,9 @@ $bodyClass = 'show';
 ob_start(); ?>
     <h1><?= $animal->getAnimalName() ?></h1>
     <article>
+        <img src="<?= $animal->getAnimalImage() ?>" alt="Animal" style="width: 100%; height: 200px; border-radius: 15px; object-fit: contain;">
         <p>Gatunek: <?= $animal->getSpeciesName();?></p>
         <p>Płeć: <?= $animal->getAnimalGender();?></p>
-        <!-- <img src="<?= $animal->getAnimalImage() ?>" alt=""> -->
         <!-- reszta dotyczaca zwierzecia -->
     </article>
 
