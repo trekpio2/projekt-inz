@@ -1,4 +1,6 @@
-<?php
+<?php $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Activity $activity */
 /** @var \App\Service\Router $router */
@@ -15,8 +17,8 @@ ob_start(); ?>
     </form>
 
     <ul class="action-list">
-        <li>
-            <a href="<?= $router->generatePath('activity-index') ?>">Back to activity list</a></li>
+        <li class="selfButton">
+            <a href="<?= $router->generatePath('activity-index') ?>"><<</a></li>
         <li>
             <form action="<?= $router->generatePath('activity-delete') ?>" method="post">
                 <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
@@ -26,6 +28,7 @@ ob_start(); ?>
         </li>
     </ul>
 
+<<<<<<< HEAD
 <?php $main = ob_get_clean();
 ob_start();
 echo "
@@ -35,3 +38,7 @@ echo "
 <?php
 $scripts = ob_get_clean();
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+=======
+<?php 
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';
+>>>>>>> css

@@ -1,4 +1,5 @@
 nav {
+  background-color: #AACB73 !important;
   ul {
     li {
       display: inline-block;
@@ -15,7 +16,56 @@ nav {
     content: "";
     display: block;
     width: 100%;
-    border-bottom: 1px solid @lineColor;
     margin: 0 auto;
   }
+}
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 11;
+  top: 0;
+  left: 0;
+  background-color: #AACB73;
+  color: white;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  text-align:center;
+}
+.sidenav img{
+  float: left;
+  margin-left: 10px;
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+
+}
+#darken {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.5);
+  overflow-x: hidden;
+  padding-top: 60px;
+  text-align:center;
+}
+.sidenav a:hover{
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
 }

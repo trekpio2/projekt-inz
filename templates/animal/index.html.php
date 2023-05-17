@@ -1,28 +1,38 @@
-<?php
+<?php $main = ob_get_clean();
 
-/** @var \App\Model\Animal[] $animals */
-/** @var \App\Service\Router $router */
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+
+
+
 
 $title = 'Animal List';
 $bodyClass = 'index';
 
 ob_start(); ?>
-    <h1>Animal List</h1>
 
-    <a href="<?= $router->generatePath('animal-create') ?>">Create new</a>
-
+    
+    
     <ul class="index-list">
         <?php foreach ($animals as $animal): ?>
+            <div class="singleAnimal">
              <!-- dodac zdjecie? -->
+            <div class="animalPhoto">
+                <img src="<?= $animal->getAnimalImage(); ?>" style='height: 137px; width: 288px; object-fit: cover; border-radius: 47px'>
+            </div>
             <li><h3><?= $animal->getAnimalName(); ?></h3>
                 <ul class="action-list">
                     <li><a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>">Details</a></li>
                     <li><a href="<?= $router->generatePath('animal-edit', ['animal_id' => $animal->getAnimalId()]) ?>">Edit</a></li>
                 </ul>
             </li>
+            </div>
         <?php endforeach; ?>
     </ul>
 
-<?php $main = ob_get_clean();
+    <div class="addAnimal">
+        <a href="<?= $router->generatePath('animal-create') ?>">Create new</a>
+    </div>
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+<?php
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

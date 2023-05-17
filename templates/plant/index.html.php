@@ -1,4 +1,6 @@
-<?php
+<?php $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Plant[] $plants */
 /** @var \App\Service\Router $router */
@@ -21,7 +23,12 @@ ob_start(); ?>
             </li>
         <?php endforeach; ?>
     </ul>
+<<<<<<< HEAD
     
 <?php $main = ob_get_clean();
+=======
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+    <?php
+>>>>>>> css
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

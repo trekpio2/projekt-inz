@@ -1,4 +1,6 @@
-<?php
+<?php $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Animal $animal */
 /** @var \App\Service\Router $router */
@@ -14,6 +16,5 @@ ob_start(); ?>
     </form>
 
     <a href="<?= $router->generatePath('animal-index') ?>">Back to animal list</a>
-<?php $main = ob_get_clean();
-
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+    <?php
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

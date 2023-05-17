@@ -1,4 +1,6 @@
-<?php
+<?php $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Activity $activity */
 /** @var \App\Model\Aquarium $aquarium */
@@ -10,7 +12,7 @@ $title = "{$activity->getActivityName()}";
 $bodyClass = 'show';
 
 ob_start(); ?>
-    <h1><?= $activity->getActivityName() ?></h1>
+    <h1 class="acivityTitle"><?= $activity->getActivityName() ?></h1>
     <article>
         <p>Lights level: <?= $activity->getLightsLevel();?></p>
         <p>Temperature: <?= $activity->getTemperature();?></p>
@@ -19,15 +21,15 @@ ob_start(); ?>
         <p>Pump: <?= $activity->getPump() ? : 0;?></p>
         <p>Planned: <?= $activity->getIsPlanned() ? $activity->getStartTime() : "Not planned";?></p>
         <p>Assigned to: <?= $aquarium->getAquariumName();?></p>
-        <button id="executeBtn">Execute activity</button>
+        <button class="addActivity" id="executeBtn">Execute activity</button>
+        <ul class="action-list">
+            <li class="selfButton"> <a href="<?= $router->generatePath('activity-index') ?>"><<</a></li>
+            <li class="selfButton"><a href="<?= $router->generatePath('activity-edit', ['activity_id'=> $activity->getActivityId()]) ?>">Edit</a></li>
+        </ul>
     </article>
 
-    <ul class="action-list">
-        <li> <a href="<?= $router->generatePath('activity-index') ?>">Back to activity list</a></li>
-        <li><a href="<?= $router->generatePath('activity-edit', ['activity_id'=> $activity->getActivityId()]) ?>">Edit</a></li>
-    </ul>
-<?php $main = ob_get_clean();
-ob_start();
+    
+<?php 
 echo "
     <script>
     let executeData = '" . $executeData . "';
@@ -35,7 +37,5 @@ echo "
     </script>
     <script src='/assets/src/js/activityExecute.js'></script>
 ";
-?>
-<?php
-$scripts = ob_get_clean();
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';
