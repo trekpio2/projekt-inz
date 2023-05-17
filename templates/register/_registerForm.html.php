@@ -12,12 +12,7 @@
 </div>
 
 <div class="form-group">
-<<<<<<< HEAD
-    <label for="user_password">Password</label>
-    <input type="password" id="user_password" name="user[user_password]">
-=======
     <input type="text" id="user_password" name="user[user_password]" placeholder="PASSWORD">
->>>>>>> css
 </div>
 
 <div class="form-group">

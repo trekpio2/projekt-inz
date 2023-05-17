@@ -12,14 +12,6 @@ ob_start(); ?>
     <h1>Aquarium List</h1>
 
         <?php foreach ($aquariums as $aquarium): ?>
-<<<<<<< HEAD
-            <li><h3><?= $aquarium->getAquariumName(); ?></h3>
-                <ul class="action-list">
-                    <li><a href="<?= $router->generatePath('aquarium-show', ['aquarium_id' => $aquarium->getAquariumId()]) ?>">Details</a></li>
-                    <li><a href="<?= $router->generatePath('aquarium-edit', ['aquarium_id' => $aquarium->getAquariumId()]) ?>">Edit</a></li>
-                </ul>
-            </li>
-=======
 
 
             <a href="<?= $router->generatePath('aquarium-show', ['aquarium_id' => $aquarium->getAquariumId()]) ?>">
@@ -28,7 +20,6 @@ ob_start(); ?>
                 </div>
                 
                 </a>
->>>>>>> css
         <?php endforeach; ?>
     <div class="addAnimal">
         <a href="<?= $router->generatePath('aquarium-create') ?>">Create new</a>

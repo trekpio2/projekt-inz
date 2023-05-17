@@ -154,11 +154,7 @@ class Plant
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         $sql = 'SELECT * FROM plant WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id)';
         $statement = $pdo->prepare($sql);
-<<<<<<< HEAD
         $statement->execute(['user_id' => $user_id]);
-=======
-        // $statement->execute(['userId' => $userId]);
->>>>>>> css
 
         $plants = [];
         $plantsArray = $statement->fetchAll(\PDO::FETCH_ASSOC);

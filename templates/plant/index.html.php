@@ -23,12 +23,7 @@ ob_start(); ?>
             </li>
         <?php endforeach; ?>
     </ul>
-<<<<<<< HEAD
-    
-<?php $main = ob_get_clean();
-=======
 
     <?php
->>>>>>> css
 
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

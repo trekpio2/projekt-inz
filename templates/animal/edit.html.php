@@ -30,8 +30,4 @@ ob_start(); ?>
 
     <?php
 
-<<<<<<< HEAD
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
-=======
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';
->>>>>>> css
