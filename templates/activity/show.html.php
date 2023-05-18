@@ -1,6 +1,5 @@
-<?php $main = ob_get_clean();
+<?php 
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Activity $activity */
 /** @var \App\Model\Aquarium $aquarium */
@@ -27,15 +26,19 @@ ob_start(); ?>
             <li class="selfButton"><a href="<?= $router->generatePath('activity-edit', ['activity_id'=> $activity->getActivityId()]) ?>">Edit</a></li>
         </ul>
     </article>
-
     
-<?php 
+    
+    <?php $main = ob_get_clean();
 echo "
-    <script>
-    let executeData = '" . $executeData . "';
-    let ip = '" . $aquarium->getIP() . "';
-    </script>
-    <script src='/assets/src/js/activityExecute.js'></script>
+<script>
+let executeData = '" . $executeData . "';
+let ip = '" . $aquarium->getIP() . "';
+let userName = '" . $_SESSION['username'] . "'
+let activityName = '" . $activity->getActivityName() . "'
+</script>
+<script src='/assets/src/js/activityExecute.js'></script>
 ";
 
+$scripts = ob_get_clean();
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

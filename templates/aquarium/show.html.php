@@ -1,6 +1,5 @@
-<?php $main = ob_get_clean();
+<?php 
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Aquarium $aquarium */
 /** @var \App\Model\Animal[] $animals */
@@ -37,6 +36,7 @@ ob_start(); ?>
         <li> <a href="<?= $router->generatePath('aquarium-index') ?>">Back to aquarium list</a></li>
         <li><a href="<?= $router->generatePath('aquarium-edit', ['aquarium_id'=> $aquarium->getAquariumId()]) ?>">Edit</a></li>
     </ul>
-    <?php
-
+    
+<?php $main = ob_get_clean();
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

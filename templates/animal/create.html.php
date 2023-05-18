@@ -1,6 +1,5 @@
-<?php $main = ob_get_clean();
+<?php 
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Animal $animal */
 /** @var \App\Service\Router $router */
@@ -14,7 +13,9 @@ ob_start(); ?>
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_createForm.html.php'; ?>
         <input type="hidden" name="action" value="animal-create">
     </form>
-
+    
     <a href="<?= $router->generatePath('animal-index') ?>">Back to animal list</a>
-    <?php
+<?php $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

@@ -1,29 +1,46 @@
 <?php
 namespace App\Model;
 
-use App\Service\Config;
-
-function convertDate($date) {
-    $timestamp = strtotime($date);
-    return date('m/d/Y', $timestamp);
-}
+use App\Util\Util;
 
 class Scheduler
 {
-    public function createTaskFile($scriptFilePath,$ip, $activityName, $executeData)
+    public function createTaskFile($scriptFilePath,$ip, $activityName, $executeData, $logaData)
     {
         $url = $ip;
     
-        $file = fopen($scriptFilePath, "w");
-        fwrite($file, "var data = '".$executeData."';\n");
-        fwrite($file, "fetch('" . $url . "', {\n");
-        fwrite($file, "  method: 'POST',\n");
-        fwrite($file, "  headers: { 'Content-Type': 'application/json' },\n");
-        fwrite($file, "  body: JSON.stringify(data)\n");
-        fwrite($file, "})\n");
-        fwrite($file, ".then(response => response.text())\n");
-        fwrite($file, ".then(data => console.log(data))\n");
-        fwrite($file, ".catch(error => console.error('Error:', error));\n");
+        $fileContent = <<<EOD
+        fetch('$ip', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify($executeData),
+        }).then((response) => {
+          console.log(response.status);
+          console.log(response);
+          fetch('/assets/src/js/LogActivityExecution.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(),
+          })
+          .then((response) => {
+            if (response.ok) {
+              console.log('Timestamp logged successfully!');
+            } else {
+              throw new Error('Error logging timestamp');
+            }
+          })
+          .catch((error) => {
+            console.error('Error logging timestamp:', error);
+          });
+        });
+        EOD;
+        
+        $file = fopen($scriptFilePath, 'w');
+        fwrite($file, $fileContent);
         fclose($file);
     }
 
@@ -37,7 +54,7 @@ class Scheduler
 
     public function addTask($taskName, $taskCommand, $startTime, $startDate, $period, $periodNr)
     {
-        $startDate = convertDateToScheduler($startDate);
+        $startDate = Util::convertDateToScheduler($startDate);
         switch ($period) {
             case 'days':
                 exec("schtasks /create /tn \"$taskName\" /tr \"$taskCommand\" /sc daily /mo $periodNr /sd $startDate /st $startTime");
@@ -57,7 +74,7 @@ class Scheduler
 
     public function editTask($taskName, $startTime, $startDate, $period, $periodNr)
     {
-        $startDate = convertDateToScheduler($startDate);
+        $startDate = Util::convertDateToScheduler($startDate);
         switch ($period) {
             case 'days':
                 exec("schtasks /change /tn \"$taskName\" /tr \"$taskCommand\" /sc daily /mo $periodNr /sd $startDate /st $startTime");

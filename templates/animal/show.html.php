@@ -1,6 +1,5 @@
-<?php $main = ob_get_clean();
+<?php 
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Animal $animal */
 /** @var \App\Service\Router $router */
@@ -16,10 +15,11 @@ ob_start(); ?>
         <p>Płeć: <?= $animal->getAnimalGender();?></p>
         <!-- reszta dotyczaca zwierzecia -->
     </article>
-
+    
     <ul class="action-list">
         <li> <a href="<?= $router->generatePath('animal-index') ?>">Back to animal list</a></li>
         <li><a href="<?= $router->generatePath('animal-edit', ['animal_id'=> $animal->getAnimalId()]) ?>">Edit</a></li>
     </ul>
-<?php
+<?php $main = ob_get_clean();
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php'; 
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

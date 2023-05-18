@@ -1,6 +1,4 @@
-<?php $main = ob_get_clean();
-
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+<?php 
 
 /** @var \App\Model\Animal[] $animals */
 /** @var \App\Model\Plant[] $plants */
@@ -38,9 +36,14 @@ ob_start(); ?>
         <?php endforeach; ?>
     </ul>
 
-    <script type="text/javascript">
-        <?php require_once("carusel.js");?>
-    </script>
-<?php
 
+<?php $main = ob_get_clean();
+ob_start();
+    echo '<script type="text/javascript">';
+        require_once("carusel.js");
+    echo '</script>';
+$scripts = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';
+

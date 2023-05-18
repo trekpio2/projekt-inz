@@ -1,6 +1,5 @@
-<?php $main = ob_get_clean();
+<?php
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Activity $activity */
 /** @var \App\Service\Router $router */
@@ -20,7 +19,15 @@ ob_start(); ?>
     <ul class="action-list">
         <li class="selfButton">
             <a href="<?= $router->generatePath('activity-index') ?>"><<</a></li>
-        <li>
-</ul>
-<?php 
+            <li>
+                </ul>
+<?php $main = ob_get_clean(); 
+ob_start();
+echo "
+<script src='/assets/src/js/activityForm.js'></script>
+";
+?>
+<?php
+$scripts = ob_get_clean();
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

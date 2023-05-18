@@ -1,6 +1,5 @@
-<?php $main = ob_get_clean();
+<?php 
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 
 /** @var \App\Model\Animal $animal */
 /** @var \App\Service\Router $router */
@@ -15,19 +14,20 @@ ob_start(); ?>
         <input type="hidden" name="action" value="animal-edit">
         <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
     </form>
-
+    
     <ul class="action-list">
         <li>
             <a href="<?= $router->generatePath('animal-index') ?>">Back to animal list</a></li>
-        <li>
-            <form action="<?= $router->generatePath('animal-delete') ?>" method="post">
-                <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
-                <input type="hidden" name="action" value="animal-delete">
-                <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
-            </form>
-        </li>
-    </ul>
+            <li>
+                <form action="<?= $router->generatePath('animal-delete') ?>" method="post">
+                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                    <input type="hidden" name="action" value="animal-delete">
+                    <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
+                </form>
+            </li>
+        </ul>
+        
+<?php $main = ob_get_clean();
 
-    <?php
-
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

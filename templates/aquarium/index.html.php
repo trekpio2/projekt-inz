@@ -1,6 +1,6 @@
-<?php $main = ob_get_clean();
+<?php
 
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
+
 
 /** @var \App\Model\Aquarium[] $aquariums */
 /** @var \App\Service\Router $router */
@@ -10,7 +10,9 @@ $bodyClass = 'index';
 
 ob_start(); ?>
     <h1>Aquarium List</h1>
-
+    <div class="addAnimal">
+        <a href="<?= $router->generatePath('aquarium-create') ?>">Create new</a>
+    </div>
         <?php foreach ($aquariums as $aquarium): ?>
 
 
@@ -21,9 +23,8 @@ ob_start(); ?>
                 
                 </a>
         <?php endforeach; ?>
-    <div class="addAnimal">
-        <a href="<?= $router->generatePath('aquarium-create') ?>">Create new</a>
-        </div>
-<?php
 
+<?php  $main = ob_get_clean();
+
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

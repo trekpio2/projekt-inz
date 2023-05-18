@@ -522,7 +522,6 @@ footer::before {
   vertical-align: middle;
   border-radius: 31px;
   padding-left: 10px;
-  z-index: -1;
 }
 .forwardIcon {
   position: absolute;

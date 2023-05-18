@@ -1,7 +1,4 @@
-<?php $main = ob_get_clean();
-
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
-
+<?php 
 
 
 
@@ -10,12 +7,13 @@ $bodyClass = 'index';
 
 ob_start(); ?>
 
-    
-    
-    <ul class="index-list">
-        <?php foreach ($animals as $animal): ?>
-            <div class="singleAnimal">
-             <!-- dodac zdjecie? -->
+<div class="addAnimal">
+    <a href="<?= $router->generatePath('animal-create') ?>">Create new</a>
+</div>
+
+<ul class="index-list">
+    <?php foreach ($animals as $animal): ?>
+        <div class="singleAnimal">
             <div class="animalPhoto">
                 <img src="<?= $animal->getAnimalImage(); ?>" style='height: 137px; width: 288px; object-fit: cover; border-radius: 47px'>
             </div>
@@ -25,14 +23,13 @@ ob_start(); ?>
                     <li><a href="<?= $router->generatePath('animal-edit', ['animal_id' => $animal->getAnimalId()]) ?>">Edit</a></li>
                 </ul>
             </li>
-            </div>
+        </div>
         <?php endforeach; ?>
     </ul>
+    
+    
+    
+<?php $main = ob_get_clean();
 
-    <div class="addAnimal">
-        <a href="<?= $router->generatePath('animal-create') ?>">Create new</a>
-    </div>
-
-<?php
-
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'footer.html.php';

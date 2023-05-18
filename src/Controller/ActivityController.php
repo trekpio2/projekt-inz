@@ -42,12 +42,16 @@ class ActivityController
                 
                 $scriptFilePath .= $activity->getActivityName() . '.js';
                 $executeData = $activity->getExecuteData();
-                
+                $logData = array();
+                $logData['userName'] = $_SESSION['username'];
+                $logData['activityName'] = $activity->getActivityName();
+                $logData = json_encode($activityData);
+
                 $aquarium = Aquarium::find($activity->getAquariumId());
-                $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData);
+                $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData, $logData);
                 $taskCommand = "node " . $scriptFilePath;
                 // zakomentowane zeby nie smiecic w systemie                
-                //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
+                $scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
             }
 
             
@@ -103,11 +107,15 @@ class ActivityController
                 $previousFilePath = $scriptFilePath . $previousActivityName . '.js';
                 $scriptFilePath .= $activity->getActivityName() . '.js';
                 $executeData = $activity->getExecuteData();
+                $logData = array();
+                $logData['userName'] = $_SESSION['username'];
+                $logData['activityName'] = $activity->getActivityName();
+                $logData = json_encode($activityData);
+
                 $aquarium = Aquarium::find($activity->getAquariumId());
                 
-
                 $scheduler->deleteTaskFile($previousFilePath);
-                $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData);
+                $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData, $logData);
                 
                 $taskCommand = "node " . $scriptFilePath;
                 // zakomentowane zeby nie smiecic w systemie
