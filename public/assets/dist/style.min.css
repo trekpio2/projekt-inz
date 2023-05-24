@@ -353,6 +353,14 @@ footer::before {
   font-style: italic;
   color: #6d6d6d;
 }
+.sendToAq {
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+  background-color: #AACB73;
+  color: white;
+  border-radius: 10px;
+}
 .edit .edit-form {
   width: 80%;
   margin-bottom: 1em;
