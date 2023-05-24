@@ -9,8 +9,9 @@ $bodyClass = 'index';
 
 ob_start(); ?>
     <h1 class="acivityTitle">Activities List</h1>
-    
-    <a class="addActivity" href="<?= $router->generatePath('activity-create') ?>">Create new</a>
+    <div class ="addActivity">
+        <a class="addActivity" href="<?= $router->generatePath('activity-create') ?>">Create new</a>
+    </div>
     <!-- przestawilem na gore zeby nie trzeba bylo scrollowac -->
     <?php foreach ($activities as $activity): ?>
         

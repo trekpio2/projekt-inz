@@ -256,6 +256,16 @@ body ul.action-list li {
 span {
   display: block;
 }
+[id^="aquarium_"],
+#ip,
+[id^="plant_"],
+#species_name,
+#color,
+.formGreen,
+[id^="plant_"] {
+  background-color: #AACB73 !important;
+  border-radius: 5px;
+}
 nav {
   background-color: #AACB73 !important;
 }
@@ -489,8 +499,8 @@ footer::before {
   padding-top: 10px;
 }
 .addActivity {
-  width: 197px;
-  margin: 0 auto;
+  width: 306px;
+  margin: 10px auto;
   background-color: #AACB73;
   border-radius: 12px;
   text-align: center;
@@ -522,6 +532,7 @@ footer::before {
   vertical-align: middle;
   border-radius: 31px;
   padding-left: 10px;
+  z-index: 2;
 }
 .forwardIcon {
   position: absolute;
@@ -592,30 +603,32 @@ article p:nth-child(2n-1) {
   border-bottom: 1px solid #d1d1d1;
   font-size: 20px;
 }
-#carousel {
+.carsu {
   margin: 10px auto;
   width: 100%;
   height: 180px;
   text-align: center;
   position: relative;
+  transition: 1s all ease-in;
 }
-#carousel a img {
+.carsu a img {
   transition: 1s all ease-in;
   position: relative;
   box-shadow: 1px 1px 4px black;
+  z-index: 2;
 }
-#carousel a:first-child img,
-#carousel a:last-child img {
+.carsu a:first-child img,
+.carsu a:last-child img {
   filter: blur(1px);
   width: 80px !important;
   height: 135px !important;
   bottom: 10px;
-  z-index: -2;
+  z-index: 1;
 }
-#carousel a:first-child img {
+.carsu a:first-child img {
   left: 30px;
 }
-#carousel a:last-child img {
+.carsu a:last-child img {
   left: -30px;
 }
 .animalPhotoHome {
@@ -646,7 +659,7 @@ article p:nth-child(2n-1) {
   margin: 0 auto;
   margin-bottom: 40px;
 }
-.show h2 {
+h2 {
   margin: 0 auto;
   font-weight: bold;
 }

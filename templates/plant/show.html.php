@@ -12,7 +12,7 @@ ob_start(); ?>
     <article>
         <p>Gatunek: <?= $plant->getSpeciesName();?></p>
         <p>Height: <?= $plant->getPlantHeight();?></p>
-        <img src="<?= $plant->getPlantImage() ?>" alt="">
+        <img src="<?= $plant->getPlantImage() ?>" alt="PlantImage" style="width: 100%; height: 200px; border-radius: 15px; object-fit: contain;">
         <!-- reszta dotyczaca rosliny -->
     </article>
     

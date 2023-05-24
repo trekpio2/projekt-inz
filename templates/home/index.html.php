@@ -11,7 +11,7 @@ ob_start(); ?>
     <h1>Hello, <span class="name"><?php echo $_SESSION['username']?>!</span></h1>
     <h2 class="homeAnimalTitle">My Animals</h2>
 
-        <div id="carousel">
+        <div id="carousel" class="carsu">
 
         </div>
     <?php $i =0; foreach ($animals as $animal): ?>
@@ -20,21 +20,18 @@ ob_start(); ?>
                 </a></div>
                 <?php $i = $i +1; ?>
         <?php endforeach; ?>
-        <div class="ButtonHolder">
-            <div class="Button" onclick="goRight()"> <<</div>
-            <div class="Button" onclick="goLeft()"> >> </div>
-        </div>
     <h2 class="homeAnimalTitle">My Plants</h2>
-    <ul class="index-list">
-        <?php foreach ($plants as $plant): ?>
 
-            <li><h3><?= $plant->getPlantName(); ?></h3>
-                <ul class="action-list">
-                    <li><a href="<?= $router->generatePath('plant-show', ['plant_id' => $plant->getPlantId()]) ?>">Details</a></li>
-                </ul>
-            </li>
+    <div id="carouselPlant"  class="carsu">
+
+    </div>
+    <?php $j =0; foreach ($plants as $plant):  ?>
+                <div class="BazaFlower" hidden>
+                    
+                <a href="<?= $router->generatePath('plant-show', ['plant_id' => $plant->getPlantId()]) ?>"><img src="<?= $plant->getPlantImage(); ?>" style='height: 155px; width: 85px; object-fit: cover; border-radius: 20%'>
+                </a></div>
+                <?php $j = $j +1; ?>
         <?php endforeach; ?>
-    </ul>
 
 
 <?php $main = ob_get_clean();
