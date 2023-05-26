@@ -21,6 +21,13 @@ ob_start(); ?>
                 <ul class="action-list">
                     <li><a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>">Details</a></li>
                     <li><a href="<?= $router->generatePath('animal-edit', ['animal_id' => $animal->getAnimalId()]) ?>">Edit</a></li>
+                    <li>
+                        <form action="<?= $router->generatePath('animal-delete') ?>" method="post">
+                            <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                            <input type="hidden" name="action" value="animal-delete">
+                            <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
+                        </form>
+                    </li>
                 </ul>
             </li>
         </div>

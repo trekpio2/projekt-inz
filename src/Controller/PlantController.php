@@ -22,11 +22,19 @@ class PlantController
 
     public function createAction(?array $requestPlant, ?array $uploadedFile, Templating $templating, Router $router): ?string
     {
+        $msg = array();
+
         if ($requestPlant) {
-            $plant = Plant::fromArray($requestPlant);
+            $validationMsg = array();
+            
+            
             // @todo missing validation
+
+
+
+            $plant = Plant::fromArray($requestPlant);
             $plant->save();
-            echo $uploadedFile['tmp_name'];
+            
 
             $userName = $_SESSION['username'];
             $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
@@ -53,6 +61,13 @@ class PlantController
             }
             else {
                 echo "Failed to upload your image.";
+            }
+
+            if(empty($validationMsg)){
+                $msg['actionFeedback'] = 'Created successfully';
+            } else {
+                $msg['actionFeedback'] = 'Created unsuccessfully';
+                $msg['validation'] = $validationMsg;
             }
 
             $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
@@ -85,6 +100,12 @@ class PlantController
         }
 
         if ($requestPlant) {
+            $validationMsg = array();
+
+
+
+            //@todo missing validation
+
             $userName = $_SESSION['username'];
             $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
 
@@ -114,8 +135,19 @@ class PlantController
 
             $requestPlant['plant_image'] = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
 
-            $plant->fill($requestPlant);
             //@todo missing validation
+            
+            
+            if(empty($validationMsg)){
+                $msg['actionFeedback'] = 'Edited successfully';
+            } else {
+                $msg['actionFeedback'] = 'Edited unsuccessfully';
+                $msg['validation'] = $validationMsg;
+            }
+            
+            
+            $plant->fill($requestPlant);
+            
              $plant->save();
 
             $path = $router->generatePath('plant-show', ['plant_id' => $plantId]);
@@ -152,6 +184,7 @@ class PlantController
             throw new NotFoundException("Missing plant with id $plantId");
         }
 
+        $msg['actionFeedback'] = 'Deleted successfully';
         $plant->delete();
         $path = $router->generatePath('plant-index');
         $router->redirect($path);

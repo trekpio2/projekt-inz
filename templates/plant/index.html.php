@@ -18,6 +18,13 @@ ob_start(); ?>
             <ul class="action-list">
                 <li><a href="<?= $router->generatePath('plant-show', ['plant_id' => $plant->getPlantId()]) ?>">Details</a></li>
                 <li><a href="<?= $router->generatePath('plant-edit', ['plant_id' => $plant->getPlantId()]) ?>">Edit</a></li>
+                <li>
+                    <form action="<?= $router->generatePath('plant-delete') ?>" method="post">
+                        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                        <input type="hidden" name="action" value="plant-delete">
+                        <input type="hidden" name="plant_id" value="<?= $plant->getPlantId() ?>">
+                    </form>
+                </li>
             </ul>
         </li>
         <?php endforeach; ?>

@@ -23,33 +23,41 @@ class AnimalController
 
     public function createAction(?array $requestAnimal, ?array $uploadedFile, Templating $templating, Router $router): ?string
     {
-        // SPRAWDZIC CZY JEST AKWARIUM
+        $msg = array();
+        
+        if(!Aquarium::findAquariumsOwnedByUser($_SESSION['user_id']))
+        {
+            $msg['actionFeedback'] = 'You need to create aquarium first';
+            $path = $router->generatePath('aquarium-index');
+            $router->redirect($path);
+            return null;
+        }
+
         if ($requestAnimal)
         {
             $validationMsg = array();
-            $validator = new Validator();
            
-            foreach($requestAnimal as $animalDataKey => $animalDataValue)
-            {
-                $animalDataValue = $validator->testInput($animalDataValue);
+            foreach($requestAnimal as $animalDataKey => $animalDataValue) {
+                $animalDataValue = Validator::testInput($animalDataValue);
                 $requestAnimal[$animalDataKey] = $animalDataValue;
             }
             
-            $colorValidationResult = $validator->isAlpha($requestAnimal['color']);
-            if($colorValidationResult != 1)
-            {
+            $colorValidationResult = Validator::isAlpha($requestAnimal['color']);
+            if($colorValidationResult != 1) {
                 $validationMsg[] = $colorValidationResult;
             }
 
-            $speciesValidationResult = $validator->isAlpha($requestAnimal['species_name']);
-            if($speciesValidationResult != 1)
-            {
+            $speciesValidationResult = Validator::isAlpha($requestAnimal['species_name']);
+            if($speciesValidationResult != 1) {
                 $validationMsg[] = $speciesValidationResult;
             }
             
-            //if(empty($validationMsg))
-            //{
-            //}
+            if(empty($validationMsg)) {
+                $msg['actionFeedback'] = 'Created successfully';
+            } else {
+                $msg['actionFeedback'] = 'Created unsuccessfully';
+                $msg['validation'] = $validationMsg;
+            }
 
             $animal = Animal::fromArray($requestAnimal);
 
@@ -72,20 +80,17 @@ class AnimalController
 
             if(is_uploaded_file($imagetemp))
             {
-                $imgValidationResult = $validator->validateImg($uploadedFile);
-                if( $imgValidationResult == 1)
-                {
+                $imgValidationResult = Validator::validateImg($uploadedFile);
+                if( $imgValidationResult == 1) {
                     move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
-                }
-                else
-                {
+                } else{
                     $validationMsg[] = $imgValidationResult;
                 }
+                
+                $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+                $animal->setAnimalImage($toDatabase);
+                $animal->save();
             }
-
-            $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
-            $animal->setAnimalImage($toDatabase);
-            $animal->save();
 
             $path = $router->generatePath('animal-index');
             $router->redirect($path);
@@ -105,6 +110,7 @@ class AnimalController
 
     public function editAction(int $animalId, ?array $requestAnimal, ?array $uploadedFile, Templating $templating, Router $router): ?string
     {
+        $msg = array();
         $animal = Animal::find($animalId);
         
         if (! $animal) {
@@ -113,21 +119,20 @@ class AnimalController
 
         if ($requestAnimal) {
             $validationMsg = array();
-            $validator = new Validator();
             
             foreach($requestAnimal as $animalDataKey => $animalDataValue)
             {
-                $animalDataValue = $validator->testInput($animalDataValue);
+                $animalDataValue = Validator::testInput($animalDataValue);
                 $requestAnimal[$animalDataKey] = $animalDataValue;
             }
 
-            $colorValidationResult = $validator->isAlpha($requestAnimal['color']);
+            $colorValidationResult = Validator::isAlpha($requestAnimal['color']);
             if($colorValidationResult != 1)
             {
                 $validationMsg[] = $colorValidationResult;
             }
 
-            $speciesValidationResult = $validator->isAlpha($requestAnimal['species_name']);
+            $speciesValidationResult = Validator::isAlpha($requestAnimal['species_name']);
             if($speciesValidationResult != 1)
             {
                 $validationMsg[] = $speciesValidationResult;
@@ -150,7 +155,7 @@ class AnimalController
 
             if(is_uploaded_file($imagetemp))
             {
-                $imgValidationResult = $validator->validateImg($uploadedFile);
+                $imgValidationResult = Validator::validateImg($uploadedFile);
                 if( $imgValidationResult == 1)
                 {
                     move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
@@ -161,10 +166,17 @@ class AnimalController
                 }
             }
 
+            if(empty($validationMsg)){
+                $msg['actionFeedback'] = 'Edited successfully';
+            } else {
+                $msg['actionFeedback'] = 'Edited unsuccessfully';
+                $msg['validation'] = $validationMsg;
+            }
+
             $requestAnimal['animal_image'] = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
             
             $animal->fill($requestAnimal);
-             $animal->save();
+            $animal->save();
              
              $path = $router->generatePath('animal-show', ['animal_id' => $animalId]);
              $router->redirect($path);
@@ -201,7 +213,8 @@ class AnimalController
         if (! $animal) {
             throw new NotFoundException("Missing animal with id $animalId");
         }
-
+        
+        $msg['actionFeedback'] = 'Deleted successfully';
         $animal->delete();
         $path = $router->generatePath('animal-index');
         $router->redirect($path);

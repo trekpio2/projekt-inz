@@ -3,7 +3,7 @@ namespace App\Validator;
 
 class Validator
 {
-    public function testInput($data)
+    public static function testInput($data)
     {
         $data = trim($data);
         $data = stripslashes($data);
@@ -11,7 +11,7 @@ class Validator
         return $data;
     }
 
-    public function isAlpha($data)
+    public static function isAlpha($data)
     {
         if(!ctype_alpha($data))
         {
@@ -21,7 +21,7 @@ class Validator
         return 1;
     }
 
-    public function isNumeric($data)
+    public static function isNumeric($data)
     {
         if(!is_numeric($data))
         {
@@ -31,7 +31,7 @@ class Validator
         return 1;
     }
 
-    public function validateImg($file)
+    public static function validateImg($file)
     {
         if($file['type'] != 'image/png' || $file['type'] != 'image/jpeg')
             return 'Wrong file type';

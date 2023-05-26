@@ -23,9 +23,25 @@ class AquariumController
 
     public function createAction(?array $requestAquarium, Templating $templating, Router $router): ?string
     {
+        $msg = array();
+        
         if ($requestAquarium) {
-            $aquarium = Aquarium::fromArray($requestAquarium);
+            $validationMsg = array();
+            
+            
+            
             // @todo missing validation
+
+
+            if(empty($validationMsg)) {
+                $msg['actionFeedback'] = 'Created successfully';
+            } else {
+                $msg['actionFeedback'] = 'Created unsuccessfully';
+                $msg['validation'] = $validationMsg;
+            }
+            
+            $aquarium = Aquarium::fromArray($requestAquarium);
+
             $aquarium->save();
 
             $path = $router->generatePath('aquarium-index');
@@ -44,13 +60,26 @@ class AquariumController
 
     public function editAction(int $aquarium_id, ?array $requestAquarium, Templating $templating, Router $router): ?string
     {
+        $msg = array();
+        
         $aquarium = Aquarium::find($aquarium_id);
         if (! $aquarium) {
             throw new NotFoundException("Missing aquarium with id $aquarium_id");
         }
 
         if ($requestAquarium) {
+            $validationMsg = array();
             // @todo missing validation
+            
+
+            if(empty($validationMsg)){
+                $msg['actionFeedback'] = 'Edited successfully';
+            } else {
+                $msg['actionFeedback'] = 'Edited unsuccessfully';
+                $msg['validation'] = $validationMsg;
+            }
+
+
             $aquarium->fill($requestAquarium);
             $aquarium->save();
 
@@ -91,7 +120,8 @@ class AquariumController
         if (! $aquarium) {
             throw new NotFoundException("Missing aquarium with id $aquarium_id");
         }
-
+        
+        $msg['actionFeedback'] = 'Deleted successfully';
         $aquarium->delete();
         $path = $router->generatePath('aquarium-index');
         $router->redirect($path);

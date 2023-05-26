@@ -19,10 +19,22 @@ class RegisterController
 
     public function registerAction(?array $requestUser, Templating $templating, Router $router): ?string
     {
+        
         if ($requestUser) {
-
-            $user = User::fromArray($requestUser);
+            $msg = array();
+            $validationMsg = array();
             // @todo missing validation
+
+
+            if(empty($validationMsg)){
+                $msg['actionFeedback'] = 'Created successfully';
+            } else {
+                $msg['actionFeedback'] = 'Created unsuccessfully';
+                $msg['validation'] = $validationMsg;
+            }
+            
+            $user = User::fromArray($requestUser);
+
             $user->save();
 
             $path = $router->generatePath('login-index');
@@ -35,6 +47,5 @@ class RegisterController
             ]);
             return $html;
         }
-        
     }
 }

@@ -35,6 +35,13 @@ ob_start(); ?>
     <ul class="action-list">
         <li> <a href="<?= $router->generatePath('aquarium-index') ?>">Back to aquarium list</a></li>
         <li><a href="<?= $router->generatePath('aquarium-edit', ['aquarium_id'=> $aquarium->getAquariumId()]) ?>">Edit</a></li>
+        <li>
+            <form action="<?= $router->generatePath('aquarium-delete') ?>" method="post">
+                <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                <input type="hidden" name="action" value="aquarium-delete">
+                <input type="hidden" name="aquarium_id" value="<?= $aquarium->getAquariumId() ?>">
+            </form>
+        </li>
     </ul>
     
 <?php $main = ob_get_clean();

@@ -20,7 +20,17 @@ class LoginController
     public function loginAction(?array $requestUser, Templating $templating, Router $router): ?string
     {
         if ($requestUser) {
+            $msg = array();
+            $validationMsg = array();
             // @todo missing validation
+
+
+            if(!empty($validationMsg)){
+                $msg['actionFeedback'] = 'Wrong login data';
+                $msg['validation'] = $validationMsg;
+            }
+
+
             $user = User::login($requestUser['username'], $requestUser['user_password']);
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();

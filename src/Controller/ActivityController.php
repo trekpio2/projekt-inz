@@ -23,7 +23,18 @@ class ActivityController
     public function createAction(?array $requestActivity, Templating $templating, Router $router): ?string
     {
         if ($requestActivity) {
+            $msg = array();
+            $validationMsg = array();
             // @todo missing validation
+
+            if(empty($validationMsg)) {
+                $msg['actionFeedback'] = 'Created successfully';
+            } else {
+                $msg['actionFeedback'] = 'Created unsuccessfully';
+                $msg['validation'] = $validationMsg;
+            }
+
+
             $userName = $_SESSION['username'];
             $taskName = $userName . '-' . $requestActivity['activity_name'];
             $requestActivity['task_name'] = $taskName;
@@ -51,7 +62,7 @@ class ActivityController
                 $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData, $logData);
                 $taskCommand = "node " . $scriptFilePath;
                 // zakomentowane zeby nie smiecic w systemie                
-                $scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
+                //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
             }
 
             
