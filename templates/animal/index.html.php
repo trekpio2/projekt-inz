@@ -23,7 +23,7 @@ ob_start(); ?>
                     <li><a href="<?= $router->generatePath('animal-edit', ['animal_id' => $animal->getAnimalId()]) ?>">Edit</a></li>
                     <li>
                         <form action="<?= $router->generatePath('animal-delete') ?>" method="post">
-                            <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                            <input class="deleteButton" type="submit" value="Delete" onclick="return confirm('Are you sure?')">
                             <input type="hidden" name="action" value="animal-delete">
                             <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
                         </form>
@@ -33,8 +33,6 @@ ob_start(); ?>
         </div>
         <?php endforeach; ?>
     </ul>
-    
-    
     
 <?php $main = ob_get_clean();
 
