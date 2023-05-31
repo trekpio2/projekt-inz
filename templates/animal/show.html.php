@@ -9,9 +9,9 @@ $title = "{$animal->getAnimalName()}";
 $bodyClass = 'show';
 
 ob_start(); ?>
-    <h1><?= $animal->getAnimalName() ?></h1>
+    <h1 class="homeAnimalTitle"><?= $animal->getAnimalName() ?></h1>
     <article>
-        <img src="<?= $animal->getAnimalImage() ?>" alt="Animal" style="width: 100%; height: 200px; border-radius: 15px; object-fit: contain;">
+        <img src="<?= $animal->getAnimalImage() ?>" alt="Animal" style="width: 100%; height: 200px; border-radius: 25% !important; object-fit: contain;">
         <p>Gatunek: <?= $animal->getSpeciesName();?></p>
         <p>Płeć: <?= $animal->getAnimalGender();?></p>
         <!-- reszta dotyczaca zwierzecia -->
@@ -26,7 +26,7 @@ ob_start(); ?>
         <li><a href="<?= $router->generatePath('animal-edit', ['animal_id'=> $animal->getAnimalId()]) ?>">Edit</a></li>
         <li>
                 <form action="<?= $router->generatePath('animal-delete') ?>" method="post">
-                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                    <input type="submit" class="deleteButton" value="Delete" onclick="return confirm('Are you sure?')">
                     <input type="hidden" name="action" value="animal-delete">
                     <input type="hidden" name="animal_id" value="<?= $animal->getAnimalId() ?>">
                 </form>
