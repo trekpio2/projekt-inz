@@ -16,6 +16,22 @@ carusel.innerHTML += current.innerHTML;
 carusel.innerHTML += next.innerHTML;
 
 
+
+Flowers = document.getElementsByClassName("BazaFlower");
+caruselF = document.getElementById("carouselPlant");
+console.log(Flowers);
+
+// caruselF.innerHTML = Flowers[0].outerHTML;
+// caruselF.innerHTML += Flowers[1].outerHTML;
+// caruselF.innerHTML += Flowers[2].outerHTML;
+j = 0;
+prevF = Flowers[i];
+currentF = Flowers[i+1];
+nextF = Flowers[i+2];
+caruselF.innerHTML = prevF.innerHTML;
+caruselF.innerHTML += currentF.innerHTML;
+caruselF.innerHTML += nextF.innerHTML;
+
 function goLeft(){
     if(i == Animals.length -3){
   
@@ -48,3 +64,19 @@ function goRight(){
     
 }
 
+let touchstartX = 0
+let touchendX = 0
+    
+function checkDirection() {
+  if (touchendX < touchstartX) goLeft()
+  if (touchendX > touchstartX) goRight()
+}
+
+document.addEventListener('touchstart', e => {
+  touchstartX = e.changedTouches[0].screenX
+})
+
+document.addEventListener('touchend', e => {
+  touchendX = e.changedTouches[0].screenX
+  checkDirection()
+})

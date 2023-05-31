@@ -32,35 +32,34 @@ class PlantController
 
 
 
-            $plant = Plant::fromArray($requestPlant);
-            $plant->save();
+
             
 
-            $userName = $_SESSION['username'];
-            $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
 
-            if ( ! is_dir($imagePath)) {
-                mkdir($imagePath);
-            }
-
-            $imageName = 'plant' . $plant->getPlantId();
-            
-            
-            $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
 
             //Stores the tempname as it is given by the host when uploaded.
             $imagetemp = $uploadedFile['tmp_name'];
 
             if(is_uploaded_file($imagetemp)) {
-                if(move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension)) {
-                    echo "Succesfully uploaded your image.";
+                $imageName = $requestPlant['plant_name'];
+                $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+                
+                $imgValidationResult = Validator::validateImg($uploadedFile);
+                if( $imgValidationResult == 1) {
+                    $userName = $_SESSION['username'];
+                    $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+        
+                    if ( ! is_dir($imagePath)) {
+                        mkdir($imagePath);
+                    }
+                    
+                    move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
+                } else{
+                    $validationMsg['image'] = $imgValidationResult;
                 }
-                else {
-                    echo "Failed to move your image.";
-                }
-            }
-            else {
-                echo "Failed to upload your image.";
+
+                $imagePathToDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+                $requestPlant['plant_image'] = $imagePathToDatabase;
             }
 
             if(empty($validationMsg)){
@@ -70,8 +69,8 @@ class PlantController
                 $msg['validation'] = $validationMsg;
             }
 
-            $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
-            $plant->setPlantImage($toDatabase);
+
+            $plant = Plant::fromArray($requestPlant);
             $plant->save();
 
             $path = $router->generatePath('plant-index');
@@ -185,6 +184,7 @@ class PlantController
         }
 
         $msg['actionFeedback'] = 'Deleted successfully';
+        unlink(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . $plant->getPlantName());
         $plant->delete();
         $path = $router->generatePath('plant-index');
         $router->redirect($path);

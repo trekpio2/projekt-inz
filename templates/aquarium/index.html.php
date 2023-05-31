@@ -10,9 +10,7 @@ $bodyClass = 'index';
 
 ob_start(); ?>
     <h1>Aquarium List</h1>
-    <div class="addAnimal">
-        <a href="<?= $router->generatePath('aquarium-create') ?>">Create new</a>
-    </div>
+
         <?php foreach ($aquariums as $aquarium): ?>
 
 
@@ -23,7 +21,9 @@ ob_start(); ?>
                 
                 </a>
         <?php endforeach; ?>
-
+        <div class="addAnimal">
+        <a href="<?= $router->generatePath('aquarium-create') ?>">Create new</a>
+    </div>
 <?php  $main = ob_get_clean();
 
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

@@ -52,46 +52,42 @@ class AnimalController
                 $validationMsg[] = $speciesValidationResult;
             }
             
+            $imagetemp = $uploadedFile['tmp_name'];
+            
+            if(is_uploaded_file($imagetemp))
+            {
+                $imageName = $requestAnimal['animal_name'];
+                $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+
+                $imgValidationResult = Validator::validateImg($uploadedFile);
+                if( $imgValidationResult == 1) {
+                    $userName = $_SESSION['username'];
+                    $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+        
+                    if ( ! is_dir($imagePath)) {
+                        mkdir($imagePath);
+                    }
+                    
+                    move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
+                } else{
+                    $validationMsg['image'] = $imgValidationResult;
+                }
+                
+                $imagePathToDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+                $requestAnimal['animal_image'] = $imagePathToDatabase;
+            }
+            
+            
             if(empty($validationMsg)) {
                 $msg['actionFeedback'] = 'Created successfully';
             } else {
-                $msg['actionFeedback'] = 'Created unsuccessfully';
+                $msg['actionFeedback'] = 'Creation failed';
                 $msg['validation'] = $validationMsg;
             }
-
+            
             $animal = Animal::fromArray($requestAnimal);
-
             $animal->save();
             
-            $userName = $_SESSION['username'];
-            
-            $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
-
-            if ( ! is_dir($imagePath)) {
-                mkdir($imagePath);
-            }
-
-            $imageName = 'animal' . $animal->getAnimalId();
-                        
-            $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-
-            //Stores the tempname as it is given by the host when uploaded.
-            $imagetemp = $uploadedFile['tmp_name'];
-
-            if(is_uploaded_file($imagetemp))
-            {
-                $imgValidationResult = Validator::validateImg($uploadedFile);
-                if( $imgValidationResult == 1) {
-                    move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
-                } else{
-                    $validationMsg[] = $imgValidationResult;
-                }
-                
-                $toDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
-                $animal->setAnimalImage($toDatabase);
-                $animal->save();
-            }
-
             $path = $router->generatePath('animal-index');
             $router->redirect($path);
             return null;
@@ -120,60 +116,51 @@ class AnimalController
         if ($requestAnimal) {
             $validationMsg = array();
             
-            foreach($requestAnimal as $animalDataKey => $animalDataValue)
-            {
+            foreach($requestAnimal as $animalDataKey => $animalDataValue){
                 $animalDataValue = Validator::testInput($animalDataValue);
                 $requestAnimal[$animalDataKey] = $animalDataValue;
             }
 
             $colorValidationResult = Validator::isAlpha($requestAnimal['color']);
-            if($colorValidationResult != 1)
-            {
+            if($colorValidationResult != 1){
                 $validationMsg[] = $colorValidationResult;
             }
 
             $speciesValidationResult = Validator::isAlpha($requestAnimal['species_name']);
-            if($speciesValidationResult != 1)
-            {
+            if($speciesValidationResult != 1){
                 $validationMsg[] = $speciesValidationResult;
             }
 
-            $userName = $_SESSION['username'];
-            $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
-
-            if ( ! is_dir($imagePath)) {
-                mkdir($imagePath);
-            }
-
-            $imageName = 'animal' . $animalId;
-            
-            
-            $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-
-            //Stores the tempname as it is given by the host when uploaded.
             $imagetemp = $uploadedFile['tmp_name'];
 
-            if(is_uploaded_file($imagetemp))
-            {
+            if(is_uploaded_file($imagetemp)) {
+                $imageName = $requestAnimal['animal_name'];
+                $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+
                 $imgValidationResult = Validator::validateImg($uploadedFile);
-                if( $imgValidationResult == 1)
-                {
+                if( $imgValidationResult == 1) {
+                    $userName = $_SESSION['username'];
+                    $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+        
+                    if ( ! is_dir($imagePath)) {
+                        mkdir($imagePath);
+                    }
+                    
                     move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
+                } else{
+                    $validationMsg['image'] = $imgValidationResult;
                 }
-                else
-                {
-                    $validationMsg[] = $imgValidationResult;
-                }
+                
+                $imagePathToDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+                $requestAnimal['animal_image'] = $imagePathToDatabase;
             }
 
-            if(empty($validationMsg)){
+            if(empty($validationMsg)) {
                 $msg['actionFeedback'] = 'Edited successfully';
             } else {
-                $msg['actionFeedback'] = 'Edited unsuccessfully';
+                $msg['actionFeedback'] = 'edition failed';
                 $msg['validation'] = $validationMsg;
             }
-
-            $requestAnimal['animal_image'] = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
             
             $animal->fill($requestAnimal);
             $animal->save();
@@ -215,7 +202,10 @@ class AnimalController
         }
         
         $msg['actionFeedback'] = 'Deleted successfully';
+        unlink(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . $animal->getAnimalImage());
         $animal->delete();
+
+
         $path = $router->generatePath('animal-index');
         $router->redirect($path);
         return null;

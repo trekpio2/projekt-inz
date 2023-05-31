@@ -7,7 +7,6 @@
 /** @var \App\Model\Acitity[] $activities */
 /** @var \App\Service\Router $router */
 
-// zawartosc do ustalenia narazie wypis zwierzat, pozniej tez czynnosci
 
 $title = "{$aquarium->getAquariumName()}";
 $bodyClass = 'show';

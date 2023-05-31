@@ -151,7 +151,7 @@ class Animal
     public static function findAllInAquarium($aquariumId): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM animal WHERE aquarium_id = :aquariumId';
+        $sql = 'SELECT * FROM animal WHERE aquarium_id = :aquariumId ORDER BY animal_name';
         $statement = $pdo->prepare($sql);
         $statement->execute(['aquariumId' => $aquariumId]);
 
@@ -167,7 +167,7 @@ class Animal
     public static function findAllOwnedByUser($user_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM animal WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id)';
+        $sql = 'SELECT * FROM animal WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id) ORDER BY animal_name';
         $statement = $pdo->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
 

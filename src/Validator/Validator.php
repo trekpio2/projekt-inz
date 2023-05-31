@@ -13,8 +13,7 @@ class Validator
 
     public static function isAlpha($data)
     {
-        if(!ctype_alpha($data))
-        {
+        if(!ctype_alpha($data)) {
             return "Given data must contains only alphabetic characters";
         }
     
@@ -23,8 +22,7 @@ class Validator
 
     public static function isNumeric($data)
     {
-        if(!is_numeric($data))
-        {
+        if(!is_numeric($data)){
             return "Given data must be numeric only";
         }
 
@@ -33,13 +31,14 @@ class Validator
 
     public static function validateImg($file)
     {
-        if($file['type'] != 'image/png' || $file['type'] != 'image/jpeg')
+        if($file['type'] != 'image/png' && $file['type'] != 'image/jpeg') {
             return 'Wrong file type';
+        }
+
         $fileSize = filesize($file['tmp_name']);
  
         // 5MB
-        if($fileSize > 5242880)
-        {
+        if($fileSize > 5242880) {
             return 'Image is too large. Max 5MB';
         }
 

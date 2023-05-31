@@ -136,7 +136,7 @@ class Plant
     public static function findAllInAquarium($aquariumId): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM plant WHERE aquarium_id = :aquariumId';
+        $sql = 'SELECT * FROM plant WHERE aquarium_id = :aquariumId ORDER BY plant_name';
         $statement = $pdo->prepare($sql);
         $statement->execute(['aquariumId' => $aquariumId]);
 
@@ -152,7 +152,7 @@ class Plant
     public static function findAllOwnedByUser($user_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM plant WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id)';
+        $sql = 'SELECT * FROM plant WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id ORDER BY plant_name)';
         $statement = $pdo->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
 

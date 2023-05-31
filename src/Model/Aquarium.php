@@ -151,7 +151,7 @@ class Aquarium
     public static function findAquariumsOwnedByUser($userId): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM aquarium WHERE user_id = :userId';
+        $sql = 'SELECT * FROM aquarium WHERE user_id = :userId ORDER BY aquarium_name';
         $statement = $pdo->prepare($sql);
         $statement->execute([
             ':userId' => $userId,
