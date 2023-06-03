@@ -30,7 +30,6 @@ class LoginController
                 $msg['validation'] = $validationMsg;
             }
 
-
             $user = User::login($requestUser['username'], $requestUser['user_password']);
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();
@@ -44,7 +43,6 @@ class LoginController
             ]);
             return $html;
         }
-        
     }
 
     public function logoutAction(Templating $templating, Router $router): ?string

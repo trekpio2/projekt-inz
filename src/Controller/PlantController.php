@@ -33,18 +33,14 @@ class PlantController
 
 
 
-            
 
-
-
-            //Stores the tempname as it is given by the host when uploaded.
             $imagetemp = $uploadedFile['tmp_name'];
 
             if(is_uploaded_file($imagetemp)) {
-                $imageName = $requestPlant['plant_name'];
+                $imageName = 'plant' . $plantId;            
                 $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-                
                 $imgValidationResult = Validator::validateImg($uploadedFile);
+
                 if( $imgValidationResult == 1) {
                     $userName = $_SESSION['username'];
                     $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
@@ -57,7 +53,7 @@ class PlantController
                 } else{
                     $validationMsg['image'] = $imgValidationResult;
                 }
-
+                
                 $imagePathToDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
                 $requestPlant['plant_image'] = $imagePathToDatabase;
             }
@@ -105,34 +101,30 @@ class PlantController
 
             //@todo missing validation
 
-            $userName = $_SESSION['username'];
-            $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
-
-            if ( ! is_dir($imagePath)) {
-                mkdir($imagePath);
-            }
-
-            $imageName = 'plant' . $plantId;
-            
-            
-            $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-
-            //Stores the tempname as it is given by the host when uploaded.
+          
             $imagetemp = $uploadedFile['tmp_name'];
 
             if(is_uploaded_file($imagetemp)) {
-                if(move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension)) {
-                    echo "Sussecfully uploaded your image.";
-                }
-                else {
-                    echo "Failed to move your image.";
-                }
-            }
-            else {
-                echo "Failed to upload your image.";
-            }
+                $imageName = 'plant' . $plantId;            
+                $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+                $imgValidationResult = Validator::validateImg($uploadedFile);
 
-            $requestPlant['plant_image'] = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+                if( $imgValidationResult == 1) {
+                    $userName = $_SESSION['username'];
+                    $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+        
+                    if ( ! is_dir($imagePath)) {
+                        mkdir($imagePath);
+                    }
+                    
+                    move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
+                } else{
+                    $validationMsg['image'] = $imgValidationResult;
+                }
+                
+                $imagePathToDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+                $requestPlant['plant_image'] = $imagePathToDatabase;
+            }
 
             //@todo missing validation
             
@@ -140,14 +132,12 @@ class PlantController
             if(empty($validationMsg)){
                 $msg['actionFeedback'] = 'Edited successfully';
             } else {
-                $msg['actionFeedback'] = 'Edited unsuccessfully';
+                $msg['actionFeedback'] = 'Edition failed';
                 $msg['validation'] = $validationMsg;
             }
             
-            
             $plant->fill($requestPlant);
-            
-             $plant->save();
+            $plant->save();
 
             $path = $router->generatePath('plant-show', ['plant_id' => $plantId]);
             $router->redirect($path);
@@ -184,7 +174,7 @@ class PlantController
         }
 
         $msg['actionFeedback'] = 'Deleted successfully';
-        unlink(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . $plant->getPlantName());
+        unlink(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . $plant->getPlantImage());
         $plant->delete();
         $path = $router->generatePath('plant-index');
         $router->redirect($path);

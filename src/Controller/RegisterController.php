@@ -24,7 +24,9 @@ class RegisterController
             $msg = array();
             $validationMsg = array();
             // @todo missing validation
-
+            if(User::isUsernameInDatabase($requestUser['username']) == 0) {
+                $validationMsg[] = 'Username is already taken';
+            }
 
             if(empty($validationMsg)){
                 $msg['actionFeedback'] = 'Created successfully';

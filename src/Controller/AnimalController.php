@@ -64,7 +64,7 @@ class AnimalController
                     $userName = $_SESSION['username'];
                     $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
         
-                    if ( ! is_dir($imagePath)) {
+                    if ( !is_dir($imagePath)) {
                         mkdir($imagePath);
                     }
                     
@@ -142,7 +142,7 @@ class AnimalController
                     $userName = $_SESSION['username'];
                     $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
         
-                    if ( ! is_dir($imagePath)) {
+                    if ( !is_dir($imagePath)) {
                         mkdir($imagePath);
                     }
                     

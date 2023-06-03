@@ -134,6 +134,20 @@ class User
 
         return $user;
     }
+//FOR REGISTRATION
+    public static function isUsernameInDatabase($userName)
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = 'SELECT user_id FROM user WHERE username = :userName';
+        $statement = $pdo->prepare($sql);
+        $statement->execute(['userName' => $userName]);
+
+        if ($statement->rowCount() > 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 
     public function save(): void
     {

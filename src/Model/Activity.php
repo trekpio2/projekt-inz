@@ -261,10 +261,10 @@ class Activity
         return $this;
     }
 
-    public static function findAllAssignedToAquarium($aquarium_id): array
+    public static function findAllNotPlannedAssignedToAquarium($aquarium_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM activity WHERE aquarium_id = :aquarium_id ';
+        $sql = 'SELECT * FROM activity WHERE aquarium_id = :aquarium_id AND is_planned=0  ORDER BY activity_name';
         $statement = $pdo->prepare($sql);
         $statement->execute(['aquarium_id' => $aquarium_id]);
 
@@ -277,10 +277,62 @@ class Activity
         return $activities;
     }
 
-    public static function findAllAssignedToUser($user_id): array
+    public static function findAllNotPlannedAssignedToUser($user_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
-        $sql = 'SELECT * FROM activity WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id)';
+        $sql = 'SELECT * FROM activity WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id) AND is_planned=0 ORDER BY activity_name';
+        $statement = $pdo->prepare($sql);
+        $statement->execute(['user_id' => $user_id]);
+
+        $activities = [];
+        $activitiesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($activitiesArray as $activityArray) {
+            $activities[] = self::fromArray($activityArray);
+        }
+
+        return $activities;
+    }
+
+    public static function findAllPlannedAssignedToAquarium($aquarium_id): array
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        //sorting by next time execution date
+        $sql = "SELECT * FROM activity WHERE aquarium_id = :aquarium_id AND is_planned=1 ORDER BY
+            CASE
+                WHEN start_date > CURRENT_DATE THEN start_date
+                ELSE
+                 CASE period
+                    WHEN 'days' THEN start_date + INTERVAL FLOOR(DATEDIFF(CURRENT_DATE, start_date) / period_nr) * period_nr DAY
+                    WHEN 'weeks' THEN start_date + INTERVAL FLOOR(DATEDIFF(CURRENT_DATE, start_date) / (period_nr * 7)) * (period_nr * 7) DAY
+                    WHEN 'months' THEN DATE_ADD(start_date, INTERVAL FLOOR(DATEDIFF(CURRENT_DATE, start_date) / period_nr) MONTH)
+                 END
+            END, activity_name";
+        $statement = $pdo->prepare($sql);
+        $statement->execute(['aquarium_id' => $aquarium_id]);
+
+        $activities = [];
+        $activitiesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($activitiesArray as $activityArray) {
+            $activities[] = self::fromArray($activityArray);
+        }
+
+        return $activities;
+    }
+
+    public static function findAllPlannedAssignedToUser($user_id): array
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        //sorting by next time execution date
+        $sql = "SELECT * FROM activity WHERE aquarium_id IN(SELECT aquarium_id FROM aquarium WHERE user_id = :user_id) AND is_planned=1 ORDER BY
+            CASE
+                WHEN start_date > CURRENT_DATE THEN start_date
+                ELSE
+                 CASE period
+                    WHEN 'days' THEN start_date + INTERVAL FLOOR(DATEDIFF(CURRENT_DATE, start_date) / period_nr) * period_nr DAY
+                    WHEN 'weeks' THEN start_date + INTERVAL FLOOR(DATEDIFF(CURRENT_DATE, start_date) / (period_nr * 7)) * (period_nr * 7) DAY
+                    WHEN 'months' THEN DATE_ADD(start_date, INTERVAL FLOOR(DATEDIFF(CURRENT_DATE, start_date) / period_nr) MONTH)
+                 END
+            END, activity_name";
         $statement = $pdo->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
 

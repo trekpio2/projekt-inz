@@ -12,9 +12,11 @@ class ActivityController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
-        $activities = Activity::findAllAssignedToUser($_SESSION['user_id']);
+        $notPlannedActivities = Activity::findAllNotPlannedAssignedToUser($_SESSION['user_id']);
+        $plannedActivities = Activity::findAllPlannedAssignedToUser($_SESSION['user_id']);
         $html = $templating->render('activity/index.html.php', [
-            'activities' => $activities,
+            'notPlannedActivities' => $notPlannedActivities,
+            'plannedActivities' => $plannedActivities,
             'router' => $router,
         ]);
         return $html;
@@ -26,6 +28,18 @@ class ActivityController
             $msg = array();
             $validationMsg = array();
             // @todo missing validation
+            if(!isset($requestActivity['feed'])) {
+                $requestActivity['feed'] = 0;
+            }
+            if(!isset($requestActivity['filter'])) {
+                $requestActivity['filter'] = 0;
+            }
+            if(!isset($requestActivity['pump'])) {
+                $requestActivity['pump'] = 0;
+            }
+            if(!isset($requestActivity['is_planned'])) {
+                $requestActivity['is_planned'] = 0;
+            }
 
             if(empty($validationMsg)) {
                 $msg['actionFeedback'] = 'Created successfully';
@@ -47,7 +61,7 @@ class ActivityController
                 $scheduler = new Scheduler();
                 $scriptFilePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "plannedActivities" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
                 
-                if ( ! is_dir($scriptFilePath)) {
+                if ( !is_dir($scriptFilePath)) {
                     mkdir($scriptFilePath);
                 }
                 
@@ -65,7 +79,12 @@ class ActivityController
                 //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
             }
 
-            
+            if(empty($validationMsg)) {
+                $msg['actionFeedback'] = 'Created successfully';
+            } else {
+                $msg['actionFeedback'] = 'Creation failed';
+                $msg['validation'] = $validationMsg;
+            }
             
             $path = $router->generatePath('activity-index');
             $router->redirect($path);
@@ -99,8 +118,18 @@ class ActivityController
             $taskName = $userName . '-' . $requestActivity['activity_name'];
             $requestActivity['task_name'] = $taskName;
             
-            if(!isset($requestActivity['is_planned']))
-            $requestActivity['is_planned'] = 0;
+            if(!isset($requestActivity['feed'])) {
+                $requestActivity['feed'] = 0;
+            }
+            if(!isset($requestActivity['filter'])) {
+                $requestActivity['filter'] = 0;
+            }
+            if(!isset($requestActivity['pump'])) {
+                $requestActivity['pump'] = 0;
+            }
+            if(!isset($requestActivity['is_planned'])) {
+                $requestActivity['is_planned'] = 0;
+            }
             
             $activity->fill($requestActivity);
             $activity->save();
@@ -111,7 +140,7 @@ class ActivityController
                 $scheduler->removeTask($previousTaskName);
                 $scriptFilePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "plannedActivities" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
                 
-                if ( ! is_dir($scriptFilePath)) {
+                if ( !is_dir($scriptFilePath)) {
                     mkdir($scriptFilePath);
                 }
                 
@@ -138,6 +167,13 @@ class ActivityController
                 $scheduler->turnOffTask($previousTaskName);
              }
              
+             if(empty($validationMsg)) {
+                $msg['actionFeedback'] = 'Edited successfully';
+            } else {
+                $msg['actionFeedback'] = 'edition failed';
+                $msg['validation'] = $validationMsg;
+            }
+
              
             $path = $router->generatePath('activity-show', ['activity_id' => $activityId]);
             $router->redirect($path);
@@ -179,7 +215,14 @@ class ActivityController
             throw new NotFoundException("Missing activity with id $activityId");
         }
 
+        if($activity->getIsPlanned()) {
+            unlink(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "plannedActivities". DIRECTORY_SEPARATOR. $_SESSION['username'] . DIRECTORY_SEPARATOR . $activity->getActivityName() . ".js");
+        }
+
         $activity->delete();
+        
+        $msg['actionFeedback'] = 'Deleted successfully';
+        
         $path = $router->generatePath('activity-index');
         $router->redirect($path);
         return null;

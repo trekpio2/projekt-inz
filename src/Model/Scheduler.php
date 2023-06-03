@@ -95,15 +95,11 @@ class Scheduler
     {
         exec("schtasks /delete /tn \"$taskName\" /f");
     }
-/*
+
 public function turnOffTask($taskName)
 {
     exec("schtasks /change /tn \"$taskName\" /disable");
 }
 
-public function turnOnTask($taskName) 
-{
-    exec("schtasks /change /tn \"$taskName\" /enable");
-}
-*/
+
 }

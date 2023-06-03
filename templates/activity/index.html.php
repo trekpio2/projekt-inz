@@ -13,7 +13,19 @@ ob_start(); ?>
         <a class="addActivity" href="<?= $router->generatePath('activity-create') ?>">Create new</a>
     </div>
     <!-- przestawilem na gore zeby nie trzeba bylo scrollowac -->
-    <?php foreach ($activities as $activity): ?>
+    <h3>Not Planned Activities</h3>
+    <?php foreach ($notPlannedActivities as $activity): ?>
+        
+        <div class ="actionItem">
+            <a href="<?= $router->generatePath('activity-show', ['activity_id' => $activity->getActivityId()]) ?>">
+                <h3><?= $activity->getActivityName(); ?></h3>
+                <div class="forwardIcon">>></div> 
+            </a>
+        </div>                
+        <?php endforeach; ?>
+
+    <h3>Planned Activities</h3>
+    <?php foreach ($plannedActivities as $activity): ?>
         
         <div class ="actionItem">
             <a href="<?= $router->generatePath('activity-show', ['activity_id' => $activity->getActivityId()]) ?>">

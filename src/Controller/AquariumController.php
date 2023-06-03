@@ -99,7 +99,8 @@ class AquariumController
     {
         $aquarium = Aquarium::find($aquarium_id);
         $animals= Animal::findAllInAquarium($aquarium_id);
-        $activities = Activity::findAllAssignedToAquarium($aquarium_id);
+        $notPlannedActivities = Activity::findAllNotPlannedAssignedToUser($_SESSION['user_id']);
+        $plannedActivities = Activity::findAllPlannedAssignedToUser($_SESSION['user_id']);
 
         if (! $aquarium) {
             throw new NotFoundException("Missing aquarium with id $aquarium_id");
@@ -108,7 +109,8 @@ class AquariumController
         $html = $templating->render('aquarium/show.html.php', [
             'aquarium' => $aquarium,
             'animals' => $animals,
-            'activities' => $activities,
+            'notPlannedActivities' => $notPlannedActivities,
+            'plannedActivities' => $plannedActivities,
             'router' => $router,
         ]);
         return $html;
