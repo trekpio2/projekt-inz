@@ -2,6 +2,13 @@
 namespace App\Model;
 
 use App\Service\Config;
+use App\Exception\NotFoundException;
+use App\Model\Aquarium;
+use App\Model\Animal;
+use App\Model\Activity;
+use App\Validator\Validator;
+use App\Service\Router;
+use App\Service\Templating;
 
 class Animal
 {
@@ -194,6 +201,10 @@ class Animal
         $animal = Animal::fromArray($animalArray);
 
         return $animal;
+    }
+    public function findAllActivity(){
+        $activities = Activity::findAllAssignedToAquarium($this->getAquariumId());
+        return $activities;
     }
 
     public function save(): void

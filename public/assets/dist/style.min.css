@@ -126,48 +126,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiGyp8kv8JHgFVrJJLedw.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 600;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiDyp8kv8JHgFVrJJLmr19lEA.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 700;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiDyp8kv8JHgFVrJJLmy15lEA.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrFJA.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6V1s.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7V1s.ttf) format('truetype');
-}
 * {
   box-sizing: border-box;
 }
@@ -262,6 +220,7 @@ span {
 #species_name,
 #color,
 .formGreen,
+[id^="animal_"],
 [id^="plant_"] {
   background-color: #AACB73 !important;
   border-radius: 5px;
@@ -506,6 +465,16 @@ footer::before {
   border-radius: 17px;
   padding-top: 10px;
 }
+.deleteButton {
+  background-color: #FF002E;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 3px 2px 2px #d888a528;
+}
+.deleteButton:active {
+  background-color: #b60021;
+}
 .addActivity {
   width: 306px;
   margin: 10px auto;
@@ -588,6 +557,9 @@ article p:nth-child(2n-1) {
   color: white;
   text-align: center;
   text-transform: uppercase;
+}
+#executeBtn {
+  width: 100%;
 }
 .formContainer {
   width: 80%;
