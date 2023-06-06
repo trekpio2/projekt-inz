@@ -20,7 +20,7 @@ executeBtn.addEventListener('click', () => {
             console.log(response.status);
             console.log(response);
             //logging information about execution
-            fetch('/php/LogActivityExecution.php', {
+            fetch('/assets/src/php/LogActivityExecution.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -261,6 +261,22 @@ class Activity
         return $this;
     }
 
+    public static function findAllAssignedToAquarium($aquarium_id): array
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = 'SELECT * FROM activity WHERE aquarium_id = :aquarium_id ORDER BY activity_name';
+        $statement = $pdo->prepare($sql);
+        $statement->execute(['aquarium_id' => $aquarium_id]);
+
+        $activities = [];
+        $activitiesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($activitiesArray as $activityArray) {
+            $activities[] = self::fromArray($activityArray);
+        }
+
+        return $activities;
+    }
+
     public static function findAllNotPlannedAssignedToAquarium($aquarium_id): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));

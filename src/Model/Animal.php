@@ -202,10 +202,6 @@ class Animal
 
         return $animal;
     }
-    public function findAllActivity(){
-        $activities = Activity::findAllAssignedToAquarium($this->getAquariumId());
-        return $activities;
-    }
 
     public function save(): void
     {

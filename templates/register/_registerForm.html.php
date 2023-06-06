@@ -7,6 +7,7 @@
 <div class="welcome">
     <h2>RAZEM ZADAMY O NASZYCH PRZYJACIÓŁ</h2>
 </div>
+<?php flash('register'); ?>
 <div class="form-group">
     <input type="text" id="username" name="user[username]" placeholder="USERNAME">
 </div>

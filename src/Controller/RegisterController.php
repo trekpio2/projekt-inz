@@ -1,11 +1,13 @@
 <?php
 namespace App\Controller;
+require_once '../src/Helpers/flash.php';
 
 use App\Exception\NotFoundException;
 use App\Model\User;
 use App\Validator;
 use App\Service\Router;
 use App\Service\Templating;
+
 
 class RegisterController
 {
@@ -22,21 +24,30 @@ class RegisterController
         
         if ($requestUser) {
             $msg = array();
-            $validationMsg = array();
-            // @todo missing validation
+            
             if(User::isUsernameInDatabase($requestUser['username']) == 0) {
-                $validationMsg[] = 'Username is already taken';
+                $msg[] = 'Username is already taken';
             }
 
-            if(empty($validationMsg)){
-                $msg['actionFeedback'] = 'Created successfully';
-            } else {
-                $msg['actionFeedback'] = 'Created unsuccessfully';
-                $msg['validation'] = $validationMsg;
+             if(!preg_match("/^[a-zA-Z0-9]{6,}$/", $requestUser['username'])){
+                $msg[] = "Wrong username";
+             }
+
+            if(!preg_match("/^(?=.*[!@#$%^&*])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{6,}$/",$requestUser['user_password'])){
+                $msg[] = 'Wrong password';
             }
             
+            if(empty($msg)){
+                $msg[] = 'Created successfully';
+            } else {
+                flash("register", $msg);
+                $path = $router->generatePath('register-index');
+                $router->redirect($path);
+                return null;
+            }
+            
+            flash("register", $msg);
             $user = User::fromArray($requestUser);
-
             $user->save();
 
             $path = $router->generatePath('login-index');

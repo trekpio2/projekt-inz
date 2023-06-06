@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Exception\NotFoundException;
 use App\Model\Animal;
 use App\Model\Aquarium;
+use App\Model\Activity;
 use App\Validator\Validator;
 use App\Service\Router;
 use App\Service\Templating;
@@ -183,12 +184,15 @@ class AnimalController
     public function showAction(int $animalId, Templating $templating, Router $router): ?string
     {
         $animal = Animal::find($animalId);
+        $activities = Activity::findAllAssignedToAquarium($animal->getAquariumId());
+
         if (! $animal) {
             throw new NotFoundException("Missing animal with id $animalId");
         }
 
         $html = $templating->render('animal/show.html.php', [
             'animal' => $animal,
+            'activities' => $activities,
             'router' => $router,
         ]);
         return $html;

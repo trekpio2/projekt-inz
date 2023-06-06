@@ -227,7 +227,6 @@ class Plant
         $this->setPlantImage(null);
         $this->setSpeciesName(null);
         $this->setAquariumId(null);
-        $this->setBirthdate(null);
         $this->setColor(null);
     }
 }

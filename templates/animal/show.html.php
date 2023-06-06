@@ -32,9 +32,7 @@ ob_start(); ?>
                 </form>
             </li>
     </ul>
-    <?php 
-        $activities = $animal->findAllActivity();
-    ?>
+
     <h2 class="homeAnimalTitle">Activities</h2>
     <ul class="index-list">
         <?php foreach ($activities as $activity): ?>
