@@ -1,6 +1,6 @@
 <?php
 namespace App\Controller;
-require_once '../src/Helpers/flash.php';
+require_once 'src/Helpers/flash.php';
 
 use App\Exception\NotFoundException;
 use App\Model\User;

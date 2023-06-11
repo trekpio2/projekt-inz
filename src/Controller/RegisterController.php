@@ -1,6 +1,6 @@
 <?php
 namespace App\Controller;
-require_once '../src/Helpers/flash.php';
+require_once 'src/Helpers/flash.php';
 
 use App\Exception\NotFoundException;
 use App\Model\User;
@@ -25,7 +25,7 @@ class RegisterController
         if ($requestUser) {
             $msg = array();
             
-            if(User::isUsernameInDatabase($requestUser['username']) == 0) {
+            if(User::isUsernameInDatabase($requestUser['username']) != 0) {
                 $msg[] = 'Username is already taken';
             }
 

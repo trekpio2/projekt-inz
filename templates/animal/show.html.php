@@ -12,13 +12,13 @@ ob_start(); ?>
     <h1 class="homeAnimalTitle"><?= $animal->getAnimalName() ?></h1>
     <article>
         <img src="<?= $animal->getAnimalImage() ?>" alt="Animal" style="width: 100%; height: 200px; border-radius: 25% !important; object-fit: contain;">
-        <p>Gatunek: <?= $animal->getSpeciesName();?></p>
-        <p>Płeć: <?= $animal->getAnimalGender();?></p>
+        <p>Species: <?= $animal->getSpeciesName();?></p>
+        <p>Gender: <?= $animal->getAnimalGender();?></p>
         <!-- reszta dotyczaca zwierzecia -->
     </article>
 
     <a href="<?= $router->generatePath('aquarium-show', ['aquarium_id' => $animal->getAquariumId()]) ?>" >
-        <div class="sendToAq">Akwarium</div>
+        <div class="sendToAq">Aquarium</div>
     </a>
 
     <ul class="action-list">

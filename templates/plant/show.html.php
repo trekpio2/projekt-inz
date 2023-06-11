@@ -10,7 +10,7 @@ $bodyClass = 'show';
 ob_start(); ?>
     <h1><?= $plant->getPlantName() ?></h1>
     <article>
-        <p>Gatunek: <?= $plant->getSpeciesName();?></p>
+        <p>Species: <?= $plant->getSpeciesName();?></p>
         <p>Height: <?= $plant->getPlantHeight();?></p>
         <img src="<?= $plant->getPlantImage() ?>" alt="PlantImage" style="width: 100%; height: 200px; border-radius: 15px; object-fit: contain;">
         <!-- reszta dotyczaca rosliny -->

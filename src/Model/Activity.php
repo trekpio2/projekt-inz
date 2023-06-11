@@ -377,6 +377,34 @@ class Activity
         return $activity;
     }
 
+    public static function isActivityNameInDatabase($activity_name, $activity_id)
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = '';
+        if($activity_id == null) {
+            $sql = 'SELECT * FROM activity WHERE activity_name = :activity_name';
+
+        }
+        else {
+            $sql = 'SELECT * FROM activity WHERE activity_name = :activity_name AND activity_id != :activity_id';
+        }
+        
+        $statement = $pdo->prepare($sql);
+        
+        if($activity_id == null) {
+            $statement->execute(['activity_name' => $activity_name]);
+        } else {
+            $statement->execute(['activity_name' => $activity_name, 'activity_id' => $activity_id]);
+        }
+
+
+        if ($statement->rowCount() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public function save(): void
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));

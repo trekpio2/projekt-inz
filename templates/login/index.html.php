@@ -1,6 +1,7 @@
 <?php
 
 /** @var \App\Service\Router $router */
+require_once 'src/Helpers/flash.php';
 
 $title = 'Log in';
 $bodyClass = "edit";

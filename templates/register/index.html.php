@@ -2,7 +2,7 @@
 
 /** @var \App\Service\Router $router */
 /** @var \App\Util\Util $util */
-require_once '../src/Helpers/flash.php';
+require_once 'src/Helpers/flash.php';
 
 $title = 'Register';
 $bodyClass = "edit";

@@ -4,12 +4,14 @@
 
 /** @var \App\Model\Aquarium $aquarium */
 /** @var \App\Service\Router $router */
+require_once 'src/Helpers/flash.php';
 
 $title = 'Create Aquarium';
 $bodyClass = "edit";
 
 ob_start(); ?>
     <h1>Create Aquarium</h1>
+    <?php flash('aquarium') ?>
     <form action="<?= $router->generatePath('aquarium-create') ?>" method="post" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_createForm.html.php'; ?>
         <input type="hidden" name="action" value="aquarium-create">

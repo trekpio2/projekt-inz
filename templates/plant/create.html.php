@@ -3,12 +3,13 @@
 
 /** @var \App\Model\Plant $plant */
 /** @var \App\Service\Router $router */
+require_once 'src/Helpers/flash.php';
 
 $title = 'Create Plant';
 $bodyClass = "edit";
-
 ob_start(); ?>
     <h1>Create Plant</h1>
+    <?php flash('plant'); ?>
     <form action="<?= $router->generatePath('plant-create') ?>" method="post" enctype="multipart/form-data" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_createForm.html.php'; ?>
         <input type="hidden" name="action" value="plant-create">
