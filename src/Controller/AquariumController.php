@@ -33,7 +33,7 @@ class AquariumController
                 $requestAquarium[$aquariumDataKey] = $aquariumDataValue;
             }
 
-            if(Aquarium::isAquariumNameInDatabase($requestAquarium['aquarium_name']) != 0) {
+            if(Aquarium::isAquariumNameInDatabase($requestAquarium['aquarium_name'], $_SESSION['user_id']) != 0) {
                 $msg[] = 'aquarium name is already in database';
             }
             
@@ -101,11 +101,7 @@ class AquariumController
                 $requestAquarium[$aquariumDataKey] = $aquariumDataValue;
             }
 
-            if(Aquarium::isAquariumNameInDatabase($requestAquarium['aquarium_name'], $aquarium_id) != 0) {
-                $msg[] = 'aquarium name is already in database';
-            }
-
-            if(Aquarium::isAquariumNameInDatabase($requestAquarium['aquarium_name']) != 0) {
+            if(Aquarium::isAquariumNameInDatabase($requestAquarium['aquarium_name'], $_SESSION['user_id'], $aquarium_id) != 0) {
                 $msg[] = 'aquarium name is already in database';
             }
             

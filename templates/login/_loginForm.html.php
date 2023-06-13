@@ -1,5 +1,5 @@
 <div class="img-ax">
-    <img src="assets/dist/img/axelotl.png" alt="Ilustracja młodego axelotla">
+    <img src="public/assets/dist/img/axelotl.png" alt="Ilustracja młodego axelotla">
 </div>
 <div class="title">
     <h1>AXOLOTL</h1>

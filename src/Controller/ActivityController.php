@@ -6,6 +6,7 @@ use App\Exception\NotFoundException;
 use App\Model\Activity;
 use App\Model\Aquarium;
 use App\Model\Scheduler;
+use App\Validator\Validator;
 use App\Service\Router;
 use App\Service\Templating;
 
@@ -39,6 +40,11 @@ class ActivityController
             }
             if(!isset($requestActivity['is_planned'])) {
                 $requestActivity['is_planned'] = 0;
+            }
+
+            foreach($requestActivity as $activityDataKey => $activityDataValue) {
+                $animalDataValue = Validator::testInput($activityDataValue);
+                $requestActivity[$activityDataKey] = $activityDataValue;
             }
 
             if(Activity::isActivityNameInDatabase($requestActivity['activity_name']) != 0) {
@@ -126,7 +132,7 @@ class ActivityController
             if(Activity::isActivityNameInDatabase($requestAquarium['activity_name'], $activityId) != 0) {
                 $msg[] = 'activity name is already in database';
             }
-            //@todo missing validation
+           
             $previousTaskName = $activity->getTaskName();
             $previousActivityName = $activity->getActivityName();
             
@@ -147,6 +153,11 @@ class ActivityController
                 $requestActivity['is_planned'] = 0;
             }
             
+            foreach($requestActivity as $activityDataKey => $activityDataValue) {
+                $animalDataValue = Validator::testInput($activityDataValue);
+                $requestActivity[$activityDataKey] = $activityDataValue;
+            }
+
             $lightsValidationResult = Validator::isNumeric($requestAquarium['lights_level']);
             if($lightsValidationResult != 1){
                 $msg[] = "Wrong lights level";
@@ -184,11 +195,8 @@ class ActivityController
                 $taskCommand = "node " . $scriptFilePath;
                 // zakomentowane zeby nie smiecic w systemie
                 //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
-            }
-            else
-            {
-                $scheduler = new Scheduler();
-                $scheduler->turnOffTask($previousTaskName);
+            } else {
+
              }
              
              if(empty($msg)){

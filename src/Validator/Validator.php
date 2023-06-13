@@ -22,7 +22,7 @@ class Validator
 
     public static function isNumeric($data)
     {
-        if(!is_numeric($data)){
+        if(!is_numeric(floatval($data))){
             return 0;
         }
 

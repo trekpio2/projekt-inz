@@ -43,7 +43,7 @@ let ip = '" . $aquarium->getIP() . "';
 let userName = '" . $_SESSION['username'] . "'
 let activityName = '" . $activity->getActivityName() . "'
 </script>
-<script src='/assets/src/js/activityExecute.js'></script>
+<script src='public/assets/src/js/activityExecute.js'></script>
 ";
 
 $scripts = ob_get_clean();

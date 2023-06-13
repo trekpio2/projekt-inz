@@ -2,7 +2,7 @@
 namespace App\Model;
 
 use App\Service\Config;
-
+use App\Exception\NotFoundException;
 class Activity
 {
     private ?int $activity_id = null;
@@ -377,13 +377,12 @@ class Activity
         return $activity;
     }
 
-    public static function isActivityNameInDatabase($activity_name, $activity_id)
+    public static function isActivityNameInDatabase($activity_name, $activity_id=null)
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         $sql = '';
         if($activity_id == null) {
             $sql = 'SELECT * FROM activity WHERE activity_name = :activity_name';
-
         }
         else {
             $sql = 'SELECT * FROM activity WHERE activity_name = :activity_name AND activity_id != :activity_id';
@@ -396,7 +395,6 @@ class Activity
         } else {
             $statement->execute(['activity_name' => $activity_name, 'activity_id' => $activity_id]);
         }
-
 
         if ($statement->rowCount() > 0) {
             return 1;

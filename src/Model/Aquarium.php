@@ -182,24 +182,24 @@ class Aquarium
         return $aquarium;
     }
 
-    public static function isAquariumNameInDatabase($aquarium_name, $aquarium_id=null)
+    public static function isAquariumNameInDatabase($aquarium_name, $user_id, $aquarium_id=null)
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         $sql = '';
         if($aquarium_id == null) {
-            $sql = 'SELECT * FROM aquarium WHERE aquarium_name = :aquarium_name';
+            $sql = 'SELECT * FROM aquarium WHERE aquarium_name = :aquarium_name AND user_id = :user_id';
 
         }
         else {
-            $sql = 'SELECT * FROM aquarium WHERE aquarium_name = :aquarium_name AND aquarium_id != :aquarium_id';
+            $sql = 'SELECT * FROM aquarium WHERE aquarium_name = :aquarium_name AND user_id = :user_id AND aquarium_id != :aquarium_id';
         }
         
         $statement = $pdo->prepare($sql);
         
         if($aquarium_id == null) {
-            $statement->execute(['aquarium_name' => $aquarium_name]);
+            $statement->execute(['aquarium_name' => $aquarium_name, 'user_id' => $user_id]);
         } else {
-            $statement->execute(['aquarium_name' => $aquarium_name, 'aquarium_id' => $aquarium_id]);
+            $statement->execute(['aquarium_name' => $aquarium_name, 'user_id' => $user_id, 'aquarium_id' => $aquarium_id]);
         }
 
         if ($statement->rowCount() > 0) {

@@ -25,7 +25,7 @@ class RegisterController
         if ($requestUser) {
             $msg = array();
             
-            if(User::isUsernameInDatabase($requestUser['username']) != 0) {
+            if(User::isUsernameInDatabase($requestUser['username']) == 0) {
                 $msg[] = 'Username is already taken';
             }
 
