@@ -24,13 +24,11 @@ ob_start(); ?>
         <ul class="action-list">
             <li class="selfButton"> <a href="<?= $router->generatePath('activity-index') ?>"><<</a></li>
             <li class="selfButton"><a href="<?= $router->generatePath('activity-edit', ['activity_id'=> $activity->getActivityId()]) ?>">Edit</a></li>
-            <li class="selfButton">
                 <form action="<?= $router->generatePath('activity-delete') ?>" method="post">
-                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                    <input class="DeleteB" type="submit" value="Delete" onclick="return confirm('Are you sure?')">
                     <input type="hidden" name="action" value="activity-delete">
                     <input type="hidden" name="activity_id" value="<?= $activity->getActivityId() ?>">
                 </form>
-            </li>
         </ul>
     </article>
     

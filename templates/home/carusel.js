@@ -63,7 +63,37 @@ function goRight(){
     }
     
 }
+function goLeftF(){
+  if(j == Flowers.length -3){
 
+  } else {
+      j = j+1;
+      prevF = Flowers[j];
+      currentF = Flowers[j+1];
+      nextF = Flowers[j+2];
+      
+      caruselF.innerHTML = prevF.innerHTML;
+      caruselF.innerHTML += currentF.innerHTML;
+      caruselF.innerHTML += nextF.innerHTML;
+  
+  }
+}
+function goRightF(){
+  if( j==0){
+
+  }
+  else {
+      j = j-1;
+      prevF = Flowers[j];
+      currentF = Flowers[j+1];
+      nextF = Flowers[j+2];
+      
+      caruselF.innerHTML = prevF.innerHTML;
+      caruselF.innerHTML += currentF.innerHTML;
+      caruselF.innerHTML += nextF.innerHTML;
+  }
+  
+}
 let touchstartX = 0
 let touchendX = 0
     

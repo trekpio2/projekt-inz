@@ -9,11 +9,16 @@ $bodyClass = 'index';
 
 ob_start(); ?>
     <h1>Plant List</h1>
-    
-    <a href="<?= $router->generatePath('plant-create') ?>">Create new</a>
+    <div class="addAnimal">
+        <a href="<?= $router->generatePath('plant-create') ?>">Create new</a>
+    </div>
+
     
     <ul class="index-list">
         <?php foreach ($plants as $plant): ?>
+            <div class="animalPhoto">
+                <img src="<?= $plant->getPlantImage(); ?>" style='height: 137px; width: 288px; object-fit: cover; border-radius: 47px'>
+            </div>
             <li><h3><?= $plant->getPlantName(); ?></h3>
             <ul class="action-list">
                 <li><a href="<?= $router->generatePath('plant-show', ['plant_id' => $plant->getPlantId()]) ?>">Details</a></li>

@@ -132,7 +132,10 @@ class Plant
 
         return $this;
     }
-
+    public function findAllActivity(){
+        $activities = Activity::findAllAssignedToAquarium($this->getAquariumId());
+        return $activities;
+    }
     public static function findAllInAquarium($aquariumId): array
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));

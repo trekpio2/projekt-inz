@@ -136,7 +136,7 @@ html {
   height: 100%;
 }
 body {
-  background-color: #f5f5f5;
+  background-color: white;
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -173,6 +173,7 @@ body nav {
 }
 body main {
   flex-grow: 1;
+  margin-bottom: 10rem;
 }
 body h1 {
   font-size: 2rem;
@@ -320,6 +321,9 @@ footer::before {
   color: white;
   border-radius: 10px;
 }
+input[type=delete] {
+  background-color: #AACB73;
+}
 .edit .edit-form {
   width: 80%;
   margin-bottom: 1em;
@@ -341,7 +345,11 @@ footer::before {
 }
 .edit .edit-form .form-group input[type="text"] {
   flex-grow: 3;
-  background-color: white;
+  background-color: #AACB73;
+}
+.edit .edit-form .form-group input[type="submit"] {
+  flex-grow: 3;
+  background-color: #AACB73;
 }
 .edit .edit-form .form-group textarea {
   height: 300px;
@@ -461,9 +469,13 @@ footer::before {
   margin: 50px auto;
   margin-top: 150px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  background-color: white;
   border-radius: 17px;
   padding-top: 10px;
+  background-color: #AACB73;
+  color: white !important;
+}
+.addAnimal a {
+  color: white;
 }
 .deleteButton {
   background-color: #FF002E;
@@ -553,6 +565,21 @@ article p:nth-child(2n-1) {
   text-align: center;
   margin: 0 auto;
 }
+.DeleteB {
+  width: 30%;
+  color: white;
+  background-color: #AACB73;
+  box-shadow: 0 4px 5px #d888a528;
+  float: left;
+  border-radius: 31px;
+  text-align: center;
+  margin: 0 auto;
+  border: none;
+  margin-top: 30px;
+}
+.DeleteB:active {
+  background-color: #CDE990;
+}
 .selfButton a {
   color: white;
   text-align: center;
@@ -560,6 +587,9 @@ article p:nth-child(2n-1) {
 }
 #executeBtn {
   width: 100%;
+}
+#executeBtn:active {
+  background-color: #CDE990;
 }
 .formContainer {
   width: 80%;
@@ -642,4 +672,21 @@ article p:nth-child(2n-1) {
 h2 {
   margin: 0 auto;
   font-weight: bold;
+}
+.buttons {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+.changeDirAnimal {
+  width: 25px;
+  margin: 0 auto;
+  background-color: #AACB73;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 1px 2px 1px #AACB73;
+  border: none;
+}
+.changeDirAnimal:active {
+  background-color: #CDE990;
 }

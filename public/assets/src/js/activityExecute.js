@@ -17,6 +17,7 @@ executeBtn.addEventListener('click', () => {
             },
             body: JSON.stringify(executeData),
         }).then((response) => {
+            alert("Activity have been activated");
             console.log(response.status);
             console.log(response);
             //logging information about execution
@@ -29,12 +30,14 @@ executeBtn.addEventListener('click', () => {
               })
                 .then((response) => {
                   if (response.ok) {
+                    
                     console.log('Timestamp logged successfully!');
                   } else {
                     throw new Error('Error logging timestamp');
                   }
                 })
                 .catch((error) => {
+                  alert("Sorry There has been,a problem");
                   console.error('Error logging timestamp:', error);
                 });
         })

@@ -20,6 +20,10 @@ ob_start(); ?>
                 </a></div>
                 <?php $i = $i +1; ?>
         <?php endforeach; ?>
+        <div class ="buttons">
+            <button class="changeDirAnimal" onclick="goRight()"><</button>
+            <button class="changeDirAnimal" onclick="goLeft()">></button>
+        </div>
     <h2 class="homeAnimalTitle">My Plants</h2>
 
     <div id="carouselPlant"  class="carsu">
@@ -32,7 +36,10 @@ ob_start(); ?>
                 </a></div>
                 <?php $j = $j +1; ?>
         <?php endforeach; ?>
-
+        <div class ="buttons">
+            <button class="changeDirAnimal" onclick="goRightF()"><</button>
+            <button class="changeDirAnimal" onclick="goLeftF()">></button>
+        </div>
 
 <?php $main = ob_get_clean();
 ob_start();
