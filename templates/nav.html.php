@@ -10,11 +10,11 @@
         echo "zalogowano jako: " . $_SESSION['username'];
     }
     ?>
-    <img src="assets\dist\img\home.png" alt="Home icon" width=35><a href="<?= $router->generatePath('') ?>">Home</a>
-    <img src="assets\dist\img\lup.png" alt="Animals icon" width=35><a href="<?= $router->generatePath('animal-index') ?>">Animals</a>
-    <img src="assets\dist\img\aq.png" alt="Aquarium icon" width=35><a href="<?= $router->generatePath('aquarium-index') ?>">Aquariums</a>
-    <img src="assets\dist\img\home.png" alt="Activity icon" width=35><a href="<?= $router->generatePath('plant-index') ?>">Plants</a>
-    <img src="assets\dist\img\info.png" alt=" icon" width=35><a href="<?= $router->generatePath('activity-index') ?>">Activities</a>
+    <img src="public\assets\dist\img\home.png" alt="Home icon" width=35><a href="<?= $router->generatePath('') ?>">Home</a>
+    <img src="public\assets\dist\img\lup.png" alt="Animals icon" width=35><a href="<?= $router->generatePath('animal-index') ?>">Animals</a>
+    <img src="public\assets\dist\img\aq.png" alt="Aquarium icon" width=35><a href="<?= $router->generatePath('aquarium-index') ?>">Aquariums</a>
+    <img src="public\assets\dist\img\home.png" alt="Activity icon" width=35><a href="<?= $router->generatePath('plant-index') ?>">Plants</a>
+    <img src="public\assets\dist\img\info.png" alt=" icon" width=35><a href="<?= $router->generatePath('activity-index') ?>">Activities</a>
     <a href="<?= $router->generatePath('login-logout') ?>">Log out</a>
 </a></div>
 <div id="darken"></div>

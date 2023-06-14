@@ -1,5 +1,5 @@
 <div class="img-ax">
-    <img src="assets/dist/img/axelotl.png" alt="Ilustracja młodego axelotla">
+    <img src="public/assets/dist/img/axelotl.png" alt="Ilustracja młodego axelotla">
 </div>
 <div class="title">
     <h1>AXOLOTL</h1>
@@ -7,6 +7,7 @@
 <div class="welcome">
     <h2>RAZEM ZADAMY O NASZYCH PRZYJACIÓŁ</h2>
 </div>
+<?php flash('login'); ?>
 <div class="form-group">
     <input type="text" id="username" name="user[username]" placeholder="USERNAME">
 </div>

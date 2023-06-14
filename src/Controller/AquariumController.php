@@ -1,5 +1,6 @@
 <?php
 namespace App\Controller;
+require_once 'src/Helpers/flash.php';
 
 use App\Exception\NotFoundException;
 use App\Model\Aquarium;
@@ -26,18 +27,44 @@ class AquariumController
         $msg = array();
         
         if ($requestAquarium) {
-            $validationMsg = array();
             
+            foreach($requestAquarium as $aquariumDataKey => $aquariumDataValue){
+                $aquariumDataValue = Validator::testInput($aquariumDataValue);
+                $requestAquarium[$aquariumDataKey] = $aquariumDataValue;
+            }
+
+            if(Aquarium::isAquariumNameInDatabase($requestAquarium['aquarium_name'], $_SESSION['user_id']) != 0) {
+                $msg[] = 'aquarium name is already in database';
+            }
             
-            
-            // @todo missing validation
+            $lengthValidationResult = Validator::isNumeric($requestAquarium['aquarium_length']);
+            if($lengthValidationResult != 1){
+                $msg[] = "Wrong aquarium length";
+            }
+
+            $widthValidationResult = Validator::isNumeric($requestAquarium['aquarium_width']);
+            if($widthValidationResult != 1){
+                $msg[] = "Wrong aquarium width";
+            }
+
+            $HeightValidationResult = Validator::isNumeric($requestAquarium['aquarium_height']);
+            if($HeightValidationResult != 1){
+                $msg[] = "Wrong aquarium height";
+            }
+
+            $volumeValidationResult = Validator::isNumeric($requestAquarium['aquarium_volume']);
+            if($volumeValidationResult != 1){
+                $msg[] = "Wrong aquarium volume";
+            }
 
 
-            if(empty($validationMsg)) {
-                $msg['actionFeedback'] = 'Created successfully';
+            if(empty($msg)){
+                $msg[] = 'Aquarium created successfully';
             } else {
-                $msg['actionFeedback'] = 'Created unsuccessfully';
-                $msg['validation'] = $validationMsg;
+                flash("aquarium", $msg);
+                $path = $router->generatePath('aquarium-create');
+                $router->redirect($path);
+                return null;
             }
             
             $aquarium = Aquarium::fromArray($requestAquarium);
@@ -68,15 +95,43 @@ class AquariumController
         }
 
         if ($requestAquarium) {
-            $validationMsg = array();
-            // @todo missing validation
-            
 
-            if(empty($validationMsg)){
-                $msg['actionFeedback'] = 'Edited successfully';
+            foreach($requestAquarium as $aquariumDataKey => $aquariumDataValue) {
+                $aquariumDataValue = Validator::testInput($aquariumDataValue);
+                $requestAquarium[$aquariumDataKey] = $aquariumDataValue;
+            }
+
+            if(Aquarium::isAquariumNameInDatabase($requestAquarium['aquarium_name'], $_SESSION['user_id'], $aquarium_id) != 0) {
+                $msg[] = 'aquarium name is already in database';
+            }
+            
+            $lengthValidationResult = Validator::isNumeric($requestAquarium['aquarium_length']);
+            if($lengthValidationResult != 1){
+                $msg[] = "Wrong aquarium length";
+            }
+
+            $widthValidationResult = Validator::isNumeric($requestAquarium['aquarium_width']);
+            if($widthValidationResult != 1){
+                $msg[] = "Wrong aquarium width";
+            }
+
+            $HeightValidationResult = Validator::isNumeric($requestAquarium['aquarium_height']);
+            if($HeightValidationResult != 1){
+                $msg[] = "Wrong aquarium height";
+            }
+
+            $volumeValidationResult = Validator::isNumeric($requestAquarium['aquarium_volume']);
+            if($volumeValidationResult != 1){
+                $msg[] = "Wrong aquarium volume";
+            }
+
+            if(empty($msg)){
+                $msg[] = 'Aquarium edited successfully';
             } else {
-                $msg['actionFeedback'] = 'Edited unsuccessfully';
-                $msg['validation'] = $validationMsg;
+                flash("aquarium", $msg);
+                $path = $router->generatePath('aquarium-edit', ['aquarium_id' => $aquarium_id]);
+                $router->redirect($path);
+                return null;
             }
 
 
@@ -99,7 +154,8 @@ class AquariumController
     {
         $aquarium = Aquarium::find($aquarium_id);
         $animals= Animal::findAllInAquarium($aquarium_id);
-        $activities = Activity::findAllAssignedToAquarium($aquarium_id);
+        $notPlannedActivities = Activity::findAllNotPlannedAssignedToUser($_SESSION['user_id']);
+        $plannedActivities = Activity::findAllPlannedAssignedToUser($_SESSION['user_id']);
 
         if (! $aquarium) {
             throw new NotFoundException("Missing aquarium with id $aquarium_id");
@@ -108,7 +164,8 @@ class AquariumController
         $html = $templating->render('aquarium/show.html.php', [
             'aquarium' => $aquarium,
             'animals' => $animals,
-            'activities' => $activities,
+            'notPlannedActivities' => $notPlannedActivities,
+            'plannedActivities' => $plannedActivities,
             'router' => $router,
         ]);
         return $html;

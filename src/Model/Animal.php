@@ -202,9 +202,32 @@ class Animal
 
         return $animal;
     }
-    public function findAllActivity(){
-        $activities = Activity::findAllAssignedToAquarium($this->getAquariumId());
-        return $activities;
+
+    public static function isAnimalNameInDatabase($animal_name, $animal_id=null)
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = '';
+        if($animal_id == null) {
+            $sql = 'SELECT * FROM animal WHERE animal_name = :animal_name';
+
+        }
+        else {
+            $sql = 'SELECT * FROM animal WHERE animal_name = :animal_name AND animal_id != :animal_id';
+        }
+        
+        $statement = $pdo->prepare($sql);
+        
+        if($animal_id == null) {
+            $statement->execute(['animal_name' => $animal_name]);
+        } else {
+            $statement->execute(['animal_name' => $animal_name, 'animal_id' => $animal_id]);
+        }
+
+        if ($statement->rowCount() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public function save(): void

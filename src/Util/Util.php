@@ -10,5 +10,4 @@ class Util
         return date('m/d/Y', $timestamp);
     }
 }
-
 ?>

@@ -36,7 +36,10 @@
 
 <div class="form-group animal">
     <label for="animal_image">image</label>
-    <input type="file" id="animal_image" name="animal_image"  accept="image/png, image/jpeg">
+    <div class="animalPhoto" style="<?= $animal->getAnimalImage() ? : 'display:none;' ?>">
+        <img id="imagePreview" src="<?= $animal ? $animal->getAnimalImage() : '' ?>" alt="current animal image" style="height: 137px; width: 288px; object-fit: cover; border-radius: 47px">
+    </div>
+    <input class="imageInput" type="file" id="animal_image" name="animal_image"  accept="image/png, image/jpeg">
 </div>
 
 

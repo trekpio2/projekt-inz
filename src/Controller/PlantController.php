@@ -1,5 +1,6 @@
 <?php
 namespace App\Controller;
+require_once 'src/Helpers/flash.php';
 
 use App\Exception\NotFoundException;
 use App\Model\Plant;
@@ -25,29 +26,40 @@ class PlantController
         $msg = array();
 
         if ($requestPlant) {
-            $validationMsg = array();
-            
-            
-            // @todo missing validation
+            foreach($requestPlant as $plantDataKey => $plantDataValue) {
+                $aquariumDataValue = Validator::testInput($plantDataValue);
+                $requestPlant[$plantDataKey] = $plantDataValue;
+            }
 
+            if(Plant::isPlantNameInDatabase($requestPlant['plant_name'], $plantId) != 0) {
+                $msg[] = 'Plant name is already in database';
+            }
 
+            $colorValidationResult = Validator::isAlpha($requestPlant['color']);
+            if($colorValidationResult != 1){
+                $msg[] = "Wrong plant color";
+            }
 
+            $speciesValidationResult = Validator::isAlpha($requestPlant['species_name']);
+            if($speciesValidationResult != 1){
+                $msg[] = "Wrong animal species";
+            }
 
-            
-
-
-
-            //Stores the tempname as it is given by the host when uploaded.
+            $heightValidationResult = Validator::isNumeric($requestPlant['plant_height']);
+            if($heightValidationResult != 1){
+                $msg[] = "Wrong plant height";
+            }
+           
             $imagetemp = $uploadedFile['tmp_name'];
 
             if(is_uploaded_file($imagetemp)) {
-                $imageName = $requestPlant['plant_name'];
+                $imageName = 'plant' . $plantId;            
                 $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-                
                 $imgValidationResult = Validator::validateImg($uploadedFile);
+
                 if( $imgValidationResult == 1) {
                     $userName = $_SESSION['username'];
-                    $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+                    $imagePath = "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
         
                     if ( ! is_dir($imagePath)) {
                         mkdir($imagePath);
@@ -55,18 +67,20 @@ class PlantController
                     
                     move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
                 } else{
-                    $validationMsg['image'] = $imgValidationResult;
+                    $msg['image'] = $imgValidationResult;
                 }
-
-                $imagePathToDatabase = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
+                
+                $imagePathToDatabase = 'public/userImages/' . $userName .'/' . $imageName . "." . $extension;
                 $requestPlant['plant_image'] = $imagePathToDatabase;
             }
 
-            if(empty($validationMsg)){
-                $msg['actionFeedback'] = 'Created successfully';
+            if(empty($msg)){
+                $msg[] = 'Plant created successfully';
             } else {
-                $msg['actionFeedback'] = 'Created unsuccessfully';
-                $msg['validation'] = $validationMsg;
+                flash("plant", $msg);
+                $path = $router->generatePath('plant-create');
+                $router->redirect($path);
+                return null;
             }
 
 
@@ -99,55 +113,67 @@ class PlantController
         }
 
         if ($requestPlant) {
-            $validationMsg = array();
-
-
-
-            //@todo missing validation
-
-            $userName = $_SESSION['username'];
-            $imagePath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
-
-            if ( ! is_dir($imagePath)) {
-                mkdir($imagePath);
+            $msg = array();
+            foreach($requestPlant as $plantDataKey => $plantDataValue) {
+                $aquariumDataValue = Validator::testInput($plantDataValue);
+                $requestPlant[$plantDataKey] = $plantDataValue;
             }
 
-            $imageName = 'plant' . $plantId;
-            
-            
-            $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+            if(Plant::isPlantNameInDatabase($requestPlant['plant_name'], $plantId) != 0) {
+                $msg[] = 'Plant name is already in database';
+            }
+          
+            $colorValidationResult = Validator::isAlpha($requestPlant['color']);
+            if($colorValidationResult != 1){
+                $msg[] = "Wrong plant color";
+            }
 
-            //Stores the tempname as it is given by the host when uploaded.
+            $speciesValidationResult = Validator::isAlpha($requestPlant['species_name']);
+            if($speciesValidationResult != 1){
+                $msg[] = "Wrong animal species";
+            }
+
+            $heightValidationResult = Validator::isNumeric($requestPlant['plant_height']);
+            if($heightValidationResult != 1){
+                $msg[] = "Wrong plant height";
+            }
+
             $imagetemp = $uploadedFile['tmp_name'];
 
             if(is_uploaded_file($imagetemp)) {
-                if(move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension)) {
-                    echo "Sussecfully uploaded your image.";
-                }
-                else {
-                    echo "Failed to move your image.";
-                }
-            }
-            else {
-                echo "Failed to upload your image.";
-            }
+                $imageName = 'plant' . $plantId;            
+                $extension = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
+                $imgValidationResult = Validator::validateImg($uploadedFile);
 
-            $requestPlant['plant_image'] = DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR . $imageName . "." . $extension;
-
-            //@todo missing validation
+                if( $imgValidationResult == 1) {
+                    $userName = $_SESSION['username'];
+                    $imagePath = "public" . DIRECTORY_SEPARATOR . "userImages" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
+        
+                    if ( ! is_dir($imagePath)) {
+                        mkdir($imagePath);
+                    }
+                    
+                    move_uploaded_file($imagetemp, $imagePath . $imageName . "." . $extension);
+                } else{
+                    $msg['image'] = $imgValidationResult;
+                }
+                
+                $imagePathToDatabase = 'public/userImages/' . $userName .'/' . $imageName . "." . $extension;
+                $requestPlant['plant_image'] = $imagePathToDatabase;
+            }
             
             
-            if(empty($validationMsg)){
-                $msg['actionFeedback'] = 'Edited successfully';
+            if(empty($msg)){
+                $msg[] = 'Plant edited successfully';
             } else {
-                $msg['actionFeedback'] = 'Edited unsuccessfully';
-                $msg['validation'] = $validationMsg;
+                flash("plant", $msg);
+                $path = $router->generatePath('plant-edit', ['plant_id' => $plantId]);
+                $router->redirect($path);
+                return null;
             }
-            
             
             $plant->fill($requestPlant);
-            
-             $plant->save();
+            $plant->save();
 
             $path = $router->generatePath('plant-show', ['plant_id' => $plantId]);
             $router->redirect($path);
@@ -184,7 +210,7 @@ class PlantController
         }
 
         $msg['actionFeedback'] = 'Deleted successfully';
-        unlink(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . $plant->getPlantName());
+        unlink(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . $plant->getPlantImage());
         $plant->delete();
         $path = $router->generatePath('plant-index');
         $router->redirect($path);

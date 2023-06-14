@@ -184,6 +184,34 @@ class Plant
         return $plant;
     }
 
+    public static function isPlantNameInDatabase($plant_name, $plant_id=null)
+    {
+        $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
+        $sql = '';
+        if($plant_id == null) {
+            $sql = 'SELECT * FROM plant WHERE plant_name = :plant_name';
+
+        }
+        else {
+            $sql = 'SELECT * FROM plant WHERE plant_name = :plant_name AND plant_id != :plant_id';
+        }
+        
+        $statement = $pdo->prepare($sql);
+        
+        if($plant_id == null) {
+            $statement->execute(['plant_name' => $plant_name]);
+        } else {
+            $statement->execute(['plant_name' => $plant_name, 'plant_id' => $plant_id]);
+        }
+
+        
+        if ($statement->rowCount() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
     public function save(): void
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
@@ -230,7 +258,6 @@ class Plant
         $this->setPlantImage(null);
         $this->setSpeciesName(null);
         $this->setAquariumId(null);
-        $this->setBirthdate(null);
         $this->setColor(null);
     }
 }

@@ -16,7 +16,7 @@ if ($data && isset($data['userName']) && isset($data['activityName']))
 date_default_timezone_set('Europe/Warsaw');
 $timestamp = date("Y-m-d H:i:s"); // Get the current timestamp
 
-$logFile = '../../ExecutedActivities.log';
+$logFile = '../../../../ExecutedActivities.log';
 
 $logData = $username . ' - ' . $activityName . ' - ' . date('Y-m-d H:i:s') . PHP_EOL; 
 

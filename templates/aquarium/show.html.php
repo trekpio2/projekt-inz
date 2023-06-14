@@ -20,16 +20,31 @@ ob_start(); ?>
                 <a href="<?= $router->generatePath('animal-show', ['animal_id' => $animal->getAnimalId()]) ?>"><h3><?= $animal->getAnimalName(); ?></h3></a>
             </li>
             <?php endforeach; ?>
-        </ul>
+    </ul>
     
     <h2 class="homeAnimalTitle">Activities</h2>
     <ul class="index-list">
-        <?php foreach ($activities as $activity): ?>
-            <li>
-                <a href="<?= $router->generatePath('activity-show', ['activity_id' => $activity->getActivityId()]) ?>"><h3><?= $activity->getActivityName(); ?></h3></a>
-            </li>
-            <?php endforeach; ?>
-        </ul>
+    <h3>Not Planned Activities</h3>
+    <?php foreach ($notPlannedActivities as $activity): ?>
+        
+        <div class ="actionItem">
+            <a href="<?= $router->generatePath('activity-show', ['activity_id' => $activity->getActivityId()]) ?>">
+                <h3><?= $activity->getActivityName(); ?></h3>
+                <div class="forwardIcon">>></div> 
+            </a>
+        </div>                
+        <?php endforeach; ?>
+
+    <h3>Planned Activities</h3>
+    <?php foreach ($plannedActivities as $activity): ?>
+        
+        <div class ="actionItem">
+            <a href="<?= $router->generatePath('activity-show', ['activity_id' => $activity->getActivityId()]) ?>">
+                <h3><?= $activity->getActivityName(); ?></h3>
+                <div class="forwardIcon">>></div> 
+            </a>
+        </div>                
+        <?php endforeach; ?>
         
     <ul class="action-list">
         <li> <a href="<?= $router->generatePath('aquarium-index') ?>">Back to aquarium list</a></li>

@@ -1,5 +1,6 @@
 <?php
 namespace App\Controller;
+require_once 'src/Helpers/flash.php';
 
 use App\Exception\NotFoundException;
 use App\Model\User;
@@ -21,17 +22,22 @@ class LoginController
     {
         if ($requestUser) {
             $msg = array();
-            $validationMsg = array();
-            // @todo missing validation
-
-
-            if(!empty($validationMsg)){
-                $msg['actionFeedback'] = 'Wrong login data';
-                $msg['validation'] = $validationMsg;
-            }
-
+            
 
             $user = User::login($requestUser['username'], $requestUser['user_password']);
+            if(is_null($user)) {
+                $msg[] = 'wrong login data';
+            }
+            if(empty($msg)){
+                $msg[] = 'Logged successfully';
+            } else {
+                flash("login", $msg);
+                $path = $router->generatePath('login-index');
+                $router->redirect($path);
+                return null;
+            }
+            
+            flash("login", $msg);
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();
             
@@ -44,7 +50,6 @@ class LoginController
             ]);
             return $html;
         }
-        
     }
 
     public function logoutAction(Templating $templating, Router $router): ?string

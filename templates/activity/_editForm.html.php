@@ -50,7 +50,7 @@
 
 <div class="form-group">
     <label for="period">period</label>
-    <input type="number" min="1" id="period_nr" name="activity[period_nr]" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
+    <input type="number" value="<?= $activity ? $activity->getPeriodNr() : '' ?>" min="1" id="period_nr" name="activity[period_nr]" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
     <select id="period" name="activity[period]" <?= $activity->getIsPlanned()? 'required' : 'disabled' ?>>
         <option value="days">days</option>
         <option value="weeks">weeks</option>

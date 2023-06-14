@@ -4,12 +4,14 @@
 
 /** @var \App\Model\Aquarium $aquarium */
 /** @var \App\Service\Router $router */
+require_once 'src/Helpers/flash.php';
 
 $title = "Edit Aquarium {$aquarium->getAquariumName()}";
 $bodyClass = "edit";
 
 ob_start(); ?>
     <h1><?= $title ?></h1>
+    <?php flash('aquarium') ?>
     <form action="<?= $router->generatePath('aquarium-edit') ?>" method="post" class="edit-form">
         <?php require __DIR__ . DIRECTORY_SEPARATOR . '_editForm.html.php'; ?>
         <input type="hidden" name="action" value="aquarium-edit">
