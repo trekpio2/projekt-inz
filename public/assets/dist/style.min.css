@@ -171,7 +171,11 @@ body nav {
     margin-top: 1rem;
   }
 }
+body form {
+  margin: 0 auto;
+}
 body main {
+  text-align: center;
   flex-grow: 1;
   margin-bottom: 10rem;
 }
@@ -358,6 +362,15 @@ input[type=delete] {
 .edit .edit-form .form-group textarea {
   height: 300px;
   flex-grow: 3;
+}
+.form-message-red {
+  width: 80%;
+  text-align: center;
+  background-color: rgba(255, 0, 0, 0.596);
+  border-radius: 20px;
+  border: 1px solid red;
+  color: white;
+  margin: 0 auto;
 }
 @media (max-width: 1024px) {
   .img-ax {
