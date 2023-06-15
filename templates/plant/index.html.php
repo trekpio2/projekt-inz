@@ -17,7 +17,7 @@ ob_start(); ?>
     <ul class="index-list">
         <?php foreach ($plants as $plant): ?>
             <div class="animalPhoto">
-                <img src="<?= $plant->getPlantImage(); ?>" style='height: 137px; width: 288px; object-fit: cover; border-radius: 47px'>
+                <img onerror="this.style.display='none'" src="<?= $plant->getPlantImage(); ?>" style='height: 137px; width: 288px; object-fit: cover; border-radius: 47px'>
             </div>
             <li><h3><?= $plant->getPlantName(); ?></h3>
             <ul class="action-list">

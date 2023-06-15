@@ -351,6 +351,10 @@ input[type=delete] {
   flex-grow: 3;
   background-color: #AACB73;
 }
+.edit .edit-form .form-group input[type="submit"]:active {
+  flex-grow: 3;
+  background-color: #CDE990;
+}
 .edit .edit-form .form-group textarea {
   height: 300px;
   flex-grow: 3;
