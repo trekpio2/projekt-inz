@@ -47,5 +47,5 @@
 
 <div class="form-group animal">
     <label></label>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" onclick="return confirm('Are you sure?')">
 </div>
