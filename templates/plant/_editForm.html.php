@@ -37,7 +37,7 @@
     <label for="plant_image">image</label>
     
     <div class="animalPhoto">    
-        <img id="imagePreview" src="<?= $plant ? $plant->getPlantImage() : '' ?>" alt="current plant image" style="height: 137px; width: 288px; object-fit: cover; border-radius: 47px">
+        <img id="imagePreview" src="<?= $plant ? $plant->getPlantImage() : '' ?>" alt="current plant image" style="max-width: 288px; max-height: 137px; object-fit: cover; border-radius: 47px">
     </div>
     <input class="imageInput" type="file" id="plant_image" name="plant_image" accept="image/png, image/jpeg">
 </div>
