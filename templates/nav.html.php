@@ -17,7 +17,7 @@
     <img src="public\assets\dist\img\info.png" alt=" icon" width=35><a href="<?= $router->generatePath('activity-index') ?>">Activities</a>
     <a href="<?= $router->generatePath('login-logout') ?>">Log out</a>
 </a></div>
-<div id="darken"></div>
+<div id="darken" onclick="closeNav()"></div>
 <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
 <script>
 function openNav() {
