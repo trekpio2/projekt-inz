@@ -12,6 +12,9 @@ class LoginController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['rrequest'])) {
+            unset($_SESSION['rrequest']);
+        }
         $html = $templating->render('login/index.html.php', [
             'router' => $router,
         ]);
@@ -31,13 +34,16 @@ class LoginController
             if(empty($msg)){
                 $msg[] = 'Logged successfully';
             } else {
+                $_SESSION['lrequest'] = $requestUser;
                 flash("login", $msg);
                 $path = $router->generatePath('login-index');
                 $router->redirect($path);
                 return null;
             }
             
-            flash("login", $msg);
+            if(isset($_SESSION['lrequest'])) {
+                unset($_SESSION['lrequest']);
+            }
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();
             

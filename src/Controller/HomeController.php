@@ -11,6 +11,10 @@ class HomeController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
+        
         $animals = Animal::findAllOwnedByUser($_SESSION['user_id']);
         $plants = Plant::findAllOwnedByUser($_SESSION['user_id']);
         $html = $templating->render('home/index.html.php', [

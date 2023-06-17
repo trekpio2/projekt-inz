@@ -4,32 +4,32 @@
 
 <div class="form-group">
     <label for="aquarium_name">Name</label>
-    <input type="text" id="aquarium_name" name="aquarium[aquarium_name]" value="<?= $aquarium ? $aquarium->getAquariumName() : '' ?>">
+    <input type="text" required id="aquarium_name" name="aquarium[aquarium_name]" value="<?= $_SESSION['request']['aquarium_name'] ? $_SESSION['request']['aquarium_name'] : $aquarium->getAquariumName() ?>">
 </div>
 
 <div class="form-group">
     <label for="aquarium_length">Length</label>
-    <input type="text" id="aquarium_length" name="aquarium[aquarium_length]" value="<?= $aquarium ? $aquarium->getAquariumLength() : '' ?>">
+    <input type="number" required id="aquarium_length" name="aquarium[aquarium_length]" value="<?= $_SESSION['request']['aquarium_length'] ? $_SESSION['request']['aquarium_length'] : $aquarium->getAquariumLength() ?>">
 </div>
 
 <div class="form-group">
     <label for="aquarium_width">Width</label>
-    <input type="text" id="aquarium_width" name="aquarium[aquarium_width]" value="<?= $aquarium ? $aquarium->getAquariumWidth() : '' ?>">
+    <input type="number" required id="aquarium_width" name="aquarium[aquarium_width]" value="<?= $_SESSION['request']['aquarium_width'] ? $_SESSION['request']['aquarium_width'] : $aquarium->getAquariumWidth() ?>">
 </div>
 
 <div class="form-group">
     <label for="aquarium_height">Height</label>
-    <input type="text" id="aquarium_height" name="aquarium[aquarium_height]" value="<?= $aquarium ? $aquarium->getAquariumHeight() : '' ?>">
+    <input type="number" required id="aquarium_height" name="aquarium[aquarium_height]" value="<?= $_SESSION['request']['aquarium_height'] ? $_SESSION['request']['aquarium_height'] : $aquarium->getAquariumHeight() ?>">
 </div>
 
 <div class="form-group">
     <label for="aquarium_volume">Volume</label>
-    <input type="text" id="aquarium_volume" name="aquarium[aquarium_volume]" value="<?= $aquarium ? $aquarium->getAquariumVolume() : '' ?>">
+    <input type="number" required id="aquarium_volume" name="aquarium[aquarium_volume]" value="<?= $_SESSION['request']['aquarium_volume'] ? $_SESSION['request']['aquarium_volume'] : $aquarium->getAquariumVolume() ?>">
 </div>
 
 <div class="form-group">
     <label for="ip">IP</label>
-    <input type="text" id="ip" name="aquarium[ip]" value="<?= $aquarium ? $aquarium->getIP() : '' ?>">
+    <input type="text" required id="ip" name="aquarium[ip]" value="<?= $_SESSION['request']['ip'] ? $_SESSION['request']['ip'] : $aquarium->getIP() ?>">
 </div>
 
 

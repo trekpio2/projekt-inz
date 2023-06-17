@@ -17,7 +17,7 @@ executeBtn.addEventListener('click', () => {
             },
             body: JSON.stringify(executeData),
         }).then((response) => {
-            alert("Activity have been activated");
+            alert("Activity has been activated");
             console.log(response.status);
             console.log(response);
             //logging information about execution

@@ -6,6 +6,7 @@ use App\Exception\NotFoundException;
 use App\Model\Plant;
 use App\Model\Aquarium;
 use App\Validator\Validator;
+use App\Model\Activity;
 use App\Service\Router;
 use App\Service\Templating;
 
@@ -13,6 +14,9 @@ class PlantController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $plants = Plant::findAllOwnedByUser($_SESSION['user_id']);
         $html = $templating->render('plant/index.html.php', [
             'plants' => $plants,
@@ -26,6 +30,7 @@ class PlantController
         $msg = array();
 
         if ($requestPlant) {
+            
             foreach($requestPlant as $plantDataKey => $plantDataValue) {
                 $aquariumDataValue = Validator::testInput($plantDataValue);
                 $requestPlant[$plantDataKey] = $plantDataValue;
@@ -42,9 +47,9 @@ class PlantController
 
             $speciesValidationResult = Validator::isAlpha($requestPlant['species_name']);
             if($speciesValidationResult != 1){
-                $msg[] = "Wrong animal species";
+                $msg[] = "Wrong plant species";
             }
-
+            $requestPlant['plant_height'] = intval($requestPlant['plant_height']);
             $heightValidationResult = Validator::isNumeric($requestPlant['plant_height']);
             if($heightValidationResult != 1){
                 $msg[] = "Wrong plant height";
@@ -77,13 +82,15 @@ class PlantController
             if(empty($msg)){
                 $msg[] = 'Plant created successfully';
             } else {
+                $_SESSION['request'] = $requestPlant;
+                
                 flash("plant", $msg);
                 $path = $router->generatePath('plant-create');
                 $router->redirect($path);
                 return null;
             }
 
-
+            unset($_SESSION['request']);
             $plant = Plant::fromArray($requestPlant);
             $plant->save();
 
@@ -114,6 +121,7 @@ class PlantController
 
         if ($requestPlant) {
             $msg = array();
+            
             foreach($requestPlant as $plantDataKey => $plantDataValue) {
                 $aquariumDataValue = Validator::testInput($plantDataValue);
                 $requestPlant[$plantDataKey] = $plantDataValue;
@@ -130,9 +138,9 @@ class PlantController
 
             $speciesValidationResult = Validator::isAlpha($requestPlant['species_name']);
             if($speciesValidationResult != 1){
-                $msg[] = "Wrong animal species";
+                $msg[] = "Wrong plant species";
             }
-
+            $requestPlant['plant_height'] = intval($requestPlant['plant_height']);
             $heightValidationResult = Validator::isNumeric($requestPlant['plant_height']);
             if($heightValidationResult != 1){
                 $msg[] = "Wrong plant height";
@@ -166,12 +174,14 @@ class PlantController
             if(empty($msg)){
                 $msg[] = 'Plant edited successfully';
             } else {
+                $_SESSION['request'] = $requestPlant;
+
                 flash("plant", $msg);
                 $path = $router->generatePath('plant-edit', ['plant_id' => $plantId]);
                 $router->redirect($path);
                 return null;
             }
-            
+            unset($_SESSION['request']);            
             $plant->fill($requestPlant);
             $plant->save();
 
@@ -190,20 +200,27 @@ class PlantController
 
     public function showAction(int $plantId, Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $plant = Plant::find($plantId);
         if (! $plant) {
             throw new NotFoundException("Missing plant with id $plantId");
         }
-
+        $activities = Activity::findAllAssignedToAquarium($plant->getAquariumId());
         $html = $templating->render('plant/show.html.php', [
             'plant' => $plant,
             'router' => $router,
+            'activiteis' => $activities
         ]);
         return $html;
     }
 
     public function deleteAction(int $plantId, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $plant = Plant::find($plantId);
         if (! $plant) {
             throw new NotFoundException("Missing plant with id $plantId");

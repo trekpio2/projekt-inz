@@ -13,6 +13,10 @@ class RegisterController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['lrequest'])) {
+            unset($_SESSION['lrequest']);
+        }
+
         $html = $templating->render('register/index.html.php', [
             'router' => $router,
         ]);
@@ -40,13 +44,15 @@ class RegisterController
             if(empty($msg)){
                 $msg[] = 'Created successfully';
             } else {
+                $_SESSION['rrequest'] = $requestUser;
                 flash("register", $msg);
                 $path = $router->generatePath('register-index');
                 $router->redirect($path);
                 return null;
             }
-            
-            flash("register", $msg);
+            if(isset($_SESSION['rrequest'])) {
+                unset($_SESSION['rrequest']);
+            }
             $user = User::fromArray($requestUser);
             $user->save();
 

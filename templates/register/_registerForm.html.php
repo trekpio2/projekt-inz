@@ -9,11 +9,11 @@
 </div>
 <?php flash('register'); ?>
 <div class="form-group">
-    <input type="text" id="username" name="user[username]" placeholder="USERNAME">
+    <input type="text" required id="username" name="user[username]" placeholder="USERNAME" value="<?= $_SESSION['rrequest']['username']?>">
 </div>
 
 <div class="form-group">
-    <input type="text" id="user_password" name="user[user_password]" placeholder="PASSWORD">
+    <input type="text" required id="user_password" name="user[user_password]" placeholder="PASSWORD" value="<?= $_SESSION['rrequest']['user_password']?>">
 </div>
 
 <div class="form-group">

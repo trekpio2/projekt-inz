@@ -14,6 +14,9 @@ class ActivityController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $notPlannedActivities = Activity::findAllNotPlannedAssignedToUser($_SESSION['user_id']);
         $plannedActivities = Activity::findAllPlannedAssignedToUser($_SESSION['user_id']);
         $html = $templating->render('activity/index.html.php', [
@@ -28,6 +31,7 @@ class ActivityController
     {
         if ($requestActivity) {
             $msg = array();
+            
 
             if(!isset($requestActivity['feed'])) {
                 $requestActivity['feed'] = 0;
@@ -50,13 +54,13 @@ class ActivityController
             if(Activity::isActivityNameInDatabase($requestActivity['activity_name']) != 0) {
                 $msg[] = 'activity name is already in database';
             }
-
-            $lightsValidationResult = Validator::isNumeric($requestAquarium['lights_level']);
+            $requestActivity['lights_level'] = intval($requestActivity['lights_level']);
+            $lightsValidationResult = Validator::isNumeric($requestActivity['lights_level']);
             if($lightsValidationResult != 1){
                 $msg[] = "Wrong lights level";
             }
-
-            $temperatureValidationResult = Validator::isNumeric($requestAquarium['temperature']);
+            $requestActivity['temperature'] = intval($requestActivity['temperature']);
+            $temperatureValidationResult = Validator::isNumeric($requestActivity['temperature']);
             if($temperatureValidationResult != 1){
                 $msg[] = "Wrong temperature";
             }    
@@ -65,12 +69,24 @@ class ActivityController
             $taskName = $userName . '-' . $requestActivity['activity_name'];
             $requestActivity['task_name'] = $taskName;
             
- 
+            
 
+            $activity = Activity::fromArray($requestActivity);
 
             if($requestActivity['is_planned'] == 1)
             {
-                $scheduler = new Scheduler();
+                if ($requestActivity['start_time'] == '') {
+                    $msg[] = 'starting time must be set';
+                }
+
+                if ($requestActivity['start_date'] == '') {
+                    $msg[] = 'starting date must be set';
+                }
+
+                if ($requestActivity['period_nr'] == '') {
+                    $msg[] = 'period number must be set';
+                }
+                //$scheduler = new Scheduler();
                 $scriptFilePath = "public" . DIRECTORY_SEPARATOR . "plannedActivities" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
                 
                 if ( !is_dir($scriptFilePath)) {
@@ -85,7 +101,7 @@ class ActivityController
                 $logData = json_encode($activityData);
                 
                 $aquarium = Aquarium::find($activity->getAquariumId());
-                $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData, $logData);
+                //$scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData, $logData);
                 $taskCommand = "node " . $scriptFilePath;
                 // zakomentowane zeby nie smiecic w systemie                
                 //$scheduler->addTask($taskName, $taskCommand, $activity->getStartTime(), $activity->getStartDate(), $activity->getPeriod(), $activity->getPeriodNr());
@@ -94,13 +110,13 @@ class ActivityController
             if(empty($msg)){
                 $msg[] = 'Activity created successfully';
             } else {
+                $_SESSION['request'] = $requestActivity;
                 flash("activity", $msg);
                 $path = $router->generatePath('activity-create');
                 $router->redirect($path);
                 return null;
             }
-            
-            $activity = Activity::fromArray($requestActivity);
+            unset($_SESSION['request']);
             $activity->save();
             
             $path = $router->generatePath('activity-index');
@@ -129,7 +145,7 @@ class ActivityController
         if ($requestActivity) {
             $msg = array();
             
-            if(Activity::isActivityNameInDatabase($requestAquarium['activity_name'], $activityId) != 0) {
+            if(Activity::isActivityNameInDatabase($requestActivity['activity_name'], $activityId) != 0) {
                 $msg[] = 'activity name is already in database';
             }
            
@@ -157,21 +173,32 @@ class ActivityController
                 $animalDataValue = Validator::testInput($activityDataValue);
                 $requestActivity[$activityDataKey] = $activityDataValue;
             }
-
-            $lightsValidationResult = Validator::isNumeric($requestAquarium['lights_level']);
+            $requestActivity['lights_level'] = intval($requestActivity['lights_level']);
+            $lightsValidationResult = Validator::isNumeric($requestActivity['lights_level']);
             if($lightsValidationResult != 1){
                 $msg[] = "Wrong lights level";
             }
-
-            $temperatureValidationResult = Validator::isNumeric($requestAquarium['temperature']);
+            $requestActivity['temperature'] = intval($requestActivity['temperature']);
+            $temperatureValidationResult = Validator::isNumeric($requestActivity['temperature']);
             if($temperatureValidationResult != 1){
                 $msg[] = "Wrong temperature";
             }            
             
             if($requestActivity['is_planned'] == 1)
             {
-                $scheduler = new Scheduler();
-                $scheduler->removeTask($previousTaskName);
+                if ($requestActivity['start_time'] == '') {
+                    $msg[] = 'starting time must be set';
+                }
+
+                if ($requestActivity['start_date'] == '') {
+                    $msg[] = 'starting date must be set';
+                }
+
+                if ($requestActivity['period_nr'] == '') {
+                    $msg[] = 'period number must be set';
+                }
+                //$scheduler = new Scheduler();
+                //$scheduler->removeTask($previousTaskName);
                 $scriptFilePath = "public" . DIRECTORY_SEPARATOR . "plannedActivities" . DIRECTORY_SEPARATOR . $userName . DIRECTORY_SEPARATOR;
 
                 
@@ -180,17 +207,29 @@ class ActivityController
                 }
                 
                 $previousFilePath = $scriptFilePath . $previousActivityName . '.js';
-                $scriptFilePath .= $activity->getActivityName() . '.js';
-                $executeData = $activity->getExecuteData();
+                $scriptFilePath .= $requestActivity['activity_name'] . '.js';
+                $activityData = [];
+                if($requestActivity['lights_level'] != 0)
+                    $activityData['lights_level'] = $requestActivity['lights_level'];
+                if($requestActivity['temperature'] != 0)
+                    $activityData['temperature'] = $requestActivity['temperature'];
+                if($requestActivity['feed'] != 0)
+                    $activityData['feed'] = $requestActivity['feed'];
+                if($requestActivity['filter'] != 0)
+                    $activityData['filter'] = $requestActivity['filter'];
+                if($requestActivity['pump'] != 0)
+                    $activityData['pump'] = $requestActivity['pump'];
+        
+                $executeData = json_encode($activityData);
                 $logData = array();
                 $logData['userName'] = $_SESSION['username'];
-                $logData['activityName'] = $activity->getActivityName();
+                $logData['activityName'] = $requestActivity['activity_name'];
                 $logData = json_encode($activityData);
                 
-                $aquarium = Aquarium::find($activity->getAquariumId());
+                $aquarium = Aquarium::find($requestActivity['aquarium_id']);
                 
-                $scheduler->deleteTaskFile($previousFilePath);
-                $scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData, $logData);
+                //$scheduler->deleteTaskFile($previousFilePath);
+                //$scheduler->createTaskFile($scriptFilePath, $aquarium->getIP(), $activity->getActivityName(), $executeData, $logData);
                 
                 $taskCommand = "node " . $scriptFilePath;
                 // zakomentowane zeby nie smiecic w systemie
@@ -202,12 +241,14 @@ class ActivityController
              if(empty($msg)){
                 $msg[] = 'Activity edited successfully';
             } else {
+                $_SESSION['request'] = $requestActivity;
+
                 flash("activity", $msg);
                 $path = $router->generatePath('activity-edit', ['activity_id' => $activityId]);
                 $router->redirect($path);
                 return null;
             }
-            
+            unset($_SESSION['request']);
             $activity->fill($requestActivity);
             $activity->save();
             
@@ -227,6 +268,9 @@ class ActivityController
 
     public function showAction(int $activityId, Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $activity = Activity::find($activityId);
         $aquarium = Aquarium::find($activity->getAquariumId());
         $executeData = $activity->getExecuteData();
@@ -246,6 +290,9 @@ class ActivityController
 
     public function deleteAction(int $activityId, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $activity = Activity::find($activityId);
         if (! $activity) {
             throw new NotFoundException("Missing activity with id $activityId");

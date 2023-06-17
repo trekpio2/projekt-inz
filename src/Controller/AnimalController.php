@@ -14,6 +14,9 @@ class AnimalController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $animals = Animal::findAllOwnedByUser($_SESSION['user_id']);
         
         $html = $templating->render('animal/index.html.php', [
@@ -37,6 +40,8 @@ class AnimalController
 
         if ($requestAnimal)
         {
+
+
             foreach($requestAnimal as $animalDataKey => $animalDataValue) {
                 $animalDataValue = Validator::testInput($animalDataValue);
                 $requestAnimal[$animalDataKey] = $animalDataValue;
@@ -44,6 +49,11 @@ class AnimalController
             
             if (Animal::isAnimalNameInDatabase($requestAnimal['animal_name']) != 0) {
                 $msg[] = "animal name already in database";
+            }
+
+            $animalValidationResult = Validator::isAlpha($requestAnimal['animal_name']);
+            if($animalValidationResult != 1){
+                $msg[] = "Wrong animal name";
             }
 
             $colorValidationResult = Validator::isAlpha($requestAnimal['color']);
@@ -91,12 +101,14 @@ class AnimalController
             if(empty($msg)){
                 $msg[] = 'Animal created successfully';
             } else {
+                $_SESSION['request'] = $requestAnimal;
+
                 flash("animal", $msg);
                 $path = $router->generatePath('animal-create');
                 $router->redirect($path);
                 return null;
             }
-            
+            unset($_SESSION['request']);
             $animal = Animal::fromArray($requestAnimal);
             $animal->save();
             
@@ -126,7 +138,6 @@ class AnimalController
         
         if ($requestAnimal) {
             $msg = array();
-            
             foreach($requestAnimal as $animalDataKey => $animalDataValue){
                 $animalDataValue = Validator::testInput($animalDataValue);
                 $requestAnimal[$animalDataKey] = $animalDataValue;
@@ -134,6 +145,11 @@ class AnimalController
 
             if (Animal::isAnimalNameInDatabase($requestAnimal['animal_name'], $animalId) != 0) {
                 $msg[] = "animal name already in database";
+            }
+
+            $animalValidationResult = Validator::isAlpha($requestAnimal['animal_name']);
+            if($animalValidationResult != 1){
+                $msg[] = "Wrong animal name";
             }
 
             $colorValidationResult = Validator::isAlpha($requestAnimal['color']);
@@ -188,12 +204,14 @@ class AnimalController
             if(empty($msg)){
                 $msg[] = 'Animal edited successfully';
             } else {
+                $_SESSION['request'] = $requestAnimal;
+
                 flash("animal", $msg);
                 $path = $router->generatePath('animal-edit', ['animal_id' => $animalId]);
                 $router->redirect($path);
                 return null;
             }
-            
+            unset($_SESSION['request']);
             $animal->fill($requestAnimal);
             $animal->save();
              
@@ -214,6 +232,9 @@ class AnimalController
 
     public function showAction(int $animalId, Templating $templating, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $animal = Animal::find($animalId);
         $activities = Activity::findAllAssignedToAquarium($animal->getAquariumId());
 
@@ -231,6 +252,9 @@ class AnimalController
 
     public function deleteAction(int $animalId, Router $router): ?string
     {
+        if(isset($_SESSION['request'])) {
+            unset($_SESSION['request']);
+        }
         $animal = Animal::find($animalId);
         if (! $animal) {
             throw new NotFoundException("Missing animal with id $animalId");

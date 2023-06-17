@@ -13,7 +13,8 @@ class Validator
 
     public static function isAlpha($data)
     {
-        if(!ctype_alpha($data)) {
+
+        if(!ctype_alpha(str_replace(" ", "", $data))) {
             return 0;
         }
     
@@ -22,7 +23,7 @@ class Validator
 
     public static function isNumeric($data)
     {
-        if(!is_numeric(floatval($data))){
+        if(!is_numeric($data)){
             return 0;
         }
 
