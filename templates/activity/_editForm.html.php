@@ -5,17 +5,17 @@
 
 <div class="form-group">
     <label for="activity_name">Name</label>
-    <input type="text" id="activity_name" name="activity[activity_name]" value="<?= $_SESSION['request']['activity_name'] ? $_SESSION['request']['activity_name'] : $activity->getActivityName() ?>">
+    <input type="text" required id="activity_name" name="activity[activity_name]" value="<?= $_SESSION['request']['activity_name'] ? $_SESSION['request']['activity_name'] : $activity->getActivityName() ?>">
 </div>
 
 <div class="form-group">
     <label for="lights_level">Lights level</label>
-    <input type="number" id="lights_level" name="activity[lights_level]" value="<?= $_SESSION['request']['lights_level'] ? $_SESSION['request']['lights_level'] : $activity->getLightsLevel() ?>">
+    <input type="number" required id="lights_level" name="activity[lights_level]" value="<?= $_SESSION['request']['lights_level'] ? $_SESSION['request']['lights_level'] : $activity->getLightsLevel() ?>">
 </div>
 
 <div class="form-group">
     <label for="temperature">Temperature</label>
-    <input type="number" id="temperature" name="activity[temperature]" value="<?= $_SESSION['request']['temperature'] ? $_SESSION['request']['temperature'] : $activity->getTemperature() ?>">
+    <input type="number" required id="temperature" name="activity[temperature]" value="<?= $_SESSION['request']['temperature'] ? $_SESSION['request']['temperature'] : $activity->getTemperature() ?>">
 </div>
 
 <div class="form-group">

@@ -5,17 +5,17 @@
 
 <div class="form-group">
     <label for="activity_name">Name</label>
-    <input type="text" class="formGreen" id="activity_name" name="activity[activity_name]" value="<?=$_SESSION['request']['activity_name']?>">
+    <input type="text" required class="formGreen" id="activity_name" name="activity[activity_name]" value="<?=$_SESSION['request']['activity_name']?>">
 </div>
 
 <div class="form-group">
     <label for="lights_level">Lights level</label>
-    <input type="number" class="formGreen" id="lights_level" name="activity[lights_level]" value="<?=$_SESSION['request']['lights_level']?>">
+    <input type="number" required class="formGreen" id="lights_level" name="activity[lights_level]" value="<?=$_SESSION['request']['lights_level']?>">
 </div>
 
 <div class="form-group">
     <label for="temperature">Temperature</label>
-    <input type="number"  class="formGreen" id="temperature" name="activity[temperature]" value="<?=$_SESSION['request']['temperature']?>">
+    <input type="number" required  class="formGreen" id="temperature" name="activity[temperature]" value="<?=$_SESSION['request']['temperature']?>">
 </div>
 
 <div class="form-group">
@@ -40,7 +40,7 @@
 
 <div class="form-group">
     <label for="start_time">starting time</label>
-    <input type="time" id="start_time" name="activity[start_time]"  <?= $_SESSION['request']['is_planned'] ? 'required' : 'disabled' ?> value="<?=$_SESSION['request']['starting_time']?>">
+    <input type="time" id="start_time" name="activity[start_time]"  <?= $_SESSION['request']['is_planned'] ? 'required' : 'disabled' ?> value="<?=$_SESSION['request']['start_time']?>">
 </div>
 
 <div class="form-group">

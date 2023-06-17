@@ -8,7 +8,7 @@ class Plant
     private ?int $plantId = null;
     private ?int $plantHeight = null;
     private ?string $plantName = null;
-    private ?string $plantImage = null;
+    private ?string $plantImage = 'public/assets/dist/img/leaves-of-a-plant.png';
     private ?string $color = null;
     private ?string $speciesName = null;
     private ?int $aquariumId = null;
