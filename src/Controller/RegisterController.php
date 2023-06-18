@@ -38,7 +38,7 @@ class RegisterController
              }
 
             if(!preg_match("/^(?=.*[!@#$%^&*])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{6,}$/",$requestUser['user_password'])){
-                $msg[] = 'Wrong password';
+                $msg[] = 'Wrong password - must have 6 characters at least with 1 special char, 1 number and capital letter';
             }
             
             if(empty($msg)){
