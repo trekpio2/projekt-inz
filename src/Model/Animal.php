@@ -15,7 +15,7 @@ class Animal
     private ?int $animalId = null;
     private ?string $animalName = null;
     private ?string $animalGender = null;
-    private ?string $animalImage = null;
+    private ?string $animalImage = 'public/assets/dist/img/paw.png';
     private ?string $birthdate = null;
     private ?string $color = null;
     private ?string $speciesName = null;
